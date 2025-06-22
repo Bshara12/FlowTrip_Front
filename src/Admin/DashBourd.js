@@ -79,13 +79,13 @@ export default function DashBourd() {
             {!collapsed && "Restaurant"}
           </Link>
           <Link
-            to="/Admin/dashbord/Manager"
+            to="/Admin/dashbord/packages"
             className={
-              activeLink === "/Admin/dashbord/Manager" ? "active-link" : ""
+              activeLink === "/Admin/dashbord/packages" ? "active-link" : ""
             }
           >
             <i className="fa-solid fa-user-tie"></i>
-            {!collapsed && "Manager"}
+            {!collapsed && "Packages"}
           </Link>
           <Link
             to="/Admin/dashbord/Catigories"

@@ -521,3 +521,63 @@
     0 0 18px rgba(119, 139, 150, 0.5),
     0 0 10px rgba(170, 199, 215, 0.4) inset;
 }
+
+
+.forget-password {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.forget-password a {
+  color: var(--color4); 
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.forget-password a:hover {
+  text-decoration: underline;
+}
+
+
+.containercheckbox {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.containercheckbox input {
+  display: none;
+}
+
+.containercheckbox svg {
+  overflow: visible;
+}
+
+.pathcheckbox {
+  fill: none;
+  stroke: var(--color1);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+  stroke-dasharray: 241 9999999;
+  stroke-dashoffset: 0;
+}
+
+.containercheckbox input:checked ~ svg .pathcheckbox {
+  stroke-dasharray: 70.5096664428711 9999999;
+  stroke-dashoffset: -262.2723388671875;
+}
+
+
+.forget-password a{
+  text-decoration: none;
+}
+
+.forgot-password{
+  transition: .3s linear;
+}
+
+.forgot-password:hover{
+  transform: scale(1.1);
+}

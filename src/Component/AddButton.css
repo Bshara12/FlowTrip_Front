@@ -1,0 +1,56 @@
+.addbuttoncomponent {
+  position: relative;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 1px solid #34974d;
+  background-color: #3aa856;
+  transition: all 0.3s;
+}
+
+.addbuttoncomponent__text {
+  transform: translateX(30px);
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.addbuttoncomponent__icon {
+  position: absolute;
+  transform: translateX(109px);
+  height: 100%;
+  width: 39px;
+  background-color: #34974d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.addbuttoncomponent__svg {
+  width: 30px;
+  stroke: #fff;
+}
+
+.addbuttoncomponent:hover {
+  background: #34974d;
+}
+
+.addbuttoncomponent:hover .addbuttoncomponent__text {
+  color: transparent;
+}
+
+.addbuttoncomponent:hover .addbuttoncomponent__icon {
+  width: 148px;
+  transform: translateX(0);
+}
+
+.addbuttoncomponent:active .addbuttoncomponent__icon {
+  background-color: #2e8644;
+}
+
+.addbuttoncomponent:active {
+  border: 1px solid #2e8644;
+}

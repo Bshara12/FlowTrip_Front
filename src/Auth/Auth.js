@@ -37,13 +37,13 @@ const Auth = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     console.log("Login Data:", loginData);
-    alert("تسجيل الدخول غير مفعل في الوقت الحالي.");
+    alert("Login is currently disabled.");
   };
 
   const handleRegister = (e) => {
     e.preventDefault();
     console.log("Register Data:", registerData);
-    alert("التسجيل غير مفعل في الوقت الحالي.");
+    alert("Registration is currently disabled.");
   };
 
   return (
@@ -52,7 +52,7 @@ const Auth = () => {
         <div className="signin_signup">
           {/* Login form */}
           <form className="sign_in_form" onSubmit={handleLogin}>
-            <h2 className="title">تسجيل الدخول</h2>
+            <h2 className="title">Login</h2>
 
             <div className="wave-group">
               <input
@@ -94,6 +94,10 @@ const Auth = () => {
               </span>
             </div>
 
+            <div className="forgot-password" style={{ marginBottom: "1.5rem"}}>
+              <a href="#">Forgot Password?</a>
+            </div>
+
             <ButtonAuth label="Log In" />
 
             <div className="social_login">
@@ -111,7 +115,7 @@ const Auth = () => {
 
           {/* Register form */}
           <form className="sign_up_form" onSubmit={handleRegister}>
-            <h2 className="title">إنشاء حساب</h2>
+            <h2 className="title">Create Account</h2>
 
             <div className="wave-group">
               <input
@@ -190,8 +194,8 @@ const Auth = () => {
                 {showPasswordRegister ? <i className="fa-solid fa-eye"></i> : <i className="fa-solid fa-eye-slash"></i>}
               </span>
             </div>
+{/* Role Radio Buttons */}
 
-            {/* Role Radio Buttons */}
             <div className="glass-radio-group" style={{ marginBottom: "1rem" }}>
               <input
                 type="radio"
@@ -216,6 +220,23 @@ const Auth = () => {
               <div className="glass-glider"></div>
             </div>
 
+            {/* Remember Me Checkbox */}
+            <div className="remember-checkbox" style={{ marginBottom: "1.5rem" }}>
+              <label className="containercheckbox">
+                <input type="checkbox" />
+                <svg viewBox="0 0 64 64" height="1em" width="1em">
+                  <path
+                    d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
+                    pathLength="575.0541381835938"
+                    className="pathcheckbox"
+                  ></path>
+                </svg>
+                <span style={{ marginLeft: "8px", fontSize: "0.9rem", color: 'var(--color1)' }}>
+                  Remember me
+                </span>
+              </label>
+            </div>
+
             <ButtonAuth label="Register" />
 
             <div className="social_login">
@@ -236,10 +257,10 @@ const Auth = () => {
       <div className="panels_container">
         <div className="panel left_panel">
           <div className="content">
-            <h3>مستخدم جديد؟</h3>
-            <p>سجل الآن وابدأ رحلتك في استكشاف جميع الفعاليات التي ترغب بها.</p>
+            <h3>New here?</h3>
+            <p>Create an account to explore and participate in your favorite events.</p>
             <button className="re_button btn transparent" onClick={handleToggle}>
-              إنشاء حساب
+              Sign Up
             </button>
           </div>
           <img src={aircraftImage} className="image" alt="aircraft" />
@@ -247,10 +268,10 @@ const Auth = () => {
 
         <div className="panel right_panel">
           <div className="content">
-            <h3>أنت من مجتمعنا؟</h3>
-            <p>مرحبًا بك مجددًا، سجل الدخول للوصول إلى فعالياتك المفضلة.</p>
+            <h3>One of us?</h3>
+            <p>Welcome back! Log in to access your events.</p>
             <button className="re_button btn transparent" onClick={handleToggle}>
-              تسجيل الدخول
+              Login
             </button>
           </div>
           <img src={luggageImage} className="image" alt="luggage" />

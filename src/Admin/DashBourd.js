@@ -17,6 +17,10 @@ export default function DashBourd() {
     setActiveLink(location.pathname);
   }, [location.pathname]);
 
+  const handleToggleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
+
   const handleLogout = async () => {
     const token = Cookies.get("authToken");
     try {
@@ -57,11 +61,11 @@ export default function DashBourd() {
       />
       <div className={`sidpare ${collapsed ? "collapsed" : ""}`}>
         <img
-          src={require("../Assets/logo.jpg")}
+          src={require("../Assets/logo-removebg-preview.png")}
           alt="Logo"
           className={collapsed ? "small" : ""}
         />
-        <div className="longright" onClick={() => setCollapsed(!collapsed)}>
+        <div className="longright" onClick={handleToggleCollapse}>
           <i
             className={`fa-solid fa-arrow-right-long ${
               collapsed ? "expanded" : ""
@@ -76,7 +80,7 @@ export default function DashBourd() {
             }
           >
             <i className="fa-solid fa-house"></i>
-            {!collapsed && "Restaurant"}
+            <p>Restaurant</p>
           </Link>
           <Link
             to="/Admin/dashbord/Manager"
@@ -85,7 +89,7 @@ export default function DashBourd() {
             }
           >
             <i className="fa-solid fa-user-tie"></i>
-            {!collapsed && "Manager"}
+            <p>Manager</p>
           </Link>
           <Link
             to="/Admin/dashbord/Catigories"
@@ -94,7 +98,7 @@ export default function DashBourd() {
             }
           >
             <i className="fa-solid fa-list"></i>
-            {!collapsed && "Categories"}
+            <p>Categories</p>
           </Link>
           {/* ********* */}
 
@@ -104,7 +108,7 @@ export default function DashBourd() {
             style={{ cursor: "pointer" }}
           >
             <i className="fa-solid fa-phone"></i>
-            {!collapsed && "Contact us"}
+            <p>Contact us</p>
           </div>
 
           {/* ////////// */}
@@ -113,7 +117,7 @@ export default function DashBourd() {
             className="logout-link"
           >
             <i className="fa-solid fa-right-from-bracket"></i>
-            {!collapsed && "Log Out"}
+            <p>Log Out</p>
           </div>
         </div>
       </div>

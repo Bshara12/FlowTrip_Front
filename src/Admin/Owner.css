@@ -1,0 +1,159 @@
+.owner-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(.7rem + 1vw);
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 40px 50px;
+  height: fit-content;
+}
+
+/* كرت المالك */
+.owner-card, .owner-name, .owner-location, .owner-category, .owner-index { display: none !important; }
+
+.card {
+  height: 224px;
+  width: 220px;
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  border-radius: 16px;
+  box-shadow: 0 0 20px 8px #d0d0d0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.card-image {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition: all .5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  background: linear-gradient(to top, var(--color3), var(--color4));
+}
+
+.card-description {
+  display: flex;
+  position: absolute;
+  gap: 0.7em;
+  flex-direction: column;
+  background: linear-gradient(135deg, #f5f5f5 70%, #e3e9f7 100%);
+  color: #212121;
+  height: 70%;
+  width: 100%;
+  bottom: 0;
+  border-radius: 18px 18px 16px 16px;
+  box-shadow: 0 2px 12px 0 rgba(44,62,80,0.07);
+  transition: all .8s cubic-bezier(0.645, 0.045, 0.355, 1);
+  padding: 0.7rem 0.7rem 0.7rem 0.7rem;
+  transition-delay: 0s;
+}
+
+.text-title {
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: var(--color2);
+  margin-bottom: 0.15em;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 0 #f3f3f3;
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.text-body {
+  font-size: 0.93rem;
+  line-height: 1.45;
+  color: #2d3748;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32em;
+  font-weight: 500;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6em;
+}
+
+.info-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color4) 10%, var(--color6) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: .9em;
+  margin-top: 1px;
+  box-shadow: 0 1px 4px 0 rgba(79,140,255,0.10);
+}
+
+.info-label {
+  color: var(--color3);
+  font-weight: 700;
+  margin-right: 2px;
+  min-width: 60px;
+  display: inline-block;
+  font-size: 0.92em;
+}
+
+.info-value {
+  color: var(--color1);
+  font-weight: 500;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  flex: 1;
+  font-size: 0.82em;
+}
+
+.card:hover .card-description {
+  transform: translateY(100%);
+  transition-delay: 0s;
+}
+
+.card-review {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);   
+  background: #778b96ea;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: bold;
+  padding: 0.7em 2.2em;
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  z-index: 3;
+  letter-spacing: 1px;
+  transition-delay: 0s;
+}
+
+.card:hover .card-review {
+  opacity: 1;
+  transition-delay: 0.4s;
+}
+
+.owner-loading {
+  text-align: center;
+  margin-top: 60px;
+  font-size: 1.6rem;
+  color: #4f8cff;
+  letter-spacing: 1px;
+  animation: fadeInLoading 1.2s;
+}
+
+.owner-error {
+  color: #e53e3e;
+  text-align: center;
+  margin-top: 60px;
+  font-size: 1.3rem;
+  animation: fadeInLoading 1.2s;
+}
+
+@keyframes fadeInLoading {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}

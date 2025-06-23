@@ -19,7 +19,7 @@ const RequestDetails = () => {
   const [showCategoryPopup, setShowCategoryPopup] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const token = "1|lIqv1X1fZ4XjqQk9Wt7wDWYKoHqznzN1tNx92WJ6319fc32f";
+  const token = "uvf6ZqmOHc6e0IACOS91WQkulsmC72r1elnRBph5c033a8a7";
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -54,7 +54,7 @@ const RequestDetails = () => {
         },
       });
       toast.success("Order confirmed successfully");
-      setTimeout(() => navigate("/requests"), 1500);
+      setTimeout(() => navigate("/Admin/dashbord/requist"), 1500);
     } catch (error) {
       console.error("Error confirming request:", error);
       toast.error("Failed to confirm the order.");

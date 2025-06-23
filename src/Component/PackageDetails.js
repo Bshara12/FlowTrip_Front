@@ -74,7 +74,7 @@ const PackageDetails = () => {
               className="elementCard"
               onClick={() => alert(`Go to detail of ${el.name}`)}
             >
-              <img src={el.pictures[0]} alt={el.name} className="elementImage" />
+              <img src={require("../Assets/paris.jpeg")} alt={el.name} className="elementImage" />
               <div className="elementContent">
                 <h3>{el.name}</h3>
                 <p className="elementType">{el.type}</p>

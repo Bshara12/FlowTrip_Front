@@ -65,7 +65,11 @@ export default function DashBourd() {
           alt="Logo"
           className={collapsed ? "small" : ""}
         />
-        <div className="longright" onClick={handleToggleCollapse}>
+        <div
+          className="longright"
+          onClick={handleToggleCollapse}
+          style={{ color: "var(--color1)" }}
+        >
           <i
             className={`fa-solid fa-arrow-right-long ${
               collapsed ? "expanded" : ""
@@ -74,32 +78,67 @@ export default function DashBourd() {
         </div>
         <div style={{ width: "100%" }}>
           <Link
-            to="/Admin/dashbord/restaurants"
+            to="/Admin/dashbord/requist"
             className={
-              activeLink === "/Admin/dashbord/restaurants" ? "active-link" : ""
+              activeLink === "/Admin/dashbord/requist" ? "active-link" : ""
             }
           >
-            <i className="fa-solid fa-house"></i>
-            <p>Restaurant</p>
+            <i class="fas fa-clipboard-list"></i>
+            <p>Requists</p>
           </Link>
           <Link
-            to="/Admin/dashbord/Manager"
+            to="/Admin/dashbord/packages"
             className={
-              activeLink === "/Admin/dashbord/Manager" ? "active-link" : ""
+              activeLink === "/Admin/dashbord/packages" ? "active-link" : ""
             }
           >
-            <i className="fa-solid fa-user-tie"></i>
-            <p>Manager</p>
+            <i class="fas fa-cubes"></i>
+
+            <p>Packages</p>
           </Link>
           <Link
-            to="/Admin/dashbord/Catigories"
+            to="/Admin/dashbord/owners"
             className={
-              activeLink === "/Admin/dashbord/Catigories" ? "active-link" : ""
+              activeLink === "/Admin/dashbord/owners" ? "active-link" : ""
             }
           >
-            <i className="fa-solid fa-list"></i>
-            <p>Categories</p>
+            <i class="fas fa-user-tie"></i>
+
+            <p>Owners</p>
           </Link>
+
+          <Link
+            to="/Admin/dashbord/subadmin"
+            className={
+              activeLink === "/Admin/dashbord/subadmin" ? "active-link" : ""
+            }
+          >
+            <i class="fas fa-chess-king"></i>
+
+            <p>SubAdmin</p>
+          </Link>
+
+          <Link
+            to="/Admin/dashbord/activity"
+            className={
+              activeLink === "/Admin/dashbord/activity" ? "active-link" : ""
+            }
+          >
+            <i class="fas fa-running"></i>
+
+            <p>Activitys</p>
+          </Link>
+
+          <Link
+            to="/Admin/dashbord/catigory"
+            className={
+              activeLink === "/Admin/dashbord/catigory" ? "active-link" : ""
+            }
+          >
+            <i class="fas fa-layer-group"></i> 
+            <p>Catigory</p>
+          </Link>
+
           {/* ********* */}
 
           <div

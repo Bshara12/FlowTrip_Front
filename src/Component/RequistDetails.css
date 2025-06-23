@@ -1,0 +1,111 @@
+.request-details-container {
+  padding: 2rem;
+  background-color: var(--color5);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.request-details-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 6px 12px rgba(41, 53, 65, 0.1);
+  border: 1px solid var(--color4);
+}
+
+.request-title {
+  color: var(--color1);
+  margin-bottom: 1rem;
+  font-size: 28px;
+}
+
+.request-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  color: var(--color2);
+  margin-bottom: 0.5rem;
+  font-size: 18px;
+}
+
+.section-text {
+  color: var(--color3);
+  margin: 4px 0;
+}
+
+.field-label {
+  color: var(--color1);
+}
+
+.back-button {
+  background-color: var(--color1);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  margin-top: 1rem;
+}
+
+.back-button:hover {
+  background-color: var(--color2);
+}
+
+.buttons-group {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.confirm {
+  background-color: #4caf50;
+  color: white;
+}
+
+.confirm:hover {
+  background-color: #45a049;
+}
+
+.edit {
+  background-color: #2196f3;
+  color: white;
+}
+
+.edit:hover {
+  background-color: #1976d2;
+}
+
+.delete {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete:hover {
+  background-color: #d32f2f;
+}
+
+.loading,
+.error {
+  padding: 2rem;
+  color: var(--color2);
+  font-size: 18px;
+  text-align: center;
+}

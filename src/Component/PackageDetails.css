@@ -69,7 +69,9 @@
   display: flex;
   flex-direction: column;
 }
-
+.elementCard img{
+  height: 300px;
+}
 .elementCard:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
@@ -77,7 +79,7 @@
 
 .sliderImage {
   width: 100%;
-  height: 360px; /* زيدنا الطول بنسبة 20% */
+  height: 360px; 
   object-fit: cover;
 }
 

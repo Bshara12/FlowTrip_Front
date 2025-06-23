@@ -4,6 +4,8 @@ import DashBourd from "./Admin/DashBourd";
 import OwnerRigester from "./Auth/OwnerRigester";
 import Packages from "./Admin/Packages";
 import PackageDetails from "./Component/PackageDetails";
+import Requist from "./Admin/Requist";
+import RequestDetails from "./Component/RequistDetails";
 
 function App() {
   return (
@@ -14,9 +16,11 @@ function App() {
       {/* Admin */}
       <Route>
         <Route path="Admin/dashbord" element={<DashBourd />}>
+          <Route path="requist" element={<Requist />} />
           <Route path="packages" element={<Packages />} />
         </Route>
-         <Route path="/package/:id" element={<PackageDetails />} />
+        <Route path="/package/:id" element={<PackageDetails />} />
+        <Route path="/request/:id" element={<RequestDetails/>} />
       </Route>
     </Routes>
   );

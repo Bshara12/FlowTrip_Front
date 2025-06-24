@@ -1,42 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./PackageDetails.css";
+import { useNavigate } from "react-router-dom";
 
 const PackageDetails = () => {
   const { id } = useParams();
+  const [packageData, setPackageData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // بيانات وهمية
-  const packageData = {
-    companyName: "Wanderlust Tours",
-    description: "Experience the most beautiful corners of Paris with our guided tours.",
-    price: 299,
-    elements: [
-      {
-        id: 1,
-        name: "Eiffel Tower",
-        type: "Attraction",
-        description: "Visit the iconic Eiffel Tower with priority access.",
-        pictures: [
-          "https://images.unsplash.com/photo-1543340713-8df4c6132c8a",
-          "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f"
-        ]
-      },
-      {
-        id: 2,
-        name: "Louvre Museum",
-        type: "Museum",
-        description: "Discover the world-famous art inside the Louvre.",
-        pictures: [
-          "https://images.unsplash.com/photo-1529429611279-4d6d2a47d0c7"
-        ]
+  const fallbackImage = "https://images.unsplash.com/photo-1504674900247-0877df9cc836"; 
+const navigate = useNavigate();
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        const res = await axios.get(`http://127.0.0.1:8000/api/getPackage/${id}`, {
+          headers: {
+            "Authorization": "Bearer 1|lIqv1X1fZ4XjqQk9Wt7wDWYKoHqznzN1tNx92WJ6319fc32f"
+          }
+        });
+        if (res.data && res.data.data) {
+          setPackageData(res.data.data);
+        }
+      } catch (err) {
+        console.error("Error fetching package details:", err);
+      } finally {
+        setLoading(false);
       }
-    ]
-  };
+    };
 
-  const allPictures = packageData.elements.flatMap((el) => el.pictures);
+    fetchPackage();
+  }, [id]);
+
+  if (loading) return <p>Loading...</p>;
+  if (!packageData) return <p>Package not found</p>;
+
+  const allPictures = packageData.package_element.flatMap((el) =>
+    el.package_element_picture.length > 0
+      ? el.package_element_picture.map((p) => p.picture_path)
+      : [fallbackImage]
+  );
 
   const sliderSettings = {
     dots: true,
@@ -46,7 +52,7 @@ const PackageDetails = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    arrows: false
+    arrows: false,
   };
 
   return (
@@ -60,25 +66,36 @@ const PackageDetails = () => {
       </Slider>
 
       <div className="packageInfo">
-        <h1 className="companyName">{packageData.companyName}</h1>
-        <p className="description">{packageData.description}</p>
-        <p className="price">${packageData.price}</p>
+        <h1 className="companyName">{packageData.tourism_company.company_name}</h1>
+        <p className="description">{packageData.discription}</p>
+        <p className="price">${packageData.total_price}</p>
+        {packageData.payment_by_points === 1 && (
+          <p className="price">Also available with points</p>
+        )}
       </div>
 
       <div className="elementsSection">
         <h2 className="elementsTitle">What's Included</h2>
         <div className="elementsList">
-          {packageData.elements.map((el) => (
+          {packageData.package_element.map((el) => (
             <div
               key={el.id}
               className="elementCard"
-              onClick={() => alert(`Go to detail of ${el.name}`)}
+              onClick={() => navigate("/element-details", { state: { element: el } })}
             >
-              <img src={require("../Assets/paris.jpeg")} alt={el.name} className="elementImage" />
+              <img
+                src={
+                  el.package_element_picture.length > 0
+                    ? el.package_element_picture[0].picture_path
+                    : fallbackImage
+                }
+                alt={el.name}
+                className="elementImage"
+              />
               <div className="elementContent">
                 <h3>{el.name}</h3>
                 <p className="elementType">{el.type}</p>
-                <p>{el.description}</p>
+                <p>{el.discription}</p>
               </div>
             </div>
           ))}
@@ -86,7 +103,10 @@ const PackageDetails = () => {
       </div>
 
       <div className="bookingFooter">
-        <div data-tooltip={`Price:-$${packageData.price}`} className="buttonpriceanimation">
+        <div
+          data-tooltip={`Price: $${packageData.total_price}`}
+          className="buttonpriceanimation"
+        >
           <div className="button-wrapperpriceanimation">
             <div className="textpriceanimation">Buy Now</div>
             <span className="iconpriceanimation">

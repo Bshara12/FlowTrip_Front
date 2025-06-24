@@ -6,6 +6,8 @@ import Packages from "./Admin/Packages";
 import PackageDetails from "./Component/PackageDetails";
 import Requist from "./Admin/Requist";
 import RequestDetails from "./Component/RequistDetails";
+import PackageElementDetails from "./Component/PackageElementDetails";
+import Category from "./Admin/Category";
 
 function App() {
   return (
@@ -18,9 +20,12 @@ function App() {
         <Route path="Admin/dashbord" element={<DashBourd />}>
           <Route path="requist" element={<Requist />} />
           <Route path="packages" element={<Packages />} />
+          <Route path="catigory" element={<Category/>}/>
         </Route>
         <Route path="/package/:id" element={<PackageDetails />} />
         <Route path="/request/:id" element={<RequestDetails/>} />
+        <Route path="/element-details" element={<PackageElementDetails/>} />
+
       </Route>
     </Routes>
   );

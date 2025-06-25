@@ -1,8 +1,9 @@
+// ✅ PackageCard.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import "./PackageCard.css";
 
-const PackageCard = ({ id, image, title, description, price }) => {
+const PackageCard = ({ id, image, title, description, price, isPointPayment }) => {
   return (
     <Link to={`/package/${id}`} className="packageComponentLink">
       <div
@@ -12,7 +13,13 @@ const PackageCard = ({ id, image, title, description, price }) => {
         <div className="packageComponentOverlay">
           <h3 className="packageComponentTitle">{title}</h3>
           <p className="packageComponentDescription">{description}</p>
-          <span className="packageComponentPrice">${price}</span>
+
+          <div className="price-buttons">
+            <span className="packageComponentPrice">${price}</span>
+            {isPointPayment && (
+              <span className="packageComponentPrice points">{price} Points</span>
+            )}
+          </div>
         </div>
       </div>
     </Link>

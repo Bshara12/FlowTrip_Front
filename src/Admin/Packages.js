@@ -1,54 +1,67 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-// import Card from "../Component/Card";
+// ✅ Packages.jsx
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./Packages.css";
 import Button from "../Component/AddButton";
 import PackageCard from "../Component/PackageCard";
+import loadingImage from "../Assets/Loading_icon.gif"; 
 
 export default function Packages() {
   const navigate = useNavigate();
+  const [packages, setPackages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // بيانات وهمية مؤقتة إلى أن يتم ربط الباك اند لاحقًا
-  const [restaurants, setRestaurants] = useState([
-    {
-      id: 1,
-      name: "Demo Restaurant",
-      user_name: "John Doe",
-      location: "Damascus",
-    },
-    {
-      id: 2,
-      name: "Sample Diner",
-      user_name: "Jane Smith",
-      location: "Aleppo",
-    },
-  ]);
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const res = await axios.get("http://127.0.0.1:8000/api/getallpackage",{
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +"1|lIqv1X1fZ4XjqQk9Wt7wDWYKoHqznzN1tNx92WJ6319fc32f"
+            }
+        });
+        if (res.data && res.data.data) {
+          setPackages(res.data.data);
+        }
+      } catch (err) {
+        console.error("Error fetching packages:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPackages();
+  }, []);
 
   const handleCardClick = (id) => {
-    navigate(`/restaurant-details/${id}`);
+    navigate(`/package-details/${id}`);
   };
 
   return (
     <div className="RightPare">
-      {/* <div className="addbutton">
-        <button role="button" className="golden-button">
-          <Link className="golden-text" to="/Admin/dashbord/UserSelection">
-            Add
-            <i className="fa-solid fa-plus" style={{ marginLeft: "5px" }}></i>
-          </Link>
-        </button>
-      </div> */}
-      <Button />
+      <h1 style={{ margin: "10px 0 0 30px" }}>Packages</h1>
       <div className="cards">
-        {restaurants.map((restaurant) => (
-          <PackageCard
-          id="alqara-001"
-            image="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=800&q=80"
-            title="Al Qarah Mountain"
-            description="Explore one of Al-Ahsa’s most breathtaking natural wonders and cultural sites."
-            price="199"
+        {loading ? (
+          <img
+            src={loadingImage}
+            alt="Loading..."
+            style={{ width: "100px", margin: "50px auto" }}
           />
-        ))}
+        ) : (
+          packages.map((pkg) => (
+            <PackageCard
+              key={pkg.id}
+              id={pkg.id}
+              image="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=800&q=80"
+              title={pkg.tourism_company?.company_name || "Unknown Company"}
+              description={pkg.discription}
+              price={pkg.total_price}
+              isPointPayment={pkg.payment_by_points === 1}
+              onClick={() => handleCardClick(pkg.id)}
+            />
+          ))
+        )}
       </div>
     </div>
   );

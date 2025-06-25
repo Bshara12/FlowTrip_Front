@@ -1,0 +1,42 @@
+.elementDetailsContainer {
+  padding: 20px;
+  background-color: var(--color5);
+  min-height: 100vh;
+}
+
+.elementSlider {
+  margin-bottom: 20px;
+  overflow: hidden;
+
+}
+
+.sliderImage {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.elementInfo {
+  background-color: var(--color6);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.elementName {
+  font-size: 24px;
+  color: var(--color1);
+  margin-bottom: 10px;
+}
+
+.elementType {
+  font-size: 18px;
+  color: var(--color2);
+  font-weight: bold;
+}
+
+.elementDescription {
+  font-size: 16px;
+  color: var(--color3);
+}

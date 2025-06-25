@@ -1,11 +1,11 @@
 import React from "react";
 import "./AddButton.css";
 
-const Button = () => {
+const Button = ({ text = "Add Item", onClick }) => {
   return (
     <div>
-      <button type="button" className="addbuttoncomponent">
-        <span className="addbuttoncomponent__text">Add Item</span>
+      <button type="button" className="addbuttoncomponent" onClick={onClick}>
+        <span className="addbuttoncomponent__text">{text}</span>
         <span className="addbuttoncomponent__icon">
           <svg
             xmlns="http://www.w3.org/2000/svg"

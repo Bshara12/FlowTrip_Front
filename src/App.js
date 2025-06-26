@@ -6,12 +6,17 @@ import Packages from "./Admin/Packages";
 import PackageDetails from "./Component/PackageDetails";
 import Requist from "./Admin/Requist";
 import RequestDetails from "./Component/RequistDetails";
-<<<<<<< HEAD
 import Owner from "./Admin/Owner";
-=======
 import PackageElementDetails from "./Component/PackageElementDetails";
 import Category from "./Admin/Category";
->>>>>>> b92a6a1b9a83b2cffb53690aad610e7498c1da91
+import Owner from "./Admin/Owner";
+import PackageElementDetails from "./Component/PackageElementDetails";
+import Category from "./Admin/Category";
+import Activity from "./Admin/Activity";
+import Verification from "./Auth/Verification";
+import OwnerCategoryList from "./Auth/OwnerCategoryList";
+import SelectCountry from "./Auth/SelectCountry";
+import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
 
 function App() {
   return (
@@ -30,7 +35,7 @@ function App() {
           <Route path="packages" element={<Packages />} />
           <Route path="owners" element={<Owner />} />
           <Route path="catigory" element={<Category/>}/>
->>>>>>> b92a6a1b9a83b2cffb53690aad610e7498c1da91
+          <Route path="activity" element={<Activity/>}/>
         </Route>
         <Route path="/package/:id" element={<PackageDetails />} />
         <Route path="/request/:id" element={<RequestDetails/>} />

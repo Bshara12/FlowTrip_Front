@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./Category.css";
 import Button from "../Component/AddButton";
-import CategoryCard from "../Component/CategoryCard";
 import { ToastContainer, toast } from "react-toastify";
+import CategoryCard from "../Component/CategoryCard";
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
@@ -93,10 +93,7 @@ const Category = () => {
       <div className="category-row">
         {categories.map((cat) => (
           <CategoryCard
-            key={cat.id}
-            id={cat.id}
-            text={cat.text}
-            onDelete={() => handleDelete(cat.id)}
+            title={cat.text}
           />
         ))}
       </div>

@@ -14,7 +14,7 @@ export default function Owner() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const token = "TUtKG7wtaK5kYvqXJyDuGzXxusGYucL4FVJLNBxbbe0d32b9";
+  const token = "2|DHyYOULZGrRqxduJ6xvIpDZx3TSfrrhGMC11NW32133b858e";
 
   useEffect(() => {
     const loadInfo = async () => {

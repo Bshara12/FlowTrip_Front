@@ -6,7 +6,7 @@ const Requist = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const token = "uvf6ZqmOHc6e0IACOS91WQkulsmC72r1elnRBph5c033a8a7"; // ⚠️ غيّر هذا لاحقًا حسب طريقة المصادقة لديك
+  const token = "2|DHyYOULZGrRqxduJ6xvIpDZx3TSfrrhGMC11NW32133b858e";
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -21,7 +21,7 @@ const Requist = () => {
           setRequests(response.data.data);
         }
       } catch (error) {
-        console.error("حدث خطأ أثناء جلب الطلبات:", error);
+        console.error("Error:", error);
       } finally {
         setLoading(false);
       }
@@ -35,7 +35,7 @@ const Requist = () => {
       <h1 style={{ color: "var(--color1)", marginBottom: "1.5rem" }}>Current orders</h1>
 
       {loading ? (
-        <p>جاري التحميل...</p>
+        <p>Loading...</p>
       ) : (
         requests.map((item) => {
           const { id, description, business_name } = item.request;

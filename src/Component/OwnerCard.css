@@ -14,7 +14,7 @@
   height: 224px;
   width: 220px;
   position: relative;
-  transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.5s linear;
   border-radius: 16px;
   box-shadow: 0 0 20px 8px #d0d0d0;
   overflow: hidden;
@@ -39,7 +39,7 @@
   height: 100%;
   width: 100%;
   position: absolute;
-  transition: all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all .4s linear;
   background: linear-gradient(to top, var(--color3), var(--color4));
 }
 
@@ -130,8 +130,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);   
-  background: #778b96ea;
-  color: #fff;
+  background: var(--color3);
+  color: var(--color4);
   font-size: 1.25rem;
   font-weight: bold;
   padding: 0.7em 2.2em;

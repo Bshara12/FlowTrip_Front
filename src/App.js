@@ -9,14 +9,6 @@ import RequestDetails from "./Component/RequistDetails";
 import Owner from "./Admin/Owner";
 import PackageElementDetails from "./Component/PackageElementDetails";
 import Category from "./Admin/Category";
-import Owner from "./Admin/Owner";
-import PackageElementDetails from "./Component/PackageElementDetails";
-import Category from "./Admin/Category";
-import Activity from "./Admin/Activity";
-import Verification from "./Auth/Verification";
-import OwnerCategoryList from "./Auth/OwnerCategoryList";
-import SelectCountry from "./Auth/SelectCountry";
-import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
 
 function App() {
   return (
@@ -40,7 +32,8 @@ function App() {
         <Route path="/package/:id" element={<PackageDetails />} />
         <Route path="/request/:id" element={<RequestDetails/>} />
         <Route path="/element-details" element={<PackageElementDetails/>} />
-
+        <Route path="/owner_details/:id" element={<OwnerDetails/>} />
+        <Route path="/room-details/:id" element={<RoomDetails />} />
       </Route>
     </Routes>
   );

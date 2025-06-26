@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import OwnerCard from "../Component/OwnerCard";
 import "./Owner.css";
 import "./OwnerSearch.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Owner() {
   const [owners, setOwners] = useState([]);
@@ -13,8 +14,9 @@ export default function Owner() {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
-  const token = "2|DHyYOULZGrRqxduJ6xvIpDZx3TSfrrhGMC11NW32133b858e";
+  const token = "TUtKG7wtaK5kYvqXJyDuGzXxusGYucL4FVJLNBxbbe0d32b9";
 
   useEffect(() => {
     const loadInfo = async () => {
@@ -58,9 +60,11 @@ export default function Owner() {
     loadInfo();
   }, []);
 
-  const handleSearch = async (e) => {
+  const handleSearch = async (e, categoryIdParam = null) => {
     e.preventDefault();
-    if (!search && !selectedCountry && !selectedCategory) {
+    const categoryIdToUse = categoryIdParam !== null ? categoryIdParam : selectedCategoryId;
+    if (!search && !selectedCountry && !categoryIdToUse) {
+      setOwners([]);
       return;
     }
     setLoading(true);
@@ -69,8 +73,8 @@ export default function Owner() {
       const body = {};
       if (search) body.name = search;
       if (selectedCountry) body.country = selectedCountry;
-      if (selectedCategory) body.category_id = selectedCategory;
-      
+      if (categoryIdToUse) body.category_id = categoryIdToUse;
+
       const res = await axios.post(
         "http://127.0.0.1:8000/api/AdminSearch",
         body,
@@ -80,8 +84,11 @@ export default function Owner() {
           },
         }
       );
-      console.log(res.data.data);
-      setOwners(res.data.data || []);
+      if (res.data && res.data.data) {
+        setOwners(res.data.data);
+      } else {
+        setOwners([]);
+      }
     } catch (err) {
       setError("حدث خطأ أثناء البحث");
     } finally {
@@ -128,7 +135,7 @@ export default function Owner() {
         const body = {};
         if (search) body.name = search;
         if (selectedCountry && !clearCountry) body.country = selectedCountry;
-        if (selectedCategory && !clearCategory) body.category_id = selectedCategory;
+        if (selectedCategory && !clearCategory) body.category_id = selectedCategoryId;
         
         const res = await axios.post(
           "http://127.0.0.1:8000/api/AdminSearch",
@@ -206,10 +213,10 @@ export default function Owner() {
                   <a
                     href="#"
                     className="submenu-link"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setSelectedCountry("");
-                      await reloadAllOwners(true, false);
+                      reloadAllOwners(true, false);
                     }}
                   >
                     All Countries
@@ -220,12 +227,9 @@ export default function Owner() {
                     <a
                       href="#"
                       className="submenu-link"
-                      onClick={async (e) => {
+                      onClick={(e) => {
                         e.preventDefault();
                         setSelectedCountry(country.name);
-                        if (search || selectedCategory) {
-                          await handleSearch(e);
-                        }
                       }}
                     >
                       {country.name}
@@ -266,10 +270,11 @@ export default function Owner() {
                 <a
                   href="#"
                   className="submenu-link"
-                  onClick={async (e) => {
+                  onClick={(e) => {
                     e.preventDefault();
                     setSelectedCategory("");
-                    await reloadAllOwners(false, true);
+                    setSelectedCategoryId("");
+                    reloadAllOwners(false, true);
                   }}
                 >
                   All Category
@@ -283,9 +288,8 @@ export default function Owner() {
                     onClick={async (e) => {
                       e.preventDefault();
                       setSelectedCategory(category.name);
-                      if (search || selectedCountry) {
-                        await handleSearch(e);
-                      }
+                      setSelectedCategoryId(category.id);
+                      await handleSearch(e, category.id);
                     }}
                   >
                     {category.name}
@@ -306,6 +310,7 @@ export default function Owner() {
             phoneNumber={item.user.phone_number}
             category={item.category}
             style={{ animationDelay: `${(idx + 1) * 0.1}s` }}
+            onClick={() => navigate(`/owner_details/${item.owner.id}`)}
           />
         ))}
       </div>

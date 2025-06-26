@@ -1,0 +1,30 @@
+.slider {
+  overflow: hidden;
+  padding: 60px 0;
+  position: relative;
+  white-space: nowrap;
+}
+
+.owner-ictures-slider {
+  display: inline-block;
+  animation: 5s slide infinite linear;
+}
+
+.slider:hover,
+.owner-pictures-slider:hover {
+  animation-play-state: paused;
+}
+
+.slider .owner-picture-card {
+  display: inline-block;
+  margin: 0 50px !important;
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translate(-100%);
+  }
+}

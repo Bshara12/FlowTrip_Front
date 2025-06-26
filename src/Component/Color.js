@@ -4,5 +4,6 @@ export const colors = {
   color3: "#778b96",
   color4: "#aac7d7",
   color5: "#dfebf7",
-  color6: "#e8e8e8"
+  color6: "#e8e8e8",
+  color7: "#ffffff94"
 };

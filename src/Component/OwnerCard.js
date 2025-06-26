@@ -1,9 +1,9 @@
 import React from "react";
 import "./OwnerCard.css";
 
-const OwnerCard = ({ name, location, phoneNumber, category, style }) => {
+const OwnerCard = ({ name, location, phoneNumber, category, style, onClick }) => {
   return (
-    <div className="card" style={style}>
+    <div className="card" style={style} onClick={onClick}>
       <div className="card-image"></div>
       <div className="card-description">
         <p className="text-title">{name}</p>

@@ -16,6 +16,7 @@ import Verification from "./Auth/Verification";
 import OwnerCategoryList from "./Auth/OwnerCategoryList";
 import SelectCountry from "./Auth/SelectCountry";
 import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
+import DashBoardVehiclyOwner from "./VehiclyOwner/DashBoardVehiclyOwner";
 // >>>>>>> b92a6a1b9a83b2cffb53690aad610e7498c1da91
 
 function App() {
@@ -40,6 +41,10 @@ function App() {
         <Route path="/package/:id" element={<PackageDetails />} />
         <Route path="/request/:id" element={<RequestDetails/>} />
         <Route path="/element-details" element={<PackageElementDetails/>} />
+      </Route>
+
+      {/* Vehicly Owner */}
+      <Route path="VehiclyOwner/dashboard" element={<DashBoardVehiclyOwner/>}>
 
       </Route>
     </Routes>

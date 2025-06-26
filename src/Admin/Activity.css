@@ -1,4 +1,4 @@
-.category-page {
+.activity-page {
   padding: 20px;
   background-color: var(--color5);
   min-height: 100vh;
@@ -8,7 +8,7 @@
   align-items: center;
 }
 
-.category-header {
+.activity-header {
   position: sticky;
   top: 0;
   right: 0;
@@ -21,8 +21,10 @@
   background-color: var(--color5);
   padding-top: 10px;
 }
-
-.category-row {
+.addbuttoncomponent{
+    margin-bottom: 10px;
+}
+.activity-row {
   display: flex;
   flex-wrap: wrap;
   gap: 50px 20px;
@@ -30,7 +32,6 @@
   width: 100%;
   max-width: 1000px;
 }
-
 
 .modal-overlay {
   position: fixed;

@@ -9,6 +9,13 @@ import RequestDetails from "./Component/RequistDetails";
 import Owner from "./Admin/Owner";
 import PackageElementDetails from "./Component/PackageElementDetails";
 import Category from "./Admin/Category";
+import Verification from "./Auth/Verification";
+import SelectCountry from "./Auth/SelectCountry";
+import OwnerCategoryList from "./Auth/OwnerCategoryList";
+import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
+import Activity from "./Admin/Activity";
+import OwnerDetails from "./Admin/OwnerDetails";
+import RoomDetails from "./Admin/RoomDetails";
 
 function App() {
   return (

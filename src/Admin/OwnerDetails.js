@@ -2,12 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "./OwnerDetails.css";
+import ToggleButton from '../Component/ToggleButton';
 
 export default function OwnerDetails() {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isBlocked, setIsBlocked] = useState(false);
   const sliderRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   const navigate = useNavigate();
@@ -26,8 +28,11 @@ export default function OwnerDetails() {
             },
           }
         );
-        console.log(res.data)
         setData(res.data);
+        // تحديث حالة الحظر بناءً على status المستخدم
+        if (res.data?.owner?.user?.status === 2) {
+          setIsBlocked(true);
+        }
       } catch (err) {
         setError("حدث خطأ أثناء جلب البيانات");
       } finally {
@@ -80,6 +85,28 @@ export default function OwnerDetails() {
     const gap = 20;
     const amount = cardWidth + gap;
     slider.scrollLeft += dir === "left" ? -amount : amount;
+  };
+
+  const handleToggleBlock = async (checked) => {
+    try {
+      
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/BlockOwner/${data?.owner?.user?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      
+      if (response.status === 200) {
+        setIsBlocked(checked);
+      }
+    } catch (error) {
+      console.error("خطأ في تحديث حالة الحظر:", error);
+      // إعادة تعيين الحالة في حالة الخطأ
+      setIsBlocked(!checked);
+    }
   };
 
   if (loading)
@@ -383,6 +410,16 @@ export default function OwnerDetails() {
           </div>
         </div>
       )}
+      </div>
+      <div style={{position: 'absolute', top:'calc(1rem + 1vw)', right: 'calc(1rem + 1vw)'}}>
+        <ToggleButton
+          checked={isBlocked}
+          onChange={(e) => handleToggleBlock(e.target.checked)}
+          width={90}
+          height={35}
+          toggleWidth={37}
+          toggleHeight={23}
+        />
       </div>
     </div>
   );

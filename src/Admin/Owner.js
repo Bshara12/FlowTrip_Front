@@ -6,6 +6,7 @@ import "./OwnerSearch.css";
 import { useNavigate } from "react-router-dom";
 
 export default function Owner() {
+  const navigate = useNavigate();
   const [owners, setOwners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

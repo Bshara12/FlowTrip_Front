@@ -398,6 +398,12 @@ html {
   margin-top: 8px;
 }
 
+.block {
+  position: absolute;
+  top: calc(1rem + 1vw);
+  right: calc(1rem + 1vw);
+}
+
 @media (max-width: 900px) {
   .hotel-rooms-list {
     flex-direction: column;

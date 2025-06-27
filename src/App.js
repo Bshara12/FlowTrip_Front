@@ -9,16 +9,19 @@ import RequestDetails from "./Component/RequistDetails";
 import Owner from "./Admin/Owner";
 import PackageElementDetails from "./Component/PackageElementDetails";
 import Category from "./Admin/Category";
-// <<<<<<< HEAD
 import Activity from "./Admin/Activity";
 import Verification from "./Auth/Verification";
 import OwnerCategoryList from "./Auth/OwnerCategoryList";
 import SelectCountry from "./Auth/SelectCountry";
 import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
 import DashBoardVehiclyOwner from "./VehiclyOwner/DashBoardVehiclyOwner";
-// >>>>>>> b92a6a1b9a83b2cffb53690aad610e7498c1da91
-// =======
-// >>>>>>> 178f1a121999a1d3b59a6b51b061243f57819872
+import Verification from "./Auth/Verification";
+import SelectCountry from "./Auth/SelectCountry";
+import OwnerCategoryList from "./Auth/OwnerCategoryList";
+import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
+import Activity from "./Admin/Activity";
+import OwnerDetails from "./Admin/OwnerDetails";
+import RoomDetails from "./Admin/RoomDetails";
 
 function App() {
   return (

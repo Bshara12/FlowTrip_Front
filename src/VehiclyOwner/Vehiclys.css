@@ -1,0 +1,29 @@
+.vehicle-container {
+  background-color: var(--color5);
+  padding: 2rem;
+  min-height: 100vh;
+  direction: ltr;
+  width: 100%;
+}
+
+.vehicle-title {
+  color: var(--color1);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  margin: 0;
+
+}
+.vehicle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+
+.vehicle-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}

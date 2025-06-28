@@ -1,3 +1,98 @@
+html {
+  background: var(--color5);
+}
+
+/* Room Details Container */
+.room-details-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--color5);
+  padding: 48px 0;
+  gap: 32px;
+  cursor: default;
+}
+
+/* Room Details Loading */
+.room-details-loading {
+  text-align: center;
+  margin-top: 60px;
+  font-size: 1.3rem;
+  color: #b23c3c;
+}
+
+/* Room Details Error */
+.room-details-error {
+  text-align: center;
+  margin-top: 60px;
+  font-size: 1.3rem;
+  color: #b23c3c;
+}
+
+/* Room Pictures Section */
+.room-pictures-section {
+  width: 100%;
+  background: var(--color5);
+  border-radius: 20px;
+  padding: 32px 35px 40px 35px;
+  margin-top: 32px;
+  box-shadow: 0 2px 17px var(--color4);
+}
+
+.room-pictures-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: var(--color2);
+  letter-spacing: 1px;
+}
+
+.room-pictures-slider {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.room-picture-card {
+  background: var(--color7);
+  border-radius: 16px;
+  box-shadow: 0 2px 10px var(--color4);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  min-width: 180px;
+  max-width: 260px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.room-picture-card:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 6px 18px var(--color3);
+}
+
+.room-picture-img {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.room-picture-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+  height: 120px;
+  background: var(--color7);
+  border-radius: 12px;
+  color: #666;
+  font-style: italic;
+  box-shadow: 0 2px 10px var(--color4);
+}
+
 .slider {
   overflow: hidden;
   padding: 60px 0;
@@ -5,17 +100,17 @@
   white-space: nowrap;
 }
 
-.owner-ictures-slider {
+.room-pictures-slider {
   display: inline-block;
   animation: 5s slide infinite linear;
 }
 
 .slider:hover,
-.owner-pictures-slider:hover {
+.room-pictures-slider:hover {
   animation-play-state: paused;
 }
 
-.slider .owner-picture-card {
+.slider .room-picture-card {
   display: inline-block;
   margin: 0 50px !important;
 }
@@ -26,5 +121,101 @@
   }
   to {
     transform: translate(-100%);
+  }
+}
+
+/* Room Details Card */
+.room-details-card {
+  background: var(--color7);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.13);
+  padding: 38px 32px 28px 32px;
+  min-width: 320px;
+  max-width: 420px;
+  width: 100%;
+  direction: rtl;
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.3s;
+  animation: fadeInUp 0.8s cubic-bezier(0.39, 0.575, 0.56, 1);
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.room-details-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.room-details-card:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.room-details-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #3a4668;
+  margin-bottom: 22px;
+  text-align: center;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.room-details-title::after {
+  content: "";
+  display: block;
+  margin: 10px auto 0 auto;
+  width: 48px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+}
+
+.room-details-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 1.08rem;
+  gap: 10px;
+  padding: 8px 0 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s;
+  direction: ltr;
+}
+
+.room-details-section:last-child {
+  border-bottom: none;
+}
+
+.room-details-section:hover {
+  background: #f7f7fa;
+}
+
+.room-details-section b {
+  color: #667eea;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .room-details-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .room-details-card {
+    max-width: 98vw;
+    min-width: 0;
   }
 }

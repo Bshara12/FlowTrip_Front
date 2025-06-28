@@ -68,7 +68,7 @@ const SelectCountry = () => {
             return (
               <div
                 key={country.id}
-                className="category-card"
+                className="country-card"
                 onClick={() => handleCountryClick(country.id)}
                 style={{
                   display: "flex",

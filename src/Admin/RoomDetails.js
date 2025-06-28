@@ -9,6 +9,8 @@ export default function RoomDetails() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const sliderRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   const token = "8izVrtthWL2vU0kXrWV1w4wWqT9JT2z3M1gKY0hlfe25f76e";
 
@@ -34,6 +36,52 @@ export default function RoomDetails() {
     fetchRoom();
   }, [id]);
 
+  useEffect(() => {
+    if (!sliderRef.current) return;
+    if (isPaused) return;
+    if (!data || !data.pictures) return;
+    const slider = sliderRef.current;
+    const scrollAmount = 1;
+
+    const card = slider.querySelector(".room-picture-card");
+    if (!card) return;
+    const cardWidth = card.offsetWidth;
+    const gap = 20;
+    const originalPicturesLength = data.pictures.length;
+    const totalWidth = originalPicturesLength * (cardWidth + gap);
+
+    let isResetting = false;
+    const interval = setInterval(() => {
+      if (isResetting) return;
+      if (slider.scrollLeft >= totalWidth) {
+        isResetting = true;
+        slider.style.scrollBehavior = "auto";
+        slider.scrollLeft = 0;
+        setTimeout(() => {
+          slider.style.scrollBehavior = "smooth";
+          isResetting = false;
+        }, 20);
+      } else {
+        slider.scrollLeft += scrollAmount;
+      }
+    }, 16);
+    slider._interval = interval;
+
+    return () => {
+      if (slider._interval) clearInterval(slider._interval);
+    };
+  }, [isPaused, data]);
+
+  const scrollSlider = (dir) => {
+    if (!sliderRef.current) return;
+    const slider = sliderRef.current;
+    const card = slider.querySelector(".room-picture-card");
+    const cardWidth = card ? card.offsetWidth : 220;
+    const gap = 20;
+    const amount = cardWidth + gap;
+    slider.scrollLeft += dir === "left" ? -amount : amount;
+  };
+
   if (loading)
     return <div className="room-details-loading">جاري التحميل...</div>;
   if (error) return <div className="room-details-error">{error}</div>;
@@ -45,15 +93,32 @@ export default function RoomDetails() {
     <div className="room-details-container">
       <div className="room-pictures-section" style={{ width: "85%" }}>
         <h2 className="room-pictures-title">Pictures</h2>
-        <div className="slider">
-          <div className="room-pictures-slider">
+        <div
+          className="room-pictures-slider-wrapper"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <div
+            className="room-pictures-slider"
+            ref={sliderRef}
+            style={{
+              overflowX: "auto",
+              scrollBehavior: "smooth",
+              display: "flex",
+              gap: "20px",
+            }}
+          >
             {pictures.length > 0 ? (
-              pictures.map((pic, idx) => (
-                <div className="room-picture-card" key={idx}>
+              [...pictures, ...pictures, ...pictures].map((pic, idx) => (
+                <div className="room-picture-card" key={`pic-${pic.id}-${idx}`}>
                   <img
                     className="room-picture-img"
-                    src={`https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80&sig=${idx}`}
-                    alt={`Room pic ${idx + 1}`}
+                    src={
+                      pic.room_picture.startsWith("http")
+                        ? pic.room_picture
+                        : `http://localhost:8000/${pic.room_picture}`
+                    }
+                    alt={`Room pic ${(idx % pictures.length) + 1}`}
                   />
                 </div>
               ))
@@ -61,21 +126,22 @@ export default function RoomDetails() {
               <div className="room-picture-empty">No pictures available</div>
             )}
           </div>
-          <div className="room-pictures-slider">
-            {pictures.length > 0 ? (
-              pictures.map((pic, idx) => (
-                <div className="room-picture-card" key={idx}>
-                  <img
-                    className="room-picture-img"
-                    src={`https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80&sig=${idx}`}
-                    alt={`Room pic ${idx + 1}`}
-                  />
-                </div>
-              ))
-            ) : (
-              <div className="room-picture-empty">No pictures available</div>
-            )}
-          </div>
+          {pictures.length > 0 && (
+            <>
+              <button
+                className="slider-arrow left"
+                onClick={() => scrollSlider("left")}
+              >
+                <i className="fa-solid fa-arrow-left"></i>
+              </button>
+              <button
+                className="slider-arrow right"
+                onClick={() => scrollSlider("right")}
+              >
+                <i className="fa-solid fa-arrow-right"></i>
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div

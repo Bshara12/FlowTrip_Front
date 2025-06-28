@@ -16,6 +16,10 @@ import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
 import Activity from "./Admin/Activity";
 import OwnerDetails from "./Admin/OwnerDetails";
 import RoomDetails from "./Admin/RoomDetails";
+import DashBourd2  from "./Accommodation/Dashboard";
+import HomePage from "./Accommodation/HomePage";
+import Profile from "./Accommodation/Profile";
+import ShowRecords from "./Accommodation/ShowRecords";
 
 function App() {
   return (
@@ -42,7 +46,17 @@ function App() {
         <Route path="/owner_details/:id" element={<OwnerDetails/>} />
         <Route path="/room-details/:id" element={<RoomDetails />} />
       </Route>
+
+      {/* Accommodaion */}
+    <Route path="Accommodation/dashboard" element={<DashBourd2 />}>
+        <Route path="homepage" element={<HomePage />}/>
+        <Route path="profile" element={<Profile />}/>
+        <Route path="records" element={<ShowRecords />}/>
+    </Route>
     </Routes>
+
+
+
   );
 }
 

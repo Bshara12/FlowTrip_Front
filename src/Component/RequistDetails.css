@@ -23,17 +23,17 @@
   font-size: 28px;
 }
 
-.request-section {
+.request-info-section {
   margin-bottom: 1.5rem;
 }
 
-.section-title {
+.request-info-title {
   color: var(--color2);
   margin-bottom: 0.5rem;
   font-size: 18px;
 }
 
-.section-text {
+.request-info-text {
   color: var(--color3);
   margin: 4px 0;
 }
@@ -102,8 +102,8 @@
   background-color: #d32f2f;
 }
 
-.loading,
-.error {
+.request-loading,
+.request-error {
   padding: 2rem;
   color: var(--color2);
   font-size: 18px;

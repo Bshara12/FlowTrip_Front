@@ -26,7 +26,7 @@
   margin-top: 15px;
 }
 
-.category-card {
+.popup-category-card {
   background: var(--color6);
   color: var(--color1);
   padding: 10px 15px;
@@ -37,7 +37,7 @@
   flex: 1 1 45%;
 }
 
-.category-card:hover {
+.popup-category-card:hover {
   background: var(--color4);
 }
 

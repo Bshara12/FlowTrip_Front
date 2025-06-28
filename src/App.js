@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Auth from "./Auth/Auth";
 import DashBourd from "./Admin/DashBourd";
-import OwnerRigester from "./Auth/OwnerRigester";
 import Packages from "./Admin/Packages";
 import PackageDetails from "./Component/PackageDetails";
 import Requist from "./Admin/Requist";
@@ -9,25 +8,21 @@ import RequestDetails from "./Component/RequistDetails";
 import Owner from "./Admin/Owner";
 import PackageElementDetails from "./Component/PackageElementDetails";
 import Category from "./Admin/Category";
-import Verification from "./Auth/Verification";
-import SelectCountry from "./Auth/SelectCountry";
-import OwnerCategoryList from "./Auth/OwnerCategoryList";
-import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
 import Activity from "./Admin/Activity";
+import SelectCountry from "./Auth/SelectCountry";
+import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
+import DashBoardVehiclyOwner from "./VehiclyOwner/DashBoardVehiclyOwner";
+import Verification from "./Auth/Verification";
+import OwnerCategoryList from "./Auth/OwnerCategoryList";
 import OwnerDetails from "./Admin/OwnerDetails";
 import RoomDetails from "./Admin/RoomDetails";
-import DashBourd2  from "./Accommodation/Dashboard";
-import HomePage from "./Accommodation/HomePage";
-import Profile from "./Accommodation/Profile";
-import ShowRecords from "./Accommodation/ShowRecords";
 
 function App() {
   return (
     <Routes>
       <Route path="register" element={<Auth />} />
-      <Route path="ownerrigester" element={<OwnerRigester />} />
-      <Route path="verification" element={<Verification/>}/>
-      <Route path="/create-owner/step-1" element={<OwnerCategoryList/>}/>
+      <Route path="verification" element={<Verification />} />
+      <Route path="/create-owner/step-1" element={<OwnerCategoryList />} />
       <Route path="/create-owner/step-2" element={<SelectCountry />} />
       <Route path="/create-owner/step-3" element={<CreateOwnerStep3 />} />
 
@@ -37,22 +32,15 @@ function App() {
           <Route path="requist" element={<Requist />} />
           <Route path="packages" element={<Packages />} />
           <Route path="owners" element={<Owner />} />
-          <Route path="catigory" element={<Category/>}/>
-          <Route path="activity" element={<Activity/>}/>
+          <Route path="catigory" element={<Category />} />
+          <Route path="activity" element={<Activity />} />
         </Route>
         <Route path="/package/:id" element={<PackageDetails />} />
-        <Route path="/request/:id" element={<RequestDetails/>} />
-        <Route path="/element-details" element={<PackageElementDetails/>} />
-        <Route path="/owner_details/:id" element={<OwnerDetails/>} />
+        <Route path="/request/:id" element={<RequestDetails />} />
+        <Route path="/element-details" element={<PackageElementDetails />} />
+        <Route path="/owner_details/:id" element={<OwnerDetails />} />
         <Route path="/room-details/:id" element={<RoomDetails />} />
       </Route>
-
-      {/* Accommodaion */}
-    <Route path="Accommodation/dashboard" element={<DashBourd2 />}>
-        <Route path="homepage" element={<HomePage />}/>
-        <Route path="profile" element={<Profile />}/>
-        <Route path="records" element={<ShowRecords />}/>
-    </Route>
     </Routes>
 
 

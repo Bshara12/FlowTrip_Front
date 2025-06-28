@@ -62,7 +62,7 @@
   -webkit-appearance: none;
 }
 
-label {
+.form-search label{
   color: #e3e4e8;
   overflow: hidden;
   position: absolute;

@@ -16,6 +16,11 @@ import Verification from "./Auth/Verification";
 import OwnerCategoryList from "./Auth/OwnerCategoryList";
 import OwnerDetails from "./Admin/OwnerDetails";
 import RoomDetails from "./Admin/RoomDetails";
+import DashBoard2 from "./Accommodation/Dashboard";
+import Profile from "./Accommodation/Profile";
+import ShowRecords from "./Accommodation/ShowRecords";
+import Offers from "./Accommodation/Offers";
+import RoomsHome from "./Accommodation/RoomsHome";
 
 function App() {
   return (
@@ -39,12 +44,20 @@ function App() {
         <Route path="/request/:id" element={<RequestDetails />} />
         <Route path="/element-details" element={<PackageElementDetails />} />
         <Route path="/owner_details/:id" element={<OwnerDetails />} />
-        <Route path="/room-details/:id" element={<RoomDetails />} />
       </Route>
+
+      <Route path="Accommodation/dashboard" element={<DashBoard2 />}>
+      <Route path="profile" element={<Profile/>}/>
+      <Route path="records" element={<ShowRecords/>}/>
+      <Route path="rooms" element={<RoomsHome/>}/>
+      <Route path="offers" element={<Offers/>}/>
+      </Route>
+
+
+        <Route path="room-details/:id" element={<RoomDetails />} />
+    
+    
     </Routes>
-
-
-
   );
 }
 

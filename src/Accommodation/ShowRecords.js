@@ -1,135 +1,208 @@
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import "./ShowRecords.css";
+import ShowRecordsContainer from "../Component/ShowRecordsContainer";
 
-export default function ShowRecords(){
+export default function ShowRecords() {
   const [records, setRecords] = useState([]);
+  const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  var token = 'NYSAf4ryQT18IPkGxtbRGXRM28CIKN0rBZMmdela92fdd6fa';
+  const [userType, setUserType] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [roomRecords, setRoomRecords] = useState([]);
+  const [showRoomDetails, setShowRoomDetails] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [originalRecords, setOriginalRecords] = useState([]);
+  const [originalRoomRecords, setOriginalRoomRecords] = useState([]);
+
+  var token = "TJg51Xpxh1jmZ7AVMnIAXUuK5PqDZs5nANiqbyKza74a74b3";
 
   useEffect(() => {
-    const getRecords = async () => {
+    const checkUserType = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://127.0.0.1:8000/api/ShowAccommodationRecords', {
+        const response = await axios.get("http://127.0.0.1:8000/api/WhoAmI", {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
-        setRecords(response.data.details);
+        setUserType(response.data.data.type);
+        if (response.data.data.type === "Hotel") {
+          await fetchRoomsData();
+        } else {
+          await fetchBookingRecords();
+        }
         setLoading(false);
       } catch (err) {
-        setError('حدث خطأ في تحميل البيانات');
+        setError("حدث خطأ في تحميل البيانات");
         setLoading(false);
         console.error(err);
       }
-    }
-    
-    getRecords();
+    };
+    checkUserType();
+    // eslint-disable-next-line
   }, []);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.toLocaleDateString('en-US', { month: 'long' });
-    const year = date.getFullYear();
-    return `${day}, ${month}, ${year}`;
+  const fetchRoomsData = async () => {
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/ShowAccommodationRecords",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setRooms(response.data.rooms);
+    } catch (err) {
+      setError("حدث خطأ في تحميل بيانات الغرف");
+      console.error(err);
+    }
   };
 
-  const getStatusColor = (status) => {
-    return status === 0 ? '#10B981' : '#EF4444';
+  const fetchBookingRecords = async () => {
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/ShowAccommodationRecords",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setRecords(response.data.details);
+      setOriginalRecords(response.data.details);
+    } catch (err) {
+      setError("حدث خطأ في تحميل بيانات الحجوزات");
+      console.error(err);
+    }
   };
 
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p>جاري تحميل البيانات...</p>
-      </div>
-    );
-  }
+  const handleRoomClick = async (roomId) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/ShowRoomRecords/${roomId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setSelectedRoom(rooms.find((room) => room.id === roomId));
+      setRoomRecords(response.data);
+      setOriginalRoomRecords(response.data);
+      setShowRoomDetails(true);
+      setLoading(false);
+    } catch (err) {
+      setError("حدث خطأ في تحميل تفاصيل الغرفة");
+      setLoading(false);
+      console.error(err);
+    }
+  };
 
-  if (error) {
-    return (
-      <div className="error-container">
-        <div className="error-icon">⚠️</div>
-        <p>{error}</p>
-      </div>
-    );
-  }
+  const handleBackToRooms = () => {
+    setShowRoomDetails(false);
+    setSelectedRoom(null);
+    setRoomRecords([]);
+    setOriginalRoomRecords([]);
+    setSearchQuery("");
+  };
+
+  const handleSearch = async (query) => {
+    if (!query.trim()) {
+      if (userType === "Hotel" && showRoomDetails) {
+        setRoomRecords(originalRoomRecords);
+      } else if (userType !== "Hotel") {
+        setRecords(originalRecords);
+      }
+      return;
+    }
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/FilterNameAccommodation",
+        {
+          name: query,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      let filteredData = [];
+      if (
+        response.data &&
+        response.data.filtered_users &&
+        Array.isArray(response.data.filtered_users)
+      ) {
+        filteredData = response.data.filtered_users;
+      } else if (response.data && Array.isArray(response.data)) {
+        filteredData = response.data;
+      } else if (
+        response.data &&
+        response.data.details &&
+        Array.isArray(response.data.details)
+      ) {
+        filteredData = response.data.details;
+      } else if (
+        response.data &&
+        response.data.data &&
+        Array.isArray(response.data.data)
+      ) {
+        filteredData = response.data.data;
+      }
+      if (userType === "Hotel" && showRoomDetails) {
+        const filteredRoomRecords = originalRoomRecords.filter((record) =>
+          filteredData.some((user) => user.id === record.user.id)
+        );
+        setRoomRecords(filteredRoomRecords);
+      } else if (userType !== "Hotel") {
+        const filteredBookingRecords = originalRecords.filter((record) =>
+          filteredData.some((user) => user.id === record.user.id)
+        );
+        setRecords(filteredBookingRecords);
+      }
+    } catch (err) {
+      console.error("Error filtering records:", err);
+      if (userType === "Hotel" && showRoomDetails) {
+        const filtered = originalRoomRecords.filter(
+          (record) =>
+            record.user?.name?.toLowerCase().includes(query.toLowerCase()) ||
+            record.traveler_name?.toLowerCase().includes(query.toLowerCase())
+        );
+        setRoomRecords(filtered);
+      } else if (userType !== "Hotel") {
+        const filtered = originalRecords.filter(
+          (record) =>
+            record.user?.name?.toLowerCase().includes(query.toLowerCase()) ||
+            record.traveler_name?.toLowerCase().includes(query.toLowerCase())
+        );
+        setRecords(filtered);
+      }
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
-    <div className="show-records-container">
-      <div className="header-section">
-        <h1 className="main-title">Booking Archieve</h1>
-        <div className="stats-card">
-          <div className="stat-item">
-            <span className="stat-number">{records.length}</span>
-            <span className="stat-label">Total Booking</span>
-          </div>
-        </div>
-      </div>
-
-      {records.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-icon">📋</div>
-          <h3>There is no booking yet</h3>
-        </div>
-      ) : (
-        <div className="records-grid">
-          {records.map((record) => (
-            <div key={record.id} className="record-card">
-              <div className="card-header">
-                <div className="user-avatar">
-                  {record.user.name.charAt(0).toUpperCase()}
-                </div>
-                <div className="user-info">
-                  <h3 className="user-name">{record.user.name}</h3>
-                  <p className="user-email">{record.user.email}</p>
-                </div>
-              </div>
-
-              <div className="card-content">
-                <div className="info-row">
-                  <div className="info-item">
-                    <span className="info-label">Customer name:</span>
-                    <span className="info-value">{record.traveler_name}</span>
-                  </div>
-                  <div className="info-item">
-                    <span className="info-label">Natinal number:</span>
-                    <span className="info-value">{record.national_number}</span>
-                  </div>
-                </div>
-
-                <div className="info-row">
-                  <div className="info-item">
-                    <span className="info-label">Booking date:</span>
-                    <span className="info-value date-value">{formatDate(record.start_date)}</span>
-                  </div>
-                  <div className="info-item">
-                    <span className="info-label">Leaving daate:</span>
-                    <span className="info-value date-value">{formatDate(record.end_date)}</span>
-                  </div>
-                </div>
-
-                <div className="info-row">
-                  <div className="info-item">
-                    <span className="info-label">Phone number:</span>
-                    <span className="info-value">{record.user.phone_number}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* <div className="card-footer">
-                <button className="action-btn primary">عرض التفاصيل</button>
-                <button className="action-btn secondary">تعديل</button>
-              </div> */}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    <ShowRecordsContainer
+      loading={loading}
+      error={error}
+      userType={userType}
+      showRoomDetails={showRoomDetails}
+      selectedRoom={selectedRoom}
+      rooms={rooms}
+      records={records}
+      roomRecords={roomRecords}
+      handleRoomClick={handleRoomClick}
+      handleBackToRooms={handleBackToRooms}
+      searchQuery={searchQuery}
+      handleInputChange={handleInputChange}
+      handleSearch={handleSearch}
+      customTitle="Booking Archieve"
+    />
   );
 }

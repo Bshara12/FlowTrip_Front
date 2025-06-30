@@ -1,4 +1,5 @@
 .owner-list-container {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: calc(.7rem + 1vw);

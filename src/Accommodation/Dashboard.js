@@ -104,6 +104,24 @@ export default function DashBourd() {
             <i className="fas fa-clipboard-list"></i>
             <p>Records</p>
           </Link>
+          <Link
+            to="rooms"
+            className={
+              activeLink === "/Accommodation/dashboard/rooms" ? "active-link" : ""
+            }
+          >
+            <i className="fas fa-clipboard-list"></i>
+            <p>Rooms</p>
+          </Link>
+          <Link
+            to="offers"
+            className={
+              activeLink === "/Accommodation/dashboard/offers" ? "active-link" : ""
+            }
+          >
+            <i className="fas fa-clipboard-list"></i>
+            <p>Offers</p>
+          </Link>
           
           {/* ////////// */}
           <div

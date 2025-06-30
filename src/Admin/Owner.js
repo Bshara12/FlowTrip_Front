@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import OwnerCard from "../Component/OwnerCard";
-import "./Owner.css";
 import "./OwnerSearch.css";
 import { useNavigate } from "react-router-dom";
 
@@ -310,6 +309,7 @@ export default function Owner() {
             location={item.owner.location}
             phoneNumber={item.user.phone_number}
             category={item.category}
+            isUserView={true}
             style={{ animationDelay: `${(idx + 1) * 0.1}s` }}
             onClick={() => navigate(`/owner_details/${item.owner.id}`)}
           />

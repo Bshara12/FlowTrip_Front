@@ -400,9 +400,10 @@
 
 .info-row {
   display: flex;
-  gap: 1rem;
+  align-items: center;
   margin-bottom: 0.8rem;
   flex-wrap: wrap;
+  gap: calc(0.4rem + 0.5vw)
 }
 
 .info-item {
@@ -423,17 +424,18 @@
 }
 
 .info-label {
-  font-size: 0.75rem;
+  font-size: calc(0.3rem + .6vw);
   color: var(--color3);
-  margin-bottom: 0.3rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.3px;
+  padding-left: 10px;
 }
 
 .info-value {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: var(--color2);
+  padding-left: 10px;
   font-weight: 700;
   white-space: nowrap;
   overflow: hidden;

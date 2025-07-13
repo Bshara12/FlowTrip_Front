@@ -1,5 +1,4 @@
-
-.fs{
+.fs {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -11,7 +10,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 40px 50px 0 50px;
-
 }
 
 /* Modern search bar styles */
@@ -26,9 +24,7 @@
   background: white;
   border-radius: 1rem;
   background: linear-gradient(173deg, var(--color1) 0%, var(--color2) 100%);
-  box-shadow:
-    10px 10px 20px var(--color1),
-    -10px -10px 40px var(--color2);
+  box-shadow: 10px 10px 20px var(--color1), -10px -10px 40px var(--color2);
   padding: 0.3rem;
   gap: 0.3rem;
   min-width: 250px;
@@ -37,17 +33,15 @@
 .input-container input {
   border-radius: 0.8rem;
   background: var(--color1);
-  box-shadow:
-    inset 5px 5px 10px var(--color2),
-    inset -5px -5px 10px var(--color2),
-    0px 0px 20px var(--color2),
+  box-shadow: inset 5px 5px 10px var(--color2),
+    inset -5px -5px 10px var(--color2), 0px 0px 20px var(--color2),
     0px 0px 20px var(--color2);
   width: 100%;
   flex-basis: 100%;
   padding: 1rem;
   border: none;
   border: 1px solid transparent;
-  color:var(--color4);
+  color: var(--color4);
   transition: all 0.2s ease-in-out;
   font-size: 17px;
 }
@@ -55,11 +49,8 @@
 .input-container input:focus {
   border: 1px solid var(--color4);
   outline: none;
-  box-shadow:
-    inset 0px 0px 10px var(--color3),
-    inset 0px 0px 10px var(--color2),
-    0px 0px 100px var(--color2),
-    0px 0px 100px var(--color4);
+  box-shadow: inset 0px 0px 10px var(--color3), inset 0px 0px 10px var(--color2),
+    0px 0px 100px var(--color2), 0px 0px 100px var(--color4);
 }
 
 .country-dropdown {
@@ -81,7 +72,7 @@
   outline: none;
 }
 
-/* From Uiverse.io by vinodjangid07 */ 
+/* From Uiverse.io by vinodjangid07 */
 .button {
   width: 50px;
   height: 50px;
@@ -94,14 +85,14 @@
   justify-content: center;
   box-shadow: 0px 0px 20px var(--color4);
   cursor: pointer;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   overflow: hidden;
   position: relative;
 }
 
 .svgIcon {
   width: 12px;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 
 .svgIcon path {
@@ -111,14 +102,14 @@
 .button:hover {
   width: 140px;
   border-radius: 50px;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   background-color: var(--color2);
   align-items: center;
 }
 
 .button:hover .svgIcon {
   width: 50px;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   transform: translateY(60%);
 }
 
@@ -127,7 +118,7 @@
   top: -20px;
   content: "Search";
   color: var(--color4);
-  transition: all .3s linear;
+  transition: all 0.3s linear;
   font-size: 2px;
 }
 
@@ -135,7 +126,7 @@
   font-size: 13px;
   opacity: 1;
   transform: translateY(30px);
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 
 @media (max-width: 600px) {
@@ -144,7 +135,9 @@
     gap: 0.7rem;
     align-items: stretch;
   }
-  .input-container, .country-dropdown, .button {
+  .input-container,
+  .country-dropdown,
+  .button {
     width: 100%;
     min-width: 0;
     margin-left: 0;
@@ -160,8 +153,8 @@
   list-style: none;
 }
 
-.menu .two{
-  align-self:  flex-end
+.menu .two {
+  align-self: flex-end;
 }
 
 .menu a {

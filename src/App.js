@@ -21,6 +21,9 @@ import Profile from "./Accommodation/Profile";
 import ShowRecords from "./Accommodation/ShowRecords";
 import Offers from "./Accommodation/Offers";
 import RoomsHome from "./Accommodation/RoomsHome";
+import SubAdmin from "./Admin/SubAdmin";
+import Users from "./Admin/Users";
+import AddRoom from "./Accommodation/AddRoom";
 
 function App() {
   return (
@@ -37,6 +40,8 @@ function App() {
           <Route path="requist" element={<Requist />} />
           <Route path="packages" element={<Packages />} />
           <Route path="owners" element={<Owner />} />
+          <Route path="subadmin" element={<SubAdmin />} />
+          <Route path="users" element={<Users />} />
           <Route path="catigory" element={<Category />} />
           <Route path="activity" element={<Activity />} />
         </Route>
@@ -55,6 +60,7 @@ function App() {
 
 
         <Route path="room-details/:id" element={<RoomDetails />} />
+        <Route path="add-room" element={<AddRoom />} />
     
     
     </Routes>

@@ -86,7 +86,6 @@
 .info-row {
   display: flex;
   align-items: flex-start;
-  gap: 0.6em;
 }
 
 .info-icon {
@@ -127,6 +126,7 @@
 }
 
 .card-review {
+  text-align: center;
   position: absolute;
   top: 50%;
   left: 50%;

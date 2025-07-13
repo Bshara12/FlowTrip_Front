@@ -2,12 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import OwnerCard from "../Component/OwnerCard";
 import { useNavigate } from "react-router-dom";
-import RoomDetails from "../Admin/RoomDetails";
 
 export default function Offers() {
   const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
-  var token = "TJg51Xpxh1jmZ7AVMnIAXUuK5PqDZs5nANiqbyKza74a74b3";
+  var token = "GHH0Sf9hfdAIATLklXEqPAEYpBHeYmugKTn9w5mWf1ecbdb6";
 
   useEffect(() => {
     const getOffers = async () => {

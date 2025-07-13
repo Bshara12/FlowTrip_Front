@@ -21,7 +21,7 @@ export default function RoomDetails() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const navigate = useNavigate();
 
-  const token = "7EwT3dLJCWGPTgetL0J4lXsaFzQ9QdSEDa6GRVEVd5a059bb";
+  const token = "GHH0Sf9hfdAIATLklXEqPAEYpBHeYmugKTn9w5mWf1ecbdb6";
 
   useEffect(() => {
     const fetchRoom = async () => {

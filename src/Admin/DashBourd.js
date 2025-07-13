@@ -118,6 +118,18 @@ export default function DashBourd() {
             <p>SubAdmin</p>
           </Link>
 
+
+          <Link
+            to="/Admin/dashbord/users"
+            className={
+              activeLink === "/Admin/dashbord/users" ? "active-link" : ""
+            }
+          >
+            <i className="fas fa-users"></i>
+
+            <p>Users</p>
+          </Link>
+
           <Link
             to="/Admin/dashbord/activity"
             className={

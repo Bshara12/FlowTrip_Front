@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./OwnerDetails.css";
 import "./RoomDetails.css";
 import ConfirmDialog from "../Component/ConfirmDialog";
+import Loader from "../Component/Loader";
+
 
 export default function RoomDetails() {
   const { id } = useParams();
@@ -21,7 +23,7 @@ export default function RoomDetails() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const navigate = useNavigate();
 
-  const token = "GHH0Sf9hfdAIATLklXEqPAEYpBHeYmugKTn9w5mWf1ecbdb6";
+  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
 
   useEffect(() => {
     const fetchRoom = async () => {
@@ -281,7 +283,7 @@ export default function RoomDetails() {
   };
 
   if (loading)
-    return <div className="room-details-loading">جاري التحميل...</div>;
+    return <Loader/>;
   if (error) return <div className="room-details-error">{error}</div>;
   if (!data) return null;
 

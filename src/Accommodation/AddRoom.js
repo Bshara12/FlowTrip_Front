@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddRoom.css";
 import axios from "axios";
+import Loader from "../Component/Loader";
+
 
 export default function AddRoom() {
   var token = "GHH0Sf9hfdAIATLklXEqPAEYpBHeYmugKTn9w5mWf1ecbdb6";
@@ -111,7 +113,7 @@ export default function AddRoom() {
     setError("");
   };
 
-  return (
+  return loading ? <Loader/> : (
     <div className="add-room-container">
       <div className="form-container">
         <div className="form">

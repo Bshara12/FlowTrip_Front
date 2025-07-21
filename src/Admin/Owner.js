@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import OwnerCard from "../Component/OwnerCard";
+import Loader from "../Component/Loader";
 import "./OwnerSearch.css";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +17,7 @@ export default function Owner() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
-  const token = "8izVrtthWL2vU0kXrWV1w4wWqT9JT2z3M1gKY0hlfe25f76e";
+  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
 
   useEffect(() => {
     const loadInfo = async () => {
@@ -163,7 +164,7 @@ export default function Owner() {
   };
 
   if (loading) {
-    return <div className="owner-loading">Loading...</div>;
+    return <Loader/>;
   }
 
   if (error) {

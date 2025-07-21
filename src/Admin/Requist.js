@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import RequestCard from "../Component/RequestCard";
+import Loader from "../Component/Loader";
 
 const Requist = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const token = "2|DHyYOULZGrRqxduJ6xvIpDZx3TSfrrhGMC11NW32133b858e";
+  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -35,7 +36,7 @@ const Requist = () => {
       <h1 style={{ color: "var(--color1)", marginBottom: "1.5rem" }}>Current orders</h1>
 
       {loading ? (
-        <p>Loading...</p>
+        <Loader/>
       ) : (
         requests.map((item) => {
           const { id, description, business_name } = item.request;

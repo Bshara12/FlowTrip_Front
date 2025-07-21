@@ -5,6 +5,7 @@ import Button from "../Component/AddButton";
 import ActivityCard from "../Component/ActivityCard";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from "../Component/Loader";
 
 const Activity = () => {
   const [activities, setActivities] = useState([]);
@@ -13,7 +14,7 @@ const Activity = () => {
   const [confirmDeleteData, setConfirmDeleteData] = useState(null); // <-- بدل ID
   const modalRef = useRef(null);
 
-  const token = "2|DHyYOULZGrRqxduJ6xvIpDZx3TSfrrhGMC11NW32133b858e";
+  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
 
   const fetchActivities = () => {
     axios

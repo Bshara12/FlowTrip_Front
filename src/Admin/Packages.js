@@ -6,6 +6,8 @@ import "./Packages.css";
 import Button from "../Component/AddButton";
 import PackageCard from "../Component/PackageCard";
 import loadingImage from "../Assets/Loading_icon.gif"; 
+import Loader from "../Component/Loader";
+
 
 export default function Packages() {
   const navigate = useNavigate();
@@ -43,11 +45,7 @@ export default function Packages() {
       <h1 style={{ margin: "10px 0 0 30px" }}>Packages</h1>
       <div className="cards">
         {loading ? (
-          <img
-            src={loadingImage}
-            alt="Loading..."
-            style={{ width: "100px", margin: "50px auto" }}
-          />
+          <Loader/>
         ) : (
           packages.map((pkg) => (
             <PackageCard

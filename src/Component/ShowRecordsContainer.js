@@ -3,6 +3,7 @@ import SearchInput from "./SearchInput";
 import "./ShowRecordsContainer.css";
 import { useNavigate } from "react-router-dom";
 import AddButton from "./AddButton";
+import Loader from "../Component/Loader";
 
 const ShowRecordsContainer = ({
   loading,
@@ -25,12 +26,7 @@ const ShowRecordsContainer = ({
   const navigate = useNavigate();
 
   if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p>جاري تحميل البيانات...</p>
-      </div>
-    );
+    return <Loader/>
   }
 
   if (error) {

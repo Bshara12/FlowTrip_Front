@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import SubAdminCard from "../Component/SubAdminCard";
 import ConfirmDialog from "../Component/ConfirmDialog";
 import "./OwnerSearch.css";
+import Loader from "../Component/Loader";
+
 
 export default function SubAdmin() {
   const [users, setUsers] = useState([]);
@@ -12,7 +14,7 @@ export default function SubAdmin() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
 
-  const token = "8izVrtthWL2vU0kXrWV1w4wWqT9JT2z3M1gKY0hlfe25f76e";
+  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
 
   useEffect(() => {
     const loadInfo = async () => {
@@ -119,7 +121,7 @@ export default function SubAdmin() {
   };
 
   if (loading) {
-    return <div className="owner-loading">Loading...</div>;
+    return <Loader/>
   }
 
   if (error) {

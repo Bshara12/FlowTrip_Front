@@ -2,15 +2,19 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import OwnerCard from "../Component/OwnerCard";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Component/Loader";
+
 
 export default function Offers() {
   const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
+  const [loading,setLoading] = useState(true);
   var token = "GHH0Sf9hfdAIATLklXEqPAEYpBHeYmugKTn9w5mWf1ecbdb6";
 
   useEffect(() => {
     const getOffers = async () => {
       try {
+        setLoading(true);
         const res = await axios.get('http://127.0.0.1:8000/api/ShowOffers', {
           headers: {
             Authorization: `Bearer ${token}`
@@ -20,11 +24,14 @@ export default function Offers() {
       } catch (e) {
         console.log(e);
       }
+      finally{
+        setLoading(false);
+      }
     };
     getOffers();
   }, []);
 
-  return (
+  return loading ? <Loader/> : (
     <div  className="owner-list-container">
       {offers.length === 0 ? (
         <div>No offers found.</div>

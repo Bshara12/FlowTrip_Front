@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./OwnerDetailsComponent.css";
 import ToggleButton from "./ToggleButton";
+import Loader from "../Component/Loader";
 
 /**
  * مكون قابل لإعادة الاستخدام لعرض تفاصيل المالك
@@ -124,7 +125,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   };
 
   if (loading)
-    return <div className="owner-details-loading">جاري التحميل...</div>;
+    return <Loader/>;
   if (error) return <div className="owner-details-error">{error}</div>;
   if (!data) return null;
 

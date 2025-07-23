@@ -2,7 +2,6 @@ html {
   background: var(--color5);
 }
 
-/* Room Details Container */
 .room-details-container {
   display: flex;
   flex-direction: column;
@@ -15,7 +14,6 @@ html {
   cursor: default;
 }
 
-/* Room Details Loading */
 .room-details-loading {
   text-align: center;
   margin-top: 60px;
@@ -23,7 +21,6 @@ html {
   color: #b23c3c;
 }
 
-/* Room Details Error */
 .room-details-error {
   text-align: center;
   margin-top: 60px;
@@ -31,7 +28,6 @@ html {
   color: #b23c3c;
 }
 
-/* Room Pictures Section */
 .room-pictures-section {
   width: 100%;
   background: var(--color5);
@@ -96,7 +92,6 @@ html {
 
 .room-picture-card:hover {
   transform: translateY(-4px) scale(1.03);
-  /* box-shadow: 0 6px 18px var(--color4); */
 }
 
 .room-picture-img {
@@ -155,7 +150,6 @@ html {
   font-size: 16px;
 }
 
-/* Room Details Card */
 .room-details-card {
   background: var(--color7);
   border-radius: 22px;
@@ -238,7 +232,6 @@ html {
   margin-right: 0.5rem;
 }
 
-/* Responsive Design */
 @media (max-width: 900px) {
   .room-details-container {
     flex-direction: column;
@@ -251,7 +244,6 @@ html {
   }
 }
 
-/* Floating Edit Button */
 .floating-edit-btn {
   position: fixed;
   right: 1rem;
@@ -282,7 +274,6 @@ html {
   transform: translateY(-50%) scale(0.95);
 }
 
-/* Room Edit Interface */
 .room-edit-container {
   min-height: 100vh;
   background: var(--color5);
@@ -409,7 +400,6 @@ html {
   min-height: 100px;
 }
 
-/* Pictures Grid */
 .pictures-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -488,7 +478,6 @@ html {
   box-shadow: 0 4px 15px var(--color4);
 }
 
-/* Responsive Design for Edit Interface */
 @media (max-width: 768px) {
   .room-edit-content {
     grid-template-columns: 1fr;
@@ -518,7 +507,6 @@ html {
   }
 }
 
-/* Modern Input Styles */
 .inputbox {
   position: relative;
   width: 100%;
@@ -592,7 +580,6 @@ html {
   height: 44px;
 }
 
-/* Hide number input spinners */
 .inputbox input[type="number"]::-webkit-outer-spin-button,
 .inputbox input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -602,7 +589,6 @@ html {
   -moz-appearance: textfield;
 }
 
-/* Floating Delete Button */
 .floating-delete-btn {
   position: fixed;
   right: 1rem;

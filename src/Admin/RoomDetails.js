@@ -18,7 +18,7 @@ export default function RoomDetails() {
   const [editData, setEditData] = useState(null);
   const [editLoading, setEditLoading] = useState(false);
   const [deletedPictures, setDeletedPictures] = useState([]);
-  const [currentPictures, setCurrentPictures] = useState([]); // الصور الحالية
+  const [currentPictures, setCurrentPictures] = useState([]);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ export default function RoomDetails() {
           pictures: res.data.pictures,
         });
       } catch (err) {
-        setError("حدث خطأ أثناء جلب بيانات الغرفة");
+        setError(err);
       } finally {
         setLoading(false);
       }
@@ -60,7 +60,7 @@ export default function RoomDetails() {
     if (!sliderRef.current) return;
     if (isPaused) return;
     if (!data || !data.pictures) return;
-    if (data.pictures.length < 2) return; // Disable auto-scroll if less than 6 images
+    if (data.pictures.length < 2) return;
     const slider = sliderRef.current;
     const scrollAmount = 1;
 
@@ -111,19 +111,15 @@ export default function RoomDetails() {
   };
 
   const handlePictureDelete = (pictureId) => {
-    // البحث في الصور الحالية
     const pictureToDelete = currentPictures.find((pic) => pic.id === pictureId);
 
     if (pictureToDelete) {
-      // إذا كانت صورة جديدة، قم بحذف URL المؤقت
       if (pictureToDelete.isNew) {
         URL.revokeObjectURL(pictureToDelete.room_picture);
       } else {
-        // إذا كانت صورة موجودة، أضفها لقائمة الصور المحذوفة
         setDeletedPictures((prev) => [...prev, pictureToDelete]);
       }
 
-      // إزالة من الصور الحالية
       setCurrentPictures((prev) => prev.filter((pic) => pic.id !== pictureId));
     }
   };
@@ -131,49 +127,40 @@ export default function RoomDetails() {
   const handlePictureUpload = (event) => {
     const files = Array.from(event.target.files);
 
-    // إنشاء كائنات صور جديدة مع معرفات مؤقتة
     const newPictures = files.map((file, index) => ({
-      id: `temp-${Date.now()}-${index}`, // معرف مؤقت
-      room_picture: URL.createObjectURL(file), // إنشاء URL مؤقت للعرض
-      file: file, // حفظ الملف الأصلي للرفع لاحقاً
-      isNew: true, // علامة لتحديد أنها صورة جديدة
+      id: `temp-${Date.now()}-${index}`,
+      // for temporary show
+      room_picture: URL.createObjectURL(file),
+      file: file,
+      isNew: true,
     }));
 
-    // إضافة الصور الجديدة للصور الحالية
     setCurrentPictures((prev) => [...prev, ...newPictures]);
 
-    // إعادة تعيين input الملف
     event.target.value = "";
   };
 
   const handleSaveChanges = async () => {
     setEditLoading(true);
     try {
-      // إنشاء FormData لإرسال البيانات والصور
       const formData = new FormData();
 
-      // إضافة البيانات النصية
       formData.append("price", editData.price);
       formData.append("area", editData.area);
       formData.append("people_count", editData.people_count);
       formData.append("description", editData.description);
 
-      // إضافة سعر العرض إذا كان موجوداً
       if (editData.offer_price && editData.offer_price !== "") {
         formData.append("offer_price", editData.offer_price);
       }
 
-      // فصل الصور الجديدة والقديمة من currentPictures
       const newPictures = currentPictures.filter((pic) => pic.isNew);
       const oldPictures = currentPictures.filter((pic) => !pic.isNew);
 
-      // إضافة الصور الجديدة
       newPictures.forEach((pic) => {
         formData.append("images[]", pic.file);
       });
 
-      // إضافة معرفات الصور القديمة المتبقية
-      // API ستحذف تلقائياً الصور التي لم تكن في هذه القائمة
       if (oldPictures.length > 0) {
         const oldPictureIds = oldPictures.map((pic) => pic.id);
         formData.append("remaining_picture_ids", JSON.stringify(oldPictureIds));
@@ -187,18 +174,18 @@ export default function RoomDetails() {
         offer_price: editData.offer_price,
         newImagesCount: newPictures.length,
         remainingPictureIds: oldPictures.map((pic) => pic.id),
-        deletedPictureIds: deletedPictures.map((pic) => pic.id), // للتوضيح فقط
+        deletedPictureIds: deletedPictures.map((pic) => pic.id),
       });
 
-      // إرسال البيانات باستخدام FormData
       await axios.post(`http://127.0.0.1:8000/api/EditRoom/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data", // مهم للصور
+          // important for images
+          "Content-Type": "multipart/form-data",
         },
       });
 
-      // تنظيف URLs المؤقتة بعد الحفظ
+      // delete temporary urls
       currentPictures.forEach((pic) => {
         if (pic.isNew && pic.room_picture) {
           URL.revokeObjectURL(pic.room_picture);
@@ -207,14 +194,13 @@ export default function RoomDetails() {
 
       setIsEditing(false);
 
-      // إعادة تحميل البيانات لعرض التحديثات
       const res = await axios.get(`http://127.0.0.1:8000/api/ShowRoom/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       setData(res.data);
-      setCurrentPictures(res.data.pictures); // حفظ الصور الحالية
+      setCurrentPictures(res.data.pictures);
       setEditData({
         price: res.data.room.price,
         offer_price: res.data.room.offer_price || "",
@@ -224,12 +210,10 @@ export default function RoomDetails() {
         pictures: res.data.pictures,
       });
 
-      // إعادة تعيين قائمة الصور المحذوفة
       setDeletedPictures([]);
     } catch (err) {
       console.error("Error saving changes:", err);
       alert(
-        "حدث خطأ أثناء حفظ التغييرات: " +
           (err.response?.data?.message || err.message)
       );
     } finally {
@@ -238,21 +222,17 @@ export default function RoomDetails() {
   };
 
   const handleCancelEdit = () => {
-    // تنظيف URLs المؤقتة للصور الجديدة
     currentPictures.forEach((pic) => {
       if (pic.isNew && pic.room_picture) {
         URL.revokeObjectURL(pic.room_picture);
       }
     });
 
-    // إعادة تعيين الصور الحالية
     setCurrentPictures(data.pictures);
 
-    // إعادة تعيين قائمة الصور المحذوفة
     setDeletedPictures([]);
 
     setIsEditing(false);
-    // إعادة تعيين البيانات الأصلية
     if (data) {
       setEditData({
         price: data.room.price,
@@ -289,7 +269,6 @@ export default function RoomDetails() {
 
   const { room, pictures } = data;
 
-  // واجهة التعديل
   if (isEditing) {
     return (
       <div className="room-edit-container">
@@ -308,7 +287,7 @@ export default function RoomDetails() {
               onClick={handleSaveChanges}
               disabled={editLoading}
             >
-              {editLoading ? "جاري الحفظ..." : "Save"}
+              {editLoading ? "Saving.." : "Save"}
             </button>
           </div>
         </div>
@@ -384,13 +363,12 @@ export default function RoomDetails() {
           <div className="edit-pictures-section">
             <h3>Room's Photos</h3>
             <div className="pictures-grid">
-              {/* عرض جميع الصور من currentPictures */}
               {currentPictures.map((pic) => (
                 <div key={pic.id} className="picture-item">
                   <img
                     src={
                       pic.isNew
-                        ? pic.room_picture // للصور الجديدة، استخدم URL المؤقت
+                        ? pic.room_picture
                         : pic.room_picture.startsWith("http")
                         ? pic.room_picture
                         : `http://localhost:8000/${pic.room_picture}`
@@ -425,23 +403,20 @@ export default function RoomDetails() {
     );
   }
 
-  // واجهة العرض العادية
   return (
     <div className="room-details-container">
-      {/* زر التعديل العائم */}
       <button
         className="floating-edit-btn"
         onClick={() => setIsEditing(true)}
-        title="تعديل الغرفة"
+        title="Edit Room"
       >
         <i className="fa-solid fa-edit"></i>
       </button>
-      {/* زر حذف عائم */}
       <button
         className="floating-delete-btn"
         style={{ bottom: 80 }}
         onClick={() => setShowDeleteDialog(true)}
-        title="حذف الغرفة"
+        title="Delete Room"
         disabled={deleteLoading}
       >
         <i className="fa-solid fa-trash"></i>

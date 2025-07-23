@@ -38,7 +38,6 @@ const ShowRecordsContainer = ({
     );
   }
 
-  // تفاصيل الغرفة
   if (showRoomDetails && selectedRoom) {
     return (
       <div className="show-records-container">
@@ -141,7 +140,6 @@ const ShowRecordsContainer = ({
     );
   }
 
-  // واجهة الغرف للفندق
   if (userType === "Hotel") {
     return (
       <div className="show-records-container">
@@ -256,7 +254,6 @@ const ShowRecordsContainer = ({
     );
   }
 
-  // واجهة الحجوزات للمستخدم العادي
   return (
     <div className="show-records-container">
       <div className="header-section">

@@ -32,7 +32,7 @@ export default function Owner() {
           setLoading(false);
         })
         .catch((err) => {
-          setError("حدث خطأ أثناء جلب البيانات");
+          setError(err);
           setLoading(false);
         });
 
@@ -91,7 +91,7 @@ export default function Owner() {
         setOwners([]);
       }
     } catch (err) {
-      setError("حدث خطأ أثناء البحث");
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -122,7 +122,7 @@ export default function Owner() {
       console.log(res.data.data);
       setOwners(res.data.data || []);
     } catch (err) {
-      setError("حدث خطأ أثناء البحث");
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -157,7 +157,7 @@ export default function Owner() {
         setOwners(res.data.data);
       }
     } catch (err) {
-      setError("حدث خطأ أثناء جلب البيانات");
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -171,7 +171,6 @@ export default function Owner() {
     return <div className="owner-error">{error}</div>;
   }
 
-  // فلترة المالكين حسب البحث والبلد
   const filteredOwners = owners;
 
   return (

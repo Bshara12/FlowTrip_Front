@@ -40,7 +40,6 @@ export default function AddRoom() {
 
     try {
       if (images.length > 0) {
-        // إذا كان هناك صور، أرسل كل شيء عبر FormData
         const formDataToSend = new FormData();
         formDataToSend.append('price', formData.price);
         formDataToSend.append('area', formData.area);
@@ -70,7 +69,6 @@ export default function AddRoom() {
           setError('Failed to add room');
         }
       } else {
-        // إذا لم توجد صور، أرسل البيانات كـ JSON
         const response = await axios.post(
           "http://127.0.0.1:8000/api/AddRoom",
           {

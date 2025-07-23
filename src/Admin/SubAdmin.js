@@ -29,7 +29,7 @@ export default function SubAdmin() {
           setLoading(false);
         })
         .catch((err) => {
-          setError("حدث خطأ أثناء جلب البيانات");
+          setError(err);
           setLoading(false);
         });
     };
@@ -96,7 +96,7 @@ export default function SubAdmin() {
         setUsers([]);
       }
     } catch (err) {
-      setError("حدث خطأ أثناء البحث");
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -114,7 +114,7 @@ export default function SubAdmin() {
         setUsers(res.data.data);
       }
     catch (err) {
-      setError("حدث خطأ أثناء جلب البيانات");
+      setError(err);
     } finally {
       setLoading(false);
     }

@@ -19,7 +19,7 @@ const CategoryPopup = ({ onClose, requestId, onSuccessUpdate }) => {
         setCategories(res.data.owners_categories || []);
       })
       .catch((err) => {
-        toast.error("فشل في تحميل الكاتيغوري");
+        toast.error(`Error:${err}`);
         console.error("Error fetching categories:", err);
       });
   }, []);

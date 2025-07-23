@@ -162,7 +162,6 @@ export default function DashBourd() {
             <p>Contact us</p>
           </div>
 
-          {/* ////////// */}
           <div
             onClick={() => setShowLogoutConfirm(true)}
             className="logout-link"

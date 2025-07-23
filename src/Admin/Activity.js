@@ -52,11 +52,11 @@ const Activity = () => {
         },
       })
       .then(() => {
-        toast.success(`تم حذف النشاط "${name}" بنجاح`);
+        toast.success("deleted Successfully");
         setActivities((prev) => prev.filter((act) => act.id !== id));
       })
       .catch((error) => {
-        toast.error("فشل في حذف النشاط");
+        toast.error(error);
         console.error(error);
       })
       .finally(() => {
@@ -70,7 +70,7 @@ const Activity = () => {
 
   const handleAddActivity = () => {
     if (newActivityName.trim() === "") {
-      toast.error("يرجى إدخال اسم النشاط.");
+      toast.error("Enter activity name");
       return;
     }
 
@@ -87,13 +87,13 @@ const Activity = () => {
         }
       )
       .then(() => {
-        toast.success("تمت إضافة النشاط بنجاح");
+        toast.success("Success");
         setNewActivityName("");
         setShowModal(false);
         fetchActivities();
       })
       .catch((error) => {
-        toast.error(`خطأ: ${error.message}`);
+        toast.error(`${error.message}`);
         console.log(error.message);
       });
   };

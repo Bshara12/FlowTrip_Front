@@ -30,7 +30,7 @@ export default function Users() {
           setLoading(false);
         })
         .catch((err) => {
-          setError("حدث خطأ أثناء جلب البيانات");
+          setError(err);
           setLoading(false);
         });
     };
@@ -97,7 +97,7 @@ export default function Users() {
         setUsers([]);
       }
     } catch (err) {
-      setError("حدث خطأ أثناء البحث");
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -115,7 +115,7 @@ export default function Users() {
         setUsers(res.data.data);
       }
     catch (err) {
-      setError("حدث خطأ أثناء جلب البيانات");
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -135,7 +135,7 @@ export default function Users() {
         <div className="search-bar-modern">
           <div className="input-container">
             <input
-              placeholder="Enter name.."
+              placeholder="Enter name"
               type="text"
               value={search}
               onChange={(e) => {

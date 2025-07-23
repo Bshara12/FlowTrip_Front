@@ -123,7 +123,6 @@ export default function DashBourd() {
             <p>Offers</p>
           </Link>
           
-          {/* ////////// */}
           <div
             onClick={() => setShowLogoutConfirm(true)}
             className="logout-link"

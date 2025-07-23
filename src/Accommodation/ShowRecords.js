@@ -34,13 +34,12 @@ export default function ShowRecords() {
         }
         setLoading(false);
       } catch (err) {
-        setError("حدث خطأ في تحميل البيانات");
+        setError(err);
         setLoading(false);
         console.error(err);
       }
     };
     checkUserType();
-    // eslint-disable-next-line
   }, []);
 
   const fetchRoomsData = async () => {
@@ -55,7 +54,7 @@ export default function ShowRecords() {
       );
       setRooms(response.data.rooms);
     } catch (err) {
-      setError("حدث خطأ في تحميل بيانات الغرف");
+      setError(err);
       console.error(err);
     }
   };
@@ -73,7 +72,7 @@ export default function ShowRecords() {
       setRecords(response.data.details);
       setOriginalRecords(response.data.details);
     } catch (err) {
-      setError("حدث خطأ في تحميل بيانات الحجوزات");
+      setError(err);
       console.error(err);
     }
   };
@@ -95,7 +94,7 @@ export default function ShowRecords() {
       setShowRoomDetails(true);
       setLoading(false);
     } catch (err) {
-      setError("حدث خطأ في تحميل تفاصيل الغرفة");
+      setError(err);
       setLoading(false);
       console.error(err);
     }

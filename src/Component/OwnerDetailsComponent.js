@@ -5,12 +5,6 @@ import "./OwnerDetailsComponent.css";
 import ToggleButton from "./ToggleButton";
 import Loader from "../Component/Loader";
 
-/**
- * مكون قابل لإعادة الاستخدام لعرض تفاصيل المالك
- * @param {string} id - معرف المالك (اختياري، للاستخدام في صفحة الأدمن)
- * @param {string} token - رمز المصادقة
- * @param {boolean} isAdmin - هل المستخدم أدمن أم لا
- */
 export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,7 +14,6 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   const [isPaused, setIsPaused] = useState(false);
   const navigate = useNavigate();
 
-  // استخدام token افتراضي إذا لم يتم تمرير واحد
   const authToken = token || "8izVrtthWL2vU0kXrWV1w4wWqT9JT2z3M1gKY0hlfe25f76e";
 
   useEffect(() => {
@@ -42,13 +35,12 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
         });
         setData(res.data);
         
-        // تحديث حالة الحظر للأدمن فقط
         if (isAdmin && res.data?.owner?.user?.status === 2) {
           setIsBlocked(true);
         }
       } catch (err) {
-        console.error("خطأ في جلب البيانات:", err);
-        setError("حدث خطأ أثناء جلب البيانات");
+        console.error(err);
+        setError(err);
       } finally {
         setLoading(false);
       }
@@ -119,7 +111,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
         setIsBlocked(checked);
       }
     } catch (error) {
-      console.error("خطأ في تحديث حالة الحظر:", error);
+      console.error(error);
       setIsBlocked(!checked);
     }
   };

@@ -101,7 +101,6 @@ export default function DashBoardVehiclyOwner() {
             <p>Profile</p>
           </Link>
 
-          {/* ********* */}
 
           <div
             onClick={() => window.open("https://wa.me/0938246910", "_blank")}
@@ -112,7 +111,6 @@ export default function DashBoardVehiclyOwner() {
             <p>Contact us</p>
           </div>
 
-          {/* ////////// */}
           <div
             onClick={() => setShowLogoutConfirm(true)}
             className="logout-link"

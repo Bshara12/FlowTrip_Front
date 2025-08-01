@@ -1,3 +1,4 @@
+// ✅ Packages.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -44,7 +45,15 @@ export default function Packages() {
       <h1 style={{ margin: "10px 0 0 30px" }}>Packages</h1>
       <div className="cards">
         {loading ? (
-          <Loader/>
+         <>
+  <Loader />
+  <img
+    src={loadingImage}
+    alt="Loading..."
+    style={{ width: "100px", margin: "50px auto" }}
+  />
+</>
+
         ) : (
           packages.map((pkg) => (
             <PackageCard

@@ -11,7 +11,10 @@
     "axios": "^1.8.4",
     "enquire.js": "^2.1.6",
     "framer-motion": "^12.6.2",
+<<<<<<< HEAD
     "i18n-iso-countries": "^7.14.0",
+=======
+>>>>>>> 1dbc384 (أول رفع للواجهات)
     "js-cookie": "^3.0.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -20,7 +23,10 @@
     "react-slick": "^0.30.3",
     "react-toastify": "^11.0.5",
     "slick-carousel": "^1.8.1",
+<<<<<<< HEAD
     "styled-components": "^6.1.19",
+=======
+>>>>>>> 1dbc384 (أول رفع للواجهات)
     "web-vitals": "^2.1.4"
   },
   "scripts": {

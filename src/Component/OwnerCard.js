@@ -52,4 +52,4 @@ const OwnerCard = ({ name, location, phoneNumber, category, style, onClick, isUs
   );
 };
 
-export default OwnerCard; 
+export default OwnerCard;

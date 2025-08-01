@@ -4,6 +4,8 @@ import "./Category.css";
 import Button from "../Component/AddButton";
 import { ToastContainer, toast } from "react-toastify";
 import CategoryCard from "../Component/CategoryCard";
+import CategoryCard from "../Component/CategoryCard";
+import { ToastContainer, toast } from "react-toastify";
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
@@ -94,6 +96,10 @@ const Category = () => {
         {categories.map((cat) => (
           <CategoryCard
             title={cat.text}
+            key={cat.id}
+            id={cat.id}
+            text={cat.text}
+            onDelete={() => handleDelete(cat.id)}
           />
         ))}
       </div>
@@ -115,6 +121,14 @@ const Category = () => {
               <button className="animated-btn cancel" onClick={() => setShowModal(false)}>
                 cansle
               </button>
+              <button
+  type="button"
+  className="animated-btn cancel"
+  onClick={() => setShowModal(false)}
+>
+  إلغاء
+</button>
+
             </div>
           </div>
         </div>

@@ -1,3 +1,4 @@
+// RequestDetails.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
@@ -88,6 +89,8 @@ const RequestDetails = () => {
 
   if (loading) return <p className="request-loading">Loading...</p>;
   if (!request) return <p className="request-error">Failed to load data.</p>;
+  if (loading) return <p className="loading">Loading...</p>;
+  if (!request) return <p className="error">Failed to load data.</p>;
 
   const { request: req, user_name, email, phone_number } = request;
 
@@ -105,6 +108,15 @@ const RequestDetails = () => {
 
         <section className="request-info-section">
           <h3 className="request-info-title">Request Details</h3>
+        <section className="request-section">
+          <h3 className="section-title">Owner Information</h3>
+          <p className="section-text">Name: {user_name}</p>
+          <p className="section-text">Email: {email}</p>
+          <p className="section-text">Phone: {phone_number}</p>
+        </section>
+
+        <section className="request-section">
+          <h3 className="section-title">Request Details</h3>
           <p><strong className="field-label">Description:</strong> {req.description}</p>
           <p><strong className="field-label">Location:</strong> {req.location}</p>
           <p><strong className="field-label">Category:</strong> {req.owner_category_id}</p>

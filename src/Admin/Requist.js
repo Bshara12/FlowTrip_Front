@@ -23,6 +23,7 @@ const Requist = () => {
         }
       } catch (error) {
         console.error("Error:", error);
+        console.error("حدث خطأ أثناء جلب الطلبات:", error);
       } finally {
         setLoading(false);
       }
@@ -36,7 +37,11 @@ const Requist = () => {
       <h1 style={{ color: "var(--color1)", marginBottom: "1.5rem" }}>Current orders</h1>
 
       {loading ? (
-        <Loader/>
+
+        <>
+    <Loader />
+    <p>جاري التحميل...</p>
+  </>
       ) : (
         requests.map((item) => {
           const { id, description, business_name } = item.request;

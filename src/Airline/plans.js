@@ -1,25 +1,24 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import "./DashBourd.css";
+import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-export default function DashBourd() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [activeLink, setActiveLink] = useState("/Admin/dashbord/restaurants");
+import AddPlane from "./AddPlane";
+export default function Plans() {
   const [collapsed, setCollapsed] = useState(false);
+  const [activeLink, setActiveLink] = useState("/plans/showallplans");
+  const [showAddPlaneModal, setShowAddPlaneModal] = useState(false); 
+  const navigate = useNavigate();
+  const location = useLocation();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-
-  useEffect(() => {
-    setActiveLink(location.pathname);
-  }, [location.pathname]);
 
   const handleToggleCollapse = () => {
     setCollapsed(!collapsed);
   };
+
+  useEffect(() => {
+    setActiveLink(location.pathname);
+  }, [location.pathname]);
 
   const handleLogout = async () => {
     const token = Cookies.get("authToken");
@@ -78,86 +77,22 @@ export default function DashBourd() {
         </div>
         <div style={{ width: "100%" }}>
           <Link
-            to="/Admin/dashbord/requist"
-            className={
-              activeLink === "/Admin/dashbord/requist" ? "active-link" : ""
-            }
+            to="/plans/showallplans"
+            className={activeLink === "/plans/showallplans" ? "active-link" : ""}
           >
             <i className="fas fa-clipboard-list"></i>
-            <i class="fas fa-clipboard-list"></i>
-            <p>Requists</p>
-          </Link>
-          <Link
-            to="/Admin/dashbord/packages"
-            className={
-              activeLink === "/Admin/dashbord/packages" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-cubes"></i>
-            <i class="fas fa-cubes"></i>
-
-            <p>Packages</p>
-          </Link>
-          <Link
-            to="/Admin/dashbord/owners"
-            className={
-              activeLink === "/Admin/dashbord/owners" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-user-tie"></i>
-            <i class="fas fa-user-tie"></i>
-
-            <p>Owners</p>
+            <p>Show plans</p>
           </Link>
 
-          <Link
-            to="/Admin/dashbord/subadmin"
-            className={
-              activeLink === "/Admin/dashbord/subadmin" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-chess-king"></i>
-            <i class="fas fa-chess-king"></i>
+          <div
+  onClick={() => setShowAddPlaneModal(true)}
+  className={`logout-link ${showAddPlaneModal ? "active-link" : ""}`}
+  style={{ cursor: "pointer" }}
+>
+  <i className="fas fa-cubes"></i>
+  <p>Add Plane</p>
+</div>
 
-            <p>SubAdmin</p>
-          </Link>
-
-
-          <Link
-            to="/Admin/dashbord/users"
-            className={
-              activeLink === "/Admin/dashbord/users" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-users"></i>
-
-            <p>Users</p>
-          </Link>
-
-          <Link
-            to="/Admin/dashbord/activity"
-            className={
-              activeLink === "/Admin/dashbord/activity" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-running"></i>
-            <i class="fas fa-running"></i>
-
-            <p>Activitys</p>
-          </Link>
-
-          <Link
-            to="/Admin/dashbord/catigory"
-            className={
-              activeLink === "/Admin/dashbord/catigory" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-layer-group"></i> 
-            <i class="fas fa-layer-group"></i> 
-            <p>Catigory</p>
-          </Link>
-
-          {/* ********* */}
 
           <div
             onClick={() => window.open("https://wa.me/0938246910", "_blank")}
@@ -168,18 +103,12 @@ export default function DashBourd() {
             <p>Contact us</p>
           </div>
 
-          {/* ////////// */}
-          <div
-            onClick={() => setShowLogoutConfirm(true)}
-            className="logout-link"
-          >
+          <div onClick={() => setShowLogoutConfirm(true)} className="logout-link">
             <i className="fa-solid fa-right-from-bracket"></i>
             <p>Log Out</p>
           </div>
         </div>
       </div>
-
-      <Outlet />
 
       {showLogoutConfirm && (
         <div className="popup-overlay">
@@ -193,12 +122,18 @@ export default function DashBourd() {
                 onClick={() => setShowLogoutConfirm(false)}
                 className="cancel-btn"
               >
-                Cuncle
+                Cancel
               </button>
             </div>
           </div>
         </div>
       )}
+
+      {showAddPlaneModal && <AddPlane onClose={() => setShowAddPlaneModal(false)} />}
+
+      <div className="RightPare">
+        <Outlet />
+      </div>
     </div>
   );
 }

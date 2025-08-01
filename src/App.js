@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import Auth from "./Auth/Auth";
 import DashBourd from "./Admin/DashBourd";
+
+import OwnerRigester from "./Auth/OwnerRigester";
 import Packages from "./Admin/Packages";
 import PackageDetails from "./Component/PackageDetails";
 import Requist from "./Admin/Requist";
@@ -25,6 +27,11 @@ import SubAdmin from "./Admin/SubAdmin";
 import Users from "./Admin/Users";
 import AddRoom from "./Accommodation/AddRoom";
 
+import Plans from "./Airline/plans";
+import ShowAllPlans from "./Airline/Showallplans";
+import PlanDetails from "./Airline/planditels";
+import EditPlane from "./Airline/editplane";
+import AddPlane from "./Airline/AddPlane";
 function App() {
   return (
     <Routes>
@@ -36,6 +43,17 @@ function App() {
 
       {/* Admin */}
       <Route>
+=======
+      <Route path="ownerrigester" element={<OwnerRigester />} />
+      <Route path="plans" element={<Plans />}>
+  <Route path="showallplans" element={<ShowAllPlans />} />
+  <Route path="showallplans/:planeId" element={<PlanDetails />} />
+  <Route path="/plans/edit/:planeId" element={<EditPlane />} />
+  <Route path="/plans/add" element={<AddPlane />} />
+
+</Route>
+
+      <Route> 
         <Route path="Admin/dashbord" element={<DashBourd />}>
           <Route path="requist" element={<Requist />} />
           <Route path="packages" element={<Packages />} />
@@ -63,6 +81,12 @@ function App() {
         <Route path="add-room" element={<AddRoom />} />
     
     
+          <Route path="catigory" element={<Category/>}/>
+        </Route>
+        <Route path="/package/:id" element={<PackageDetails />} />
+        <Route path="/request/:id" element={<RequestDetails/>} />
+        <Route path="/element-details" element={<PackageElementDetails/>} />
+
     </Routes>
   );
 }

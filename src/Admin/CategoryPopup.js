@@ -20,6 +20,7 @@ const CategoryPopup = ({ onClose, requestId, onSuccessUpdate }) => {
       })
       .catch((err) => {
         toast.error(`Error:${err}`);
+        toast.error("فشل في تحميل الكاتيغوري");
         console.error("Error fetching categories:", err);
       });
   }, []);
@@ -51,7 +52,7 @@ const CategoryPopup = ({ onClose, requestId, onSuccessUpdate }) => {
           {categories.map((category) => (
             <div
               key={category.id}
-              className="popup-category-card"
+              className="popup-category-card category-card"
               onClick={() => handleCategoryClick(category.name)}
             >
               <p><strong>ID:</strong> {category.id}</p>

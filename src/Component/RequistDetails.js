@@ -107,6 +107,8 @@ const RequestDetails = () => {
         </section>
 
         <section className="request-info-section">
+                </section>
+
           <h3 className="request-info-title">Request Details</h3>
         <section className="request-section">
           <h3 className="section-title">Owner Information</h3>

@@ -4,9 +4,6 @@ import "./Category.css";
 import Button from "../Component/AddButton";
 import { ToastContainer, toast } from "react-toastify";
 import CategoryCard from "../Component/CategoryCard";
-import CategoryCard from "../Component/CategoryCard";
-import { ToastContainer, toast } from "react-toastify";
-
 const Category = () => {
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);

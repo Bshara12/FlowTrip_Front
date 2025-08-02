@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import "./OwnerDetails.css";
 import "./RoomDetails.css";
 import ConfirmDialog from "../Component/ConfirmDialog";
 import Loader from "../Component/Loader";

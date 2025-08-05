@@ -2,10 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./EditPlane.css";
+import { baseURL, EDIT_PLANE, GET_SINGLE_PLANE, TOKEN } from "../Api/Api";
 
 export default function EditPlane() {
   const { planeId } = useParams();
   const navigate = useNavigate();
+      const token = TOKEN;
 
   const [planeData, setPlaneData] = useState({
     plane_type_id: "",
@@ -24,9 +26,9 @@ export default function EditPlane() {
   useEffect(() => {
     const fetchPlane = async () => {
       try {
-        const res = await axios.get(`http://127.0.0.1:8000/api/GetSinglePlane/${planeId}`, {
+        const res = await axios.get(`${baseURL}/${GET_SINGLE_PLANE}/${planeId}`, {
           headers: {
-            Authorization: "Bearer 2|P4Zp6bOi9PKDtm35p3EpvdVepF8l1XIFdfPkJTQP409bd132"
+          Authorization: `Bearer ${token}`,
           }
         });
 
@@ -96,11 +98,11 @@ export default function EditPlane() {
       }
       
       const res = await axios.post(
-        `http://127.0.0.1:8000/api/EditPlane/${planeId}`,
+        `${baseURL}/${EDIT_PLANE}/${planeId}`,
         formData,
         {
           headers: {
-            Authorization: "Bearer 2|P4Zp6bOi9PKDtm35p3EpvdVepF8l1XIFdfPkJTQP409bd132",
+          Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data"
           }
         }

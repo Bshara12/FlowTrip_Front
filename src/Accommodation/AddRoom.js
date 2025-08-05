@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import "./AddRoom.css";
 import axios from "axios";
 import Loader from "../Component/Loader";
-
+import { baseURL,ADD_ROOM ,TOKEN} from "../Api/Api";
 
 export default function AddRoom() {
-  var token = "GHH0Sf9hfdAIATLklXEqPAEYpBHeYmugKTn9w5mWf1ecbdb6";
+  var token =TOKEN;
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -53,7 +53,7 @@ export default function AddRoom() {
 
 
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/AddRoom",
+          `${baseURL}`/`${ADD_ROOM}`,
           formDataToSend,
           {
             headers: {
@@ -70,7 +70,7 @@ export default function AddRoom() {
         }
       } else {
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/AddRoom",
+          `${baseURL}/${ADD_ROOM}`,
           {
             price: formData.price,
             area: formData.area,

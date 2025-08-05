@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import RequestCard from "../Component/RequestCard";
 import Loader from "../Component/Loader";
+import { baseURL, GET_ALL_REQUESTS, TOKEN } from "../Api/Api";
 
 const Requist = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
+  const token = TOKEN;
 
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/GetAllRequests", {
+        const response = await axios.get(`${baseURL}/${GET_ALL_REQUESTS}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

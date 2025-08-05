@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ShowRecordsContainer from "../Component/ShowRecordsContainer";
-
+import { baseURL, SHOW_ALL_ROOMS, TOKEN } from "../Api/Api";
 
 export default function RoomsHome() {
-  var token = "GHH0Sf9hfdAIATLklXEqPAEYpBHeYmugKTn9w5mWf1ecbdb6";
+  var token = TOKEN;
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +14,7 @@ export default function RoomsHome() {
       try {
         setLoading(true);
         const response = await axios.get(
-          "http://127.0.0.1:8000/api/ShowAllRooms",
+          `${baseURL}/${SHOW_ALL_ROOMS}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

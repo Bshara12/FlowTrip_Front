@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./OwnerDetailsComponent.css";
 import ToggleButton from "./ToggleButton";
 import Loader from "../Component/Loader";
+import { baseURL,SHOW_PROFILE,SHOW_OWNER ,BLOCK_OWNER, TOKEN} from "../Api/Api";
 
 export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   const [data, setData] = useState(null);
@@ -14,7 +15,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   const [isPaused, setIsPaused] = useState(false);
   const navigate = useNavigate();
 
-  const authToken = token || "8izVrtthWL2vU0kXrWV1w4wWqT9JT2z3M1gKY0hlfe25f76e";
+  const authToken = TOKEN;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,9 +24,9 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
       try {
         let url;
         if (id) {
-          url = `http://127.0.0.1:8000/api/ShowOwner/${id}`;
+          url = `${baseURL}/${SHOW_OWNER}/${id}`;
         } else {
-          url = `http://127.0.0.1:8000/api/ShowProfile`;
+          url = `${baseURL}/${SHOW_PROFILE}`;
         }
 
         const res = await axios.get(url, {
@@ -99,7 +100,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
     
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/BlockOwner/${data?.owner?.user?.id}`,
+       `${baseURL}/${BLOCK_OWNER}/${data?.owner?.user?.id}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

@@ -4,6 +4,7 @@ import SubAdminCard from "../Component/SubAdminCard";
 import ConfirmDialog from "../Component/ConfirmDialog";
 import "./OwnerSearch.css";
 import Loader from "../Component/Loader";
+import { baseURL, FILTER_USERS, GET_ALL_SUBADMIN, GET_ALL_UESER, REMOVE_SUBADMIN, TOKEN } from "../Api/Api";
 
 
 export default function SubAdmin() {
@@ -14,12 +15,12 @@ export default function SubAdmin() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
 
-  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
+  const token = TOKEN;
 
   useEffect(() => {
     const loadInfo = async () => {
       await axios
-        .get("http://127.0.0.1:8000/api/getAllSubAdmin", {
+        .get(`${baseURL}/${GET_ALL_SUBADMIN}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -44,13 +45,13 @@ export default function SubAdmin() {
   const removeSubAdmin = async () => {
     try {
       setLoading(true);
-      await axios.get(`http://127.0.0.1:8000/api/removeSubAdmin/${selectedUserId}`, {
+      await axios.get(`${baseURL}/${REMOVE_SUBADMIN}/${selectedUserId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       
-      const res = await axios.get("http://127.0.0.1:8000/api/getAllSubAdmin", {
+      const res = await axios.get(`${baseURL}/${GET_ALL_SUBADMIN}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -80,7 +81,7 @@ export default function SubAdmin() {
     setError(null);
     try {
       const res = await axios.post(
-        "http://127.0.0.1:8000/api/filterusers",
+        `${baseURL}/${FILTER_USERS}`,
         {
           'name' : search
         },
@@ -106,7 +107,7 @@ export default function SubAdmin() {
     setLoading(true);
     setError(null);
     try {
-        const res = await axios.get("http://127.0.0.1:8000/api/getalluser", {
+        const res = await axios.get(`${baseURL}/${GET_ALL_UESER}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

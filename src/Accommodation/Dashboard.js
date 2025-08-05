@@ -5,6 +5,7 @@ import "./HomePage.css";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { baseURL,LOGOUT } from "../Api/Api";
 
 export default function DashBourd() {
   const location = useLocation();
@@ -24,7 +25,7 @@ export default function DashBourd() {
   const handleLogout = async () => {
     const token = Cookies.get("authToken");
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/logout", {
+      const response = await fetch(`${baseURL}/${LOGOUT}`, {
         method: "GET",
         headers: {
           Authorization: ` Bearer ${token}`,

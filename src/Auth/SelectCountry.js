@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
+import { baseURL, GET_ALL_COUNTRIES } from "../Api/Api";
 
 countries.registerLocale(enLocale);
 
@@ -15,7 +16,7 @@ const SelectCountry = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/GetAllCountries")
+      .get(`${baseURL}/${GET_ALL_COUNTRIES}`)
       .then((res) => {
         setCountriesData(res.data.countries || []);
       })

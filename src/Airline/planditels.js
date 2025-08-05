@@ -4,6 +4,7 @@ import axios from "axios";
 import "./PlanDetails.css";
 import DeleteButton from "../Component/DeleteButton";
 import EditButton from "../Component/EditButton"; 
+import { baseURL, DELETE_PLANE, GET_SINGLE_PLANE, TOKEN } from "../Api/Api";
 
 
 export default function PlanDetails() {
@@ -13,13 +14,14 @@ export default function PlanDetails() {
   const [loading, setLoading] = useState(true);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+      const token = TOKEN;
 
   useEffect(() => {
     const fetchPlaneDetails = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/GetSinglePlane/${planeId}`, {
+        const response = await axios.get(`${baseURL}/${GET_SINGLE_PLANE}/${planeId}`, {
           headers: {
-            'Authorization': 'Bearer 2|P4Zp6bOi9PKDtm35p3EpvdVepF8l1XIFdfPkJTQP409bd132'
+          Authorization: `Bearer ${token}`,
           }
         });
         setPlaneData(response.data);
@@ -35,9 +37,9 @@ export default function PlanDetails() {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/DeletePlane/${planeId}`, {
+      const response = await axios.get(`${baseURL}/${DELETE_PLANE}/${planeId}`, {
         headers: {
-          Authorization: "Bearer 2|P4Zp6bOi9PKDtm35p3EpvdVepF8l1XIFdfPkJTQP409bd132",
+          Authorization: `Bearer ${token}`,
         },
       });
 

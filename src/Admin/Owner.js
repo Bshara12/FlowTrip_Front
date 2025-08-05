@@ -5,6 +5,7 @@ import Loader from "../Component/Loader";
 import "./Owner.css";
 import "./OwnerSearch.css";
 import { useNavigate } from "react-router-dom";
+import { ADMIN_SEARCH, baseURL, GET_ALL_COUNTRIES, GET_ALL_OWNER_CATEGORIES, GET_ALL_OWNERS, TOKEN } from "../Api/Api";
 
 export default function Owner() {
   const navigate = useNavigate();
@@ -18,19 +19,19 @@ export default function Owner() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
-  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
+  const token = TOKEN;
 
   useEffect(() => {
     const loadInfo = async () => {
       try {
         const [ownersRes, countriesRes, categoriesRes] = await Promise.all([
-          axios.get("http://127.0.0.1:8000/api/GetAllOwners", {
+          axios.get(`${baseURL}/${GET_ALL_OWNERS}`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://127.0.0.1:8000/api/GetAllCountries", {
+          axios.get(`${baseURL}/${GET_ALL_COUNTRIES}`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://127.0.0.1:8000/api/GetAllOwnerCategories"),
+          axios.get(`${baseURL}/${GET_ALL_OWNER_CATEGORIES}`),
         ]);
 
         setOwners(ownersRes.data.data);
@@ -60,7 +61,7 @@ export default function Owner() {
       if (selectedCountry) body.country = selectedCountry;
       if (categoryIdToUse) body.category_id = categoryIdToUse;
 
-      const res = await axios.post("http://127.0.0.1:8000/api/AdminSearch", body, {
+      const res = await axios.post(`${baseURL}/${ADMIN_SEARCH}`, body, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -83,13 +84,13 @@ export default function Owner() {
         if (selectedCountry && !clearCountry) body.country = selectedCountry;
         if (selectedCategory && !clearCategory) body.category_id = selectedCategoryId;
 
-        const res = await axios.post("http://127.0.0.1:8000/api/AdminSearch", body, {
+        const res = await axios.post(`${baseURL}/${ADMIN_SEARCH}`, body, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
         setOwners(res.data.data || []);
       } else {
-        const res = await axios.get("http://127.0.0.1:8000/api/GetAllOwners", {
+        const res = await axios.get(`${baseURL}/${GET_ALL_OWNERS}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

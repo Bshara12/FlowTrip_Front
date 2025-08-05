@@ -3,17 +3,18 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "./AddVehicleImages.css";
+import { baseURL, CREATE_PICTURE_CAR, GET_ALL_PICTURE, TOKEN, VEHICLE_OWNER } from "../Api/Api";
 
 const AddVehicleImages = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
-  const token = "2|XiOK7khnh4qRbcThf9jLcrn4KMLtdH8EPzWRHeQSad1bea29";
+  const token = TOKEN;
 
 useEffect(() => {
   axios
-    .get(`http://127.0.0.1:8000/api/vehicleowner/getAllPicture/${id}`, {
+    .get(`${baseURL}/${VEHICLE_OWNER}/${GET_ALL_PICTURE}/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
@@ -39,7 +40,7 @@ useEffect(() => {
 
     axios
       .post(
-        "http://127.0.0.1:8000/api/vehicleowner/createPictureCar",
+        `${baseURL}/${VEHICLE_OWNER}/${CREATE_PICTURE_CAR}`,
         formData,
         {
           headers: {
@@ -52,7 +53,7 @@ useEffect(() => {
         toast.success("The image has been uploaded successfully");
         setTimeout(() => {
           axios
-            .get(`http://127.0.0.1:8000/api/vehicleowner/getAllPicture/${id}`, {
+            .get(`${baseURL}/${VEHICLE_OWNER}/${GET_ALL_PICTURE}/${id}`, {
               headers: { Authorization: `Bearer ${token}` },
             })
             .then((res) => setImages(res.data.images || []));

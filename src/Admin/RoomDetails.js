@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./RoomDetails.css";
 import ConfirmDialog from "../Component/ConfirmDialog";
 import Loader from "../Component/Loader";
+import { baseURL, DELETE_ROOM, EDIT_ROOM, SHOW_ROOM, TOKEN } from "../Api/Api";
 
 
 export default function RoomDetails() {
@@ -22,14 +23,14 @@ export default function RoomDetails() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const navigate = useNavigate();
 
-  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
+  const token = TOKEN;
 
   useEffect(() => {
     const fetchRoom = async () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://127.0.0.1:8000/api/ShowRoom/${id}`,
+          `${baseURL}/${SHOW_ROOM}/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -176,7 +177,7 @@ export default function RoomDetails() {
         deletedPictureIds: deletedPictures.map((pic) => pic.id),
       });
 
-      await axios.post(`http://127.0.0.1:8000/api/EditRoom/${id}`, formData, {
+      await axios.post(`${baseURL}/${EDIT_ROOM}/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           // important for images
@@ -193,7 +194,7 @@ export default function RoomDetails() {
 
       setIsEditing(false);
 
-      const res = await axios.get(`http://127.0.0.1:8000/api/ShowRoom/${id}`, {
+      const res = await axios.get(`${baseURL}/${SHOW_ROOM}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -247,7 +248,7 @@ export default function RoomDetails() {
   const handleDeleteRoom = async () => {
     setDeleteLoading(true);
     try {
-      await axios.get(`http://127.0.0.1:8000/api/DeleteRoom/${id}`, {
+      await axios.get(`${baseURL}/${DELETE_ROOM}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -5,6 +5,7 @@ import "../Admin/DashBourd.css";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { baseURL, LOGOUT, TOKEN } from "../Api/Api";
 
 export default function DashBoardVehiclyOwner() {
   const location = useLocation();
@@ -22,9 +23,9 @@ export default function DashBoardVehiclyOwner() {
   };
 
   const handleLogout = async () => {
-    const token = Cookies.get("authToken");
+    const token = TOKEN;
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/logout", {
+      const response = await fetch(`${baseURL}/${LOGOUT}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -3,19 +3,19 @@ import { useEffect, useState } from "react";
 import OwnerCard from "../Component/OwnerCard";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Component/Loader";
-
+import { baseURL,SHOW_OFFERS, TOKEN } from "../Api/Api";
 
 export default function Offers() {
   const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
   const [loading,setLoading] = useState(true);
-  var token = "GHH0Sf9hfdAIATLklXEqPAEYpBHeYmugKTn9w5mWf1ecbdb6";
+  var token =TOKEN;
 
   useEffect(() => {
     const getOffers = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://127.0.0.1:8000/api/ShowOffers', {
+        const res = await axios.get(`${baseURL}/${SHOW_OFFERS}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

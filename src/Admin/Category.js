@@ -4,15 +4,17 @@ import "./Category.css";
 import Button from "../Component/AddButton";
 import { ToastContainer, toast } from "react-toastify";
 import CategoryCard from "../Component/CategoryCard";
+import { ADD_CATIGORY, baseURL, GET_ALL_OWNER_CATEGORIES, TOKEN } from "../Api/Api";
 const Category = () => {
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const modalRef = useRef(null);
+  const token = TOKEN;
 
   const fetchCategories = () => {
     axios
-      .get("http://127.0.0.1:8000/api/GetAllOwnerCategories")
+      .get(`${baseURL}/${GET_ALL_OWNER_CATEGORIES}`)
       .then((response) => {
         const fetched = response.data.owners_categories.map((cat) => ({
           id: cat.id,
@@ -44,12 +46,16 @@ const Category = () => {
     }
 
     axios
-      .post("http://127.0.0.1:8000/api/addcatigory", {
+      .post(`${baseURL}/${ADD_CATIGORY}`, {
         name: newCategoryName,
       },{
           headers: {
             'Content-Type': 'application/json',
+<<<<<<< HEAD
             'Authorization': 'Bearer ' +"yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd"
+=======
+            'Authorization':`Bearer ${token}`
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
             }
       })
       .then(() => {

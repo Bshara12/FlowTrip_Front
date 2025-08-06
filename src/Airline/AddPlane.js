@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./AddPlane.css"
+import { baseURL,ADD_PLANE, TOKEN } from "../Api/Api";
+
 export default function AddPlane({ onClose }) {
   const [formData, setFormData] = useState({
     plane_type_id: "",
@@ -50,7 +52,7 @@ export default function AddPlane({ onClose }) {
     setError("");
 
     try {
-      const token = "Bearer 2|P4Zp6bOi9PKDtm35p3EpvdVepF8l1XIFdfPkJTQP409bd132";
+      const token = TOKEN;
 
       const data = new FormData();
       data.append("plane_type_id", formData.plane_type_id);
@@ -59,9 +61,9 @@ export default function AddPlane({ onClose }) {
       data.append("plane_shape_diagram", image);
       
 
-      const res = await axios.post("http://127.0.0.1:8000/api/AddPlane", data, {
+      const res = await axios.post(`${baseURL}/${ADD_PLANE}`, data, {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });

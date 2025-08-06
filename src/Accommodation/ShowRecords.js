@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ShowRecordsContainer from "../Component/ShowRecordsContainer";
+import { baseURL,WHO_AMI,SHOW_ACCOMMODATION_RECORDS,SHOW_ROOM_RECORDS,FILTER_NAME_ACCOMMODATIOM, TOKEN } from "../Api/Api";
+
 
 export default function ShowRecords() {
   const [records, setRecords] = useState([]);
@@ -15,13 +17,17 @@ export default function ShowRecords() {
   const [originalRecords, setOriginalRecords] = useState([]);
   const [originalRoomRecords, setOriginalRoomRecords] = useState([]);
 
+<<<<<<< HEAD
   var token = "bOJYVAykGuPS02EwMu3KndnhrJ2Ff6t6yMP1uE9O68ab63f0";
+=======
+  var token = TOKEN;
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
   useEffect(() => {
     const checkUserType = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://127.0.0.1:8000/api/WhoAmI", {
+        const response = await axios.get(`${baseURL}/${WHO_AMI}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,7 +51,7 @@ export default function ShowRecords() {
   const fetchRoomsData = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/api/ShowAccommodationRecords",
+        `${baseURL}/${SHOW_ACCOMMODATION_RECORDS}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -62,7 +68,7 @@ export default function ShowRecords() {
   const fetchBookingRecords = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/api/ShowAccommodationRecords",
+       `${baseURL}/${SHOW_ACCOMMODATION_RECORDS}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -81,7 +87,7 @@ export default function ShowRecords() {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/ShowRoomRecords/${roomId}`,
+        `${baseURL}/${SHOW_ROOM_RECORDS}/${roomId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -119,7 +125,7 @@ export default function ShowRecords() {
     }
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/FilterNameAccommodation",
+        `${baseURL}/${FILTER_NAME_ACCOMMODATIOM}`,
         {
           name: query,
         },

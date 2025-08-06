@@ -4,6 +4,7 @@ import OwnerCard from "../Component/OwnerCard";
 import Loader from "../Component/Loader";
 import "./OwnerSearch.css";
 import { useNavigate } from "react-router-dom";
+import { ADMIN_SEARCH, baseURL, GET_ALL_COUNTRIES, GET_ALL_OWNER_CATEGORIES, GET_ALL_OWNERS, TOKEN } from "../Api/Api";
 
 export default function Owner() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export default function Owner() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
+<<<<<<< HEAD
   const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
 
   useEffect(() => {
@@ -35,6 +37,22 @@ export default function Owner() {
           setError(err);
           setLoading(false);
         });
+=======
+  const token = TOKEN;
+
+  useEffect(() => {
+    const loadInfo = async () => {
+      try {
+        const [ownersRes, countriesRes, categoriesRes] = await Promise.all([
+          axios.get(`${baseURL}/${GET_ALL_OWNERS}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get(`${baseURL}/${GET_ALL_COUNTRIES}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get(`${baseURL}/${GET_ALL_OWNER_CATEGORIES}`),
+        ]);
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
       await axios
         .get("http://127.0.0.1:8000/api/GetAllCountries", {
@@ -76,6 +94,7 @@ export default function Owner() {
       if (selectedCountry) body.country = selectedCountry;
       if (categoryIdToUse) body.category_id = categoryIdToUse;
 
+<<<<<<< HEAD
       const res = await axios.post(
         "http://127.0.0.1:8000/api/AdminSearch",
         body,
@@ -90,6 +109,13 @@ export default function Owner() {
       } else {
         setOwners([]);
       }
+=======
+      const res = await axios.post(`${baseURL}/${ADMIN_SEARCH}`, body, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setOwners(res.data.data || []);
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
     } catch (err) {
       setError(err);
     } finally {
@@ -106,6 +132,7 @@ export default function Owner() {
         if (search) body.name = search;
         if (selectedCountry && !clearCountry) body.country = selectedCountry;
         if (selectedCategory && !clearCategory) body.category_id = selectedCategoryId;
+<<<<<<< HEAD
         
         const res = await axios.post(
           "http://127.0.0.1:8000/api/AdminSearch",
@@ -122,6 +149,17 @@ export default function Owner() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+=======
+
+        const res = await axios.post(`${baseURL}/${ADMIN_SEARCH}`, body, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setOwners(res.data.data || []);
+      } else {
+        const res = await axios.get(`${baseURL}/${GET_ALL_OWNERS}`, {
+          headers: { Authorization: `Bearer ${token}` },
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
         });
         setOwners(res.data.data);
       }

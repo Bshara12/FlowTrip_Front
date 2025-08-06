@@ -7,7 +7,9 @@ import Button from "../Component/AddButton";
 import PackageCard from "../Component/PackageCard";
 import loadingImage from "../Assets/Loading_icon.gif"; 
 import Loader from "../Component/Loader";
+import { baseURL, GET_ALL_PACKAGE, TOKEN } from "../Api/Api";
 
+  const token = TOKEN;
 
 export default function Packages() {
   const navigate = useNavigate();
@@ -17,10 +19,14 @@ export default function Packages() {
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const res = await axios.get("http://127.0.0.1:8000/api/getallpackage",{
+        const res = await axios.get(`${baseURL}/${GET_ALL_PACKAGE}`,{
           headers: {
             'Content-Type': 'application/json',
+<<<<<<< HEAD
             'Authorization': 'Bearer ' +"yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd"
+=======
+            'Authorization': `Bearer ${token}`
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
             }
         });
         if (res.data && res.data.data) {

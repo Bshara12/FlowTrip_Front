@@ -6,20 +6,22 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./PackageDetails.css";
 import { useNavigate } from "react-router-dom";
+import { baseURL, GET_PACKAGE, TOKEN } from "../Api/Api";
 
 const PackageDetails = () => {
   const { id } = useParams();
   const [packageData, setPackageData] = useState(null);
   const [loading, setLoading] = useState(true);
+      const token = TOKEN;
 
   const fallbackImage = "https://images.unsplash.com/photo-1504674900247-0877df9cc836"; 
 const navigate = useNavigate();
   useEffect(() => {
     const fetchPackage = async () => {
       try {
-        const res = await axios.get(`http://127.0.0.1:8000/api/getPackage/${id}`, {
+        const res = await axios.get(`${baseURL}/${GET_PACKAGE}/${id}`, {
           headers: {
-            "Authorization": "Bearer 1|lIqv1X1fZ4XjqQk9Wt7wDWYKoHqznzN1tNx92WJ6319fc32f"
+          Authorization: `Bearer ${token}`,
           }
         });
         if (res.data && res.data.data) {

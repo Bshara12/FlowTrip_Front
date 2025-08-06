@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import "./CreateOwnerStep3.css";
+import { baseURL, GET_ALL_ACCOMMODATION_TYPES, GET_ALL_ACTIVITY } from "../Api/Api";
 
 const CreateOwnerStep3 = () => {
   const location = useLocation();
@@ -27,7 +28,7 @@ const CreateOwnerStep3 = () => {
     if (categoryId === ACCOMMODATION_CATEGORY_ID) {
       setCategoryType("accommodation");
       axios
-        .get("http://127.0.0.1:8000/api/GetAllAccommodationTypes")
+        .get(`${baseURL}/${GET_ALL_ACCOMMODATION_TYPES}`)
         .then((res) => {
           setAccommodationTypes(res.data.accommodation_types || []);
         })
@@ -37,7 +38,7 @@ const CreateOwnerStep3 = () => {
     } else if (categoryId === ACTIVITY_OWNER_CATEGORY_ID) {
       setCategoryType("activity");
       axios
-        .get("http://127.0.0.1:8000/api/getAllActivity")
+        .get(`${baseURL}/${GET_ALL_ACTIVITY}`)
         .then((res) => {
           setActivityList(res.data.data || []);
         })

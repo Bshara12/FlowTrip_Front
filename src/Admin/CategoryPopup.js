@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./CategoryPopup.css";
 import { toast } from "react-toastify";
+import { baseURL, EDIT_REQUEST, GET_ALL_OWNER_CATEGORIES, TOKEN } from "../Api/Api";
 
+<<<<<<< HEAD
 const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
+=======
+const token = TOKEN;
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
 const CategoryPopup = ({ onClose, requestId, onSuccessUpdate }) => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/GetAllOwnerCategories", {
+      .get(`${baseURL}/${GET_ALL_OWNER_CATEGORIES}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -28,7 +33,7 @@ const CategoryPopup = ({ onClose, requestId, onSuccessUpdate }) => {
   const handleCategoryClick = async (name) => {
     try {
       await axios.post(
-        `http://127.0.0.1:8000/api/EditRequest/${requestId}`,
+        `${baseURL}/${EDIT_REQUEST}/${requestId}`,
         { activity_name: name },
         {
           headers: {

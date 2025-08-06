@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./CreateVehicle.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { baseURL, CREATE_VEHICLE, GET_ALL_CAR_TYPES, TOKEN, VEHICLE_OWNER } from "../Api/Api";
 
 const CreateVehicle = () => {
   const [carTypes, setCarTypes] = useState([]);
@@ -20,7 +21,7 @@ const CreateVehicle = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/GetAllCarTypes")
+      .get(`${baseURL}/${GET_ALL_CAR_TYPES}`)
       .then((res) => {
         if (Array.isArray(res.data.car_types)) {
           setCarTypes(res.data.car_types);
@@ -45,7 +46,7 @@ const CreateVehicle = () => {
 const handleSubmit = (e) => {
   e.preventDefault();
 
-  const token = "2|XiOK7khnh4qRbcThf9jLcrn4KMLtdH8EPzWRHeQSad1bea29";
+  const token = TOKEN;
   if (!token) {
     toast.error("Authentication token not found.");
     return;
@@ -59,7 +60,7 @@ const handleSubmit = (e) => {
   };
 
   axios
-    .post("http://127.0.0.1:8000/api/vehicleowner/createVehicle", payload, {
+    .post(`${baseURL}/${VEHICLE_OWNER}/${CREATE_VEHICLE}`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

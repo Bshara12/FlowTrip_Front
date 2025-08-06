@@ -4,6 +4,7 @@ import SubAdminCard from "../Component/SubAdminCard";
 import ConfirmDialog from "../Component/ConfirmDialog";
 import "./OwnerSearch.css";
 import Loader from "../Component/Loader";
+import { baseURL, FILTER_USERS, GET_ALL_SUBADMIN, GET_ALL_UESER, REMOVE_SUBADMIN, TOKEN } from "../Api/Api";
 
 
 export default function SubAdmin() {
@@ -13,12 +14,16 @@ export default function SubAdmin() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
 
+<<<<<<< HEAD
   const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
+=======
+  const token = TOKEN;
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
   useEffect(() => {
     const loadInfo = async () => {
       await axios
-        .get("http://127.0.0.1:8000/api/getAllSubAdmin", {
+        .get(`${baseURL}/${GET_ALL_SUBADMIN}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -43,13 +48,13 @@ export default function SubAdmin() {
   const removeSubAdmin = async () => {
     try {
       setLoading(true);
-      await axios.get(`http://127.0.0.1:8000/api/removeSubAdmin/${selectedUserId}`, {
+      await axios.get(`${baseURL}/${REMOVE_SUBADMIN}/${selectedUserId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       
-      const res = await axios.get("http://127.0.0.1:8000/api/getAllSubAdmin", {
+      const res = await axios.get(`${baseURL}/${GET_ALL_SUBADMIN}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -69,6 +74,59 @@ export default function SubAdmin() {
     setSelectedUserId(null);
   };
 
+<<<<<<< HEAD
+=======
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!search) {
+      setUsers([]);
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await axios.post(
+        `${baseURL}/${FILTER_USERS}`,
+        {
+          'name' : search
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.data && res.data.data) {
+        setUsers(res.data.data);
+      } else {
+        setUsers([]);
+      }
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const reloadAllUsers = async (clearCountry = false, clearCategory = false) => {
+    setLoading(true);
+    setError(null);
+    try {
+        const res = await axios.get(`${baseURL}/${GET_ALL_UESER}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUsers(res.data.data);
+      }
+    catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
   if (loading) {
     return <Loader/>
   }

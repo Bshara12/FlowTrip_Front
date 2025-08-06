@@ -5,18 +5,20 @@ import { useNavigate } from "react-router-dom";
 import PlaneCard from "./PlaneCard"; 
 import 'react-toastify/dist/ReactToastify.css';
 import "../Component/OwnerCard.css"; 
+import { baseURL, GET_ALL_PLANES, TOKEN } from "../Api/Api";
 
 export default function ShowAllPlans() {
   const [planes, setPlanes] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+      const token = TOKEN;
 
   useEffect(() => {
     const fetchPlanes = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/GetAllPlanes", {
+        const response = await axios.get(`${baseURL}/${GET_ALL_PLANES}`, {
           headers: {
-            'Authorization': 'Bearer ' + "2|P4Zp6bOi9PKDtm35p3EpvdVepF8l1XIFdfPkJTQP409bd132"
+          Authorization: `Bearer ${token}`,
           }
         });
 

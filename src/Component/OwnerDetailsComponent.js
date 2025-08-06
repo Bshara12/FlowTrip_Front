@@ -4,10 +4,14 @@ import { useNavigate } from "react-router-dom";
 import "./OwnerDetailsComponent.css";
 import ToggleButton from "./ToggleButton";
 import Loader from "../Component/Loader";
+<<<<<<< HEAD
 import Button from "./AddButton";
 import ConfirmDialog from "./ConfirmDialog";
 import CloseButton from "../Component/CloseButton";
 import EditButton from "./EditButton";
+=======
+import { baseURL,SHOW_PROFILE,SHOW_OWNER ,BLOCK_OWNER, TOKEN} from "../Api/Api";
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
 export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   const [data, setData] = useState(null);
@@ -25,8 +29,9 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   const [serviceToDelete2, setServiceToDelete2] = useState(null);
   const [newService, setNewService] = useState("");
 
-  const authToken = token || "8izVrtthWL2vU0kXrWV1w4wWqT9JT2z3M1gKY0hlfe25f76e";
+  const authToken = TOKEN;
 
+<<<<<<< HEAD
   const fetchData = async () => {
     setLoading(true);
     setError(null);
@@ -36,6 +41,35 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
         url = `http://127.0.0.1:8000/api/ShowOwner/${id}`;
       } else {
         url = `http://127.0.0.1:8000/api/ShowProfile`;
+=======
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        let url;
+        if (id) {
+          url = `${baseURL}/${SHOW_OWNER}/${id}`;
+        } else {
+          url = `${baseURL}/${SHOW_PROFILE}`;
+        }
+
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        setData(res.data);
+        
+        if (isAdmin && res.data?.owner?.user?.status === 2) {
+          setIsBlocked(true);
+        }
+      } catch (err) {
+        console.error(err);
+        setError(err);
+      } finally {
+        setLoading(false);
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
       }
 
       const res = await axios.get(url, {
@@ -111,7 +145,11 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
 
     try {
       const response = await axios.get(
+<<<<<<< HEAD
         `http://127.0.0.1:8000/api/BlockOwner/${data.owner.user.id}`,
+=======
+       `${baseURL}/${BLOCK_OWNER}/${data?.owner?.user?.id}`,
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

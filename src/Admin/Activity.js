@@ -6,7 +6,7 @@ import ActivityCard from "../Component/ActivityCard";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../Component/Loader";
-
+import { ADD_ACTIVITY, baseURL,DELETE_ACTIVITY,GET_ALL_ACTIVITY, TOKEN } from "../Api/Api";
 const Activity = () => {
   const [activities, setActivities] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -14,11 +14,15 @@ const Activity = () => {
   const [confirmDeleteData, setConfirmDeleteData] = useState(null); // <-- بدل ID
   const modalRef = useRef(null);
 
+<<<<<<< HEAD
   const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
+=======
+  const token = TOKEN;
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
   const fetchActivities = () => {
     axios
-      .get("http://127.0.0.1:8000/api/getAllActivity", {
+      .get(`${baseURL}/${GET_ALL_ACTIVITY}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -46,7 +50,7 @@ const Activity = () => {
   const confirmDelete = () => {
     const { id, name } = confirmDeleteData;
     axios
-      .delete(`http://127.0.0.1:8000/api/deleteactivity/${id}`, {
+      .delete(`${baseURL}/${DELETE_ACTIVITY}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -76,13 +80,13 @@ const Activity = () => {
 
     axios
       .post(
-        "http://127.0.0.1:8000/api/addActivity",
+        `${baseURL}/${ADD_ACTIVITY}`,
         { name: newActivityName },
         {
           headers: {
             "Content-Type": "application/json",
             Authorization:
-              "Bearer " + "1|lIqv1X1fZ4XjqQk9Wt7wDWYKoHqznzN1tNx92WJ6319fc32f",
+              `Bearer ${token}`,
           },
         }
       )

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import AddPlane from "./AddPlane";
+import { baseURL, LOGOUT } from "../Api/Api";
 export default function Plans() {
   const [collapsed, setCollapsed] = useState(false);
   const [activeLink, setActiveLink] = useState("/plans/showallplans");
@@ -23,7 +24,7 @@ export default function Plans() {
   const handleLogout = async () => {
     const token = Cookies.get("authToken");
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/logout", {
+      const response = await fetch(`${baseURL}/${LOGOUT}`, {
         method: "GET",
         headers: {
           Authorization: ` Bearer ${token}`,

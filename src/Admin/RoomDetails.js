@@ -3,7 +3,11 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import ConfirmDialog from "../Component/ConfirmDialog";
 import Loader from "../Component/Loader";
+<<<<<<< HEAD
 import './RoomDetails.css'
+=======
+import { baseURL, DELETE_ROOM, EDIT_ROOM, SHOW_ROOM, TOKEN } from "../Api/Api";
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
 
 export default function RoomDetails() {
@@ -22,14 +26,18 @@ export default function RoomDetails() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const navigate = useNavigate();
 
+<<<<<<< HEAD
   const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
+=======
+  const token = TOKEN;
+>>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
   useEffect(() => {
     const fetchRoom = async () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://127.0.0.1:8000/api/ShowRoom/${id}`,
+          `${baseURL}/${SHOW_ROOM}/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -176,7 +184,7 @@ export default function RoomDetails() {
         deletedPictureIds: deletedPictures.map((pic) => pic.id),
       });
 
-      await axios.post(`http://127.0.0.1:8000/api/EditRoom/${id}`, formData, {
+      await axios.post(`${baseURL}/${EDIT_ROOM}/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           // important for images
@@ -193,7 +201,7 @@ export default function RoomDetails() {
 
       setIsEditing(false);
 
-      const res = await axios.get(`http://127.0.0.1:8000/api/ShowRoom/${id}`, {
+      const res = await axios.get(`${baseURL}/${SHOW_ROOM}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -247,7 +255,7 @@ export default function RoomDetails() {
   const handleDeleteRoom = async () => {
     setDeleteLoading(true);
     try {
-      await axios.get(`http://127.0.0.1:8000/api/DeleteRoom/${id}`, {
+      await axios.get(`${baseURL}/${DELETE_ROOM}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

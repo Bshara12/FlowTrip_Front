@@ -6,6 +6,7 @@ import ConfirmDialog from "../Component/ConfirmDialog";
 import "./VehicleDetails.css";
 import EditButton from "../Component/EditButton";
 import DeleteButton from "../Component/DeleteButton";
+import { baseURL, CREATE_PICTURE_CAR, DELETE_PICTURE_CAR, DELETE_VEHICLY, EDIT_VEHICLE, GET_ALL_PICTURE, GET_VEHICLE_BYID, TOKEN, VEHICLE_OWNER } from "../Api/Api";
 
 const VehicleDetails = () => {
   const { id } = useParams();
@@ -22,11 +23,11 @@ const VehicleDetails = () => {
   const [editDescription, setEditDescription] = useState("");
   const [editPeopleCount, setEditPeopleCount] = useState("");
   const [isChanged, setIsChanged] = useState(false);
-  const token = "1|lGO19zxYSFLciw9752pIUUXuK4mxrz4Q5aMkV0hCad4ab853";
+  const token = TOKEN;
 
   const fetchImages = () => {
     axios
-      .get(`http://127.0.0.1:8000/api/vehicleowner/getAllPicture/${id}`, {
+      .get(`${baseURL}/${VEHICLE_OWNER}/${GET_ALL_PICTURE}/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setImages(res.data.images))
@@ -35,7 +36,7 @@ const VehicleDetails = () => {
 
   const fetchVehicle = () => {
     axios
-      .get(`http://127.0.0.1:8000/api/vehicleowner/getVehicleById/${id}`, {
+      .get(`${baseURL}/${VEHICLE_OWNER}/${GET_VEHICLE_BYID}/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -61,7 +62,7 @@ const VehicleDetails = () => {
 
   const confirmDeleteVehicle = () => {
     axios
-      .delete(`http://127.0.0.1:8000/api/vehicleowner/deleteVehicly/${id}`, {
+      .delete(`${baseURL}/${VEHICLE_OWNER}/${DELETE_VEHICLY}/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
@@ -76,7 +77,7 @@ const VehicleDetails = () => {
   const handleDeleteImage = (imageId) => {
     axios
       .delete(
-        `http://127.0.0.1:8000/api/vehicleowner/deletePictureCar/${imageId}`,
+        `${baseURL}/${VEHICLE_OWNER}/${DELETE_PICTURE_CAR}/${imageId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -110,7 +111,7 @@ const VehicleDetails = () => {
 
     axios
       .post(
-        "http://127.0.0.1:8000/api/vehicleowner/createPictureCar",
+         `${baseURL}/${VEHICLE_OWNER}/${CREATE_PICTURE_CAR}`,
         formData,
         {
           headers: {
@@ -175,7 +176,7 @@ const VehicleDetails = () => {
   const handleSaveEdit = () => {
     axios
       .post(
-        `http://127.0.0.1:8000/api/vehicleowner/editVehicle/${id}`,
+        `${baseURL}/${VEHICLE_OWNER}/${EDIT_VEHICLE}/${id}`,
         {
           car_discription: editDescription,
           people_count: editPeopleCount,

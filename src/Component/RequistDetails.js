@@ -10,6 +10,7 @@ import ConfirmDialog from "./ConfirmDialog";
 import CategoryPopup from "../Admin/CategoryPopup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ACCEPT_REQUEST, baseURL, DELETE_REQUEST, SHOW_REQUEST, TOKEN } from "../Api/Api";
 
 const RequestDetails = () => {
   const { id } = useParams();
@@ -19,13 +20,13 @@ const RequestDetails = () => {
   const [showCategoryPopup, setShowCategoryPopup] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const token = "uvf6ZqmOHc6e0IACOS91WQkulsmC72r1elnRBph5c033a8a7";
+  const token = TOKEN;
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
         const res = await axios.get(
-          `http://127.0.0.1:8000/api/ShowRequest/${id}`,
+         `${baseURL}/${SHOW_REQUEST}/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -48,7 +49,7 @@ const RequestDetails = () => {
 
   const handleConfirm = async () => {
     try {
-      await axios.get(`http://127.0.0.1:8000/api/AcceptRequest/${id}`, {
+      await axios.get(`${baseURL}/${ACCEPT_REQUEST}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -74,7 +75,7 @@ const RequestDetails = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.get(`http://127.0.0.1:8000/api/DeleteRequest/${id}`, {
+      await axios.get(`${baseURL}/${DELETE_REQUEST}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

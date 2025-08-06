@@ -15,7 +15,7 @@ export default function ShowRecords() {
   const [originalRecords, setOriginalRecords] = useState([]);
   const [originalRoomRecords, setOriginalRoomRecords] = useState([]);
 
-  var token = "GHH0Sf9hfdAIATLklXEqPAEYpBHeYmugKTn9w5mWf1ecbdb6";
+  var token = "bOJYVAykGuPS02EwMu3KndnhrJ2Ff6t6yMP1uE9O68ab63f0";
 
   useEffect(() => {
     const checkUserType = async () => {
@@ -164,21 +164,6 @@ export default function ShowRecords() {
       }
     } catch (err) {
       console.error("Error filtering records:", err);
-      if (userType === "Hotel" && showRoomDetails) {
-        const filtered = originalRoomRecords.filter(
-          (record) =>
-            record.user?.name?.toLowerCase().includes(query.toLowerCase()) ||
-            record.traveler_name?.toLowerCase().includes(query.toLowerCase())
-        );
-        setRoomRecords(filtered);
-      } else if (userType !== "Hotel") {
-        const filtered = originalRecords.filter(
-          (record) =>
-            record.user?.name?.toLowerCase().includes(query.toLowerCase()) ||
-            record.traveler_name?.toLowerCase().includes(query.toLowerCase())
-        );
-        setRecords(filtered);
-      }
     }
   };
 

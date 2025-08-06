@@ -20,7 +20,7 @@ export default function Packages() {
         const res = await axios.get("http://127.0.0.1:8000/api/getallpackage",{
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' +"1|lIqv1X1fZ4XjqQk9Wt7wDWYKoHqznzN1tNx92WJ6319fc32f"
+            'Authorization': 'Bearer ' +"yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd"
             }
         });
         if (res.data && res.data.data) {

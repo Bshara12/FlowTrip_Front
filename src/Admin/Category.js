@@ -49,7 +49,7 @@ const Category = () => {
       },{
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' +"G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec"
+            'Authorization': 'Bearer ' +"yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd"
             }
       })
       .then(() => {

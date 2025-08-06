@@ -14,7 +14,7 @@ export default function Users() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
 
-  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
+  const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
 
   useEffect(() => {
     const loadInfo = async () => {
@@ -103,7 +103,7 @@ export default function Users() {
     }
   };
 
-  const reloadAllUsers = async (clearCountry = false, clearCategory = false) => {
+  const reloadAllUsers = async () => {
     setLoading(true);
     setError(null);
     try {

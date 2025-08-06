@@ -10,11 +10,10 @@ export default function SubAdmin() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [search, setSearch] = useState("");
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
 
-  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
+  const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
 
   useEffect(() => {
     const loadInfo = async () => {
@@ -68,56 +67,6 @@ export default function SubAdmin() {
   const cancelRemove = () => {
     setShowConfirmDialog(false);
     setSelectedUserId(null);
-  };
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!search) {
-      setUsers([]);
-      return;
-    }
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await axios.post(
-        "http://127.0.0.1:8000/api/filterusers",
-        {
-          'name' : search
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (res.data && res.data.data) {
-        setUsers(res.data.data);
-      } else {
-        setUsers([]);
-      }
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const reloadAllUsers = async (clearCountry = false, clearCategory = false) => {
-    setLoading(true);
-    setError(null);
-    try {
-        const res = await axios.get("http://127.0.0.1:8000/api/getalluser", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUsers(res.data.data);
-      }
-    catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
   };
 
   if (loading) {

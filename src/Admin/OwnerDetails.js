@@ -4,7 +4,7 @@ import OwnerDetailsComponent from "../Component/OwnerDetailsComponent";
 
 export default function OwnerDetails() {
   const { id } = useParams();
-  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
+  const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
   
   return <OwnerDetailsComponent id={id} token={token} isAdmin={true} />;
 }

@@ -9,7 +9,7 @@ export default function Offers() {
   const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
   const [loading,setLoading] = useState(true);
-  var token = "GHH0Sf9hfdAIATLklXEqPAEYpBHeYmugKTn9w5mWf1ecbdb6";
+  var token = "bOJYVAykGuPS02EwMu3KndnhrJ2Ff6t6yMP1uE9O68ab63f0";
 
   useEffect(() => {
     const getOffers = async () => {

@@ -3,7 +3,7 @@ import axios from "axios";
 import "./CategoryPopup.css";
 import { toast } from "react-toastify";
 
-const token = "1|lIqv1X1fZ4XjqQk9Wt7wDWYKoHqznzN1tNx92WJ6319fc32f";
+const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
 
 const CategoryPopup = ({ onClose, requestId, onSuccessUpdate }) => {
   const [categories, setCategories] = useState([]);

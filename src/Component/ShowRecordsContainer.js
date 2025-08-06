@@ -1,4 +1,3 @@
-import React from "react";
 import SearchInput from "./SearchInput";
 import "./ShowRecordsContainer.css";
 import { useNavigate } from "react-router-dom";

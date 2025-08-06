@@ -6,7 +6,7 @@ import Loader from "../Component/Loader";
 
 
 export default function AddRoom() {
-  var token = "GHH0Sf9hfdAIATLklXEqPAEYpBHeYmugKTn9w5mWf1ecbdb6";
+  var token = "bOJYVAykGuPS02EwMu3KndnhrJ2Ff6t6yMP1uE9O68ab63f0";
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

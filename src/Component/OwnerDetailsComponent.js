@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 import "./OwnerDetailsComponent.css";
 import ToggleButton from "./ToggleButton";
 import Loader from "../Component/Loader";
+import Button from "./AddButton";
+import ConfirmDialog from "./ConfirmDialog";
+import CloseButton from "../Component/CloseButton";
+import EditButton from "./EditButton";
 
 export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   const [data, setData] = useState(null);
@@ -13,38 +17,46 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   const sliderRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   const navigate = useNavigate();
+  const [showServicesModal, setShowServicesModal] = useState(false);
+  const [allServices, setAllServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [serviceToDelete, setServiceToDelete] = useState(null);
+  const [serviceToDelete2, setServiceToDelete2] = useState(null);
+  const [newService, setNewService] = useState("");
 
   const authToken = token || "8izVrtthWL2vU0kXrWV1w4wWqT9JT2z3M1gKY0hlfe25f76e";
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        let url;
-        if (id) {
-          url = `http://127.0.0.1:8000/api/ShowOwner/${id}`;
-        } else {
-          url = `http://127.0.0.1:8000/api/ShowProfile`;
-        }
-
-        const res = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
-        setData(res.data);
-        
-        if (isAdmin && res.data?.owner?.user?.status === 2) {
-          setIsBlocked(true);
-        }
-      } catch (err) {
-        console.error(err);
-        setError(err);
-      } finally {
-        setLoading(false);
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      let url;
+      if (id) {
+        url = `http://127.0.0.1:8000/api/ShowOwner/${id}`;
+      } else {
+        url = `http://127.0.0.1:8000/api/ShowProfile`;
       }
-    };
+
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      setData(res.data);
+
+      if (isAdmin && res.data?.owner?.user?.status === 2) {
+        setIsBlocked(true);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, [id, authToken, isAdmin]);
 
@@ -96,10 +108,10 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
 
   const handleToggleBlock = async (checked) => {
     if (!isAdmin) return;
-    
+
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/BlockOwner/${data?.owner?.user?.id}`,
+        `http://127.0.0.1:8000/api/BlockOwner/${data.owner.user.id}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -112,12 +124,87 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
       }
     } catch (error) {
       console.error(error);
-      setIsBlocked(!checked);
     }
   };
 
-  if (loading)
-    return <Loader/>;
+  const handleOpenServicesModal = async () => {
+    setShowServicesModal(true);
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/GetAllServices");
+      const data = await response.json();
+      setAllServices(data.services || []);
+    } catch (error) {
+      setAllServices([]);
+    }
+  };
+  const handleCloseServicesModal = () => {
+    setSelectedServices([]);
+    setNewService("");
+    setServiceToDelete(null);
+    setServiceToDelete2(null);
+    setShowServicesModal(false);
+  };
+
+  const toggleService = (serviceName) => {
+    setSelectedServices((prev) =>
+      prev.includes(serviceName)
+        ? prev.filter((name) => name !== serviceName)
+        : [...prev, serviceName]
+    );
+  };
+
+  const handleDoneAddServices = async () => {
+    // 1. جهّز مصفوفة الخدمات لإرسالها
+    const servicesToSend = [...selectedServices];
+    const trimmedNew = newService.trim();
+    if (trimmedNew) {
+      servicesToSend.push(trimmedNew);
+    }
+
+    // 2. إذا لم يختَر المستخدم شيئًا ولم يدخل جديدًا، اغلق المودال وارجع
+    if (servicesToSend.length === 0) {
+      setShowServicesModal(false);
+      return;
+    }
+
+    try {
+      await fetch("http://127.0.0.1:8000/api/AddService", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ services: servicesToSend }),
+      });
+
+      setShowServicesModal(false);
+      setSelectedServices([]);
+      setNewService("");
+      fetchData();
+    } catch (error) {
+      alert("Failed to add services");
+      console.log(error);
+    }
+  };
+
+  const handleDeleteService = async (serviceId) => {
+    try {
+      serviceId = serviceToDelete2;
+      await fetch(`http://127.0.0.1:8000/api/DeleteService/${serviceId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      fetchData();
+    } catch (error) {
+      alert("Failed to delete service");
+      console.log(error);
+    }
+  };
+
+  if (loading) return <Loader />;
   if (error) return <div className="owner-details-error">{error}</div>;
   if (!data) return null;
 
@@ -199,7 +286,12 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   }
 
   return (
-    <div className="owner-details-container">
+    <div className="owner-details-container" style={{ position: "relative" }}>
+      {!isAdmin && (
+        <div style={{ position: "fixed", top: 16, right: 16, zIndex: 10 }}>
+          <EditButton />
+        </div>
+      )}
       <div className="owner-details-top">
         <div className="owner-details-card">
           <h2 className="owner-details-title">Business Information</h2>
@@ -268,27 +360,121 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
         </div>
       </div>
       <div className="more-info-section">
-        <div className="owner-services-section">
+        <div
+          className="owner-services-section"
+          style={{ position: "relative" }}
+        >
+          <Button
+            text="Add Service"
+            style={{ position: "absolute", top: 0, left: 0, zIndex: 2 }}
+            onClick={handleOpenServicesModal}
+          />
           <h2 className="owner-services-title">Services</h2>
           <div className="owner-services-list">
             {services && services.length > 0 ? (
               services.map((service) => (
-                <div className="owner-service-card" key={service.id}>
-                  <span className="owner-service-icon">
-                    {service.name.toLowerCase().includes("wifi") && "📶"}
-                    {service.name.toLowerCase().includes("buffet") && "🍽️"}
-                    {!service.name.toLowerCase().includes("wifi") &&
-                      !service.name.toLowerCase().includes("buffet") &&
-                      "🛎️"}
-                  </span>
+                <div
+                  className="owner-service-card"
+                  key={service.id}
+                  style={{ position: "relative" }}
+                  onMouseEnter={() => {
+                    setServiceToDelete(service.id);
+                    setServiceToDelete2(service.id);
+                  }}
+                  onMouseLeave={() => setServiceToDelete(null)}
+                >
+                  <span className="owner-service-icon">🛎️</span>
                   <span className="owner-service-name">{service.name}</span>
+                  {serviceToDelete === service.id && (
+                    <button
+                      className="delete-service-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowDeleteDialog(true);
+                      }}
+                      style={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                        zIndex: 2,
+                        border: "none",
+                      }}
+                    >
+                      <i
+                        className="fa-solid fa-trash"
+                        style={{ color: "var(--color2)" }}
+                      ></i>
+                    </button>
+                  )}
                 </div>
               ))
             ) : (
               <div className="owner-service-empty">No services available</div>
             )}
           </div>
+          {showServicesModal && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <div
+                  onClick={handleCloseServicesModal}
+                  style={{ float: "left" }}
+                >
+                  <CloseButton></CloseButton>
+                </div>
+                <h3>All Services</h3>
+                <div className="services-grid">
+                  {allServices.length > 0 ? (
+                    allServices.map((service) => (
+                      <div
+                        className={`service-card${
+                          selectedServices.includes(service.name)
+                            ? " selected"
+                            : ""
+                        }`}
+                        key={service.id}
+                        onClick={() => toggleService(service.name)}
+                      >
+                        <span className="service-icon">🛎️</span>
+                        <span className="service-name">{service.name}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="no-services">لا توجد خدمات متاحة</div>
+                  )}
+                </div>
+                <div className="service-input">
+                  <input
+                    type="text"
+                    autocomplete="off"
+                    name="text"
+                    class="new-service-input"
+                    placeholder="New Service"
+                    value={newService}
+                    onChange={(e) => setNewService(e.target.value)}
+                  />
+                </div>
+                <button className="done-btn" onClick={handleDoneAddServices}>
+                  Done
+                </button>
+              </div>
+            </div>
+          )}
         </div>
+        {showDeleteDialog && (
+          <ConfirmDialog
+            message="Are you sure you want to delete this service?"
+            onConfirm={async () => {
+              await handleDeleteService(serviceToDelete);
+              setShowDeleteDialog(false);
+              setServiceToDelete(null);
+            }}
+            onCancel={() => {
+              setShowDeleteDialog(false);
+              setServiceToDelete(null);
+            }}
+            color="false"
+          />
+        )}
         <div className="owner-pictures-section">
           <h2 className="owner-pictures-title">Pictures</h2>
           <div
@@ -317,7 +503,10 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
             >
               {pictures.length > 0 ? (
                 [...pictures, ...pictures, ...pictures].map((pic, idx) => (
-                  <div className="owner-picture-card" key={`pic-${pic.id}-${idx}`}>
+                  <div
+                    className="owner-picture-card"
+                    key={`pic-${pic.id}-${idx}`}
+                  >
                     <img
                       className="owner-picture-img"
                       src={
@@ -327,7 +516,8 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
                       }
                       alt={`Owner pic ${(idx % pictures.length) + 1}`}
                       onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/180x120?text=No+Image";
+                        e.target.src =
+                          "https://via.placeholder.com/180x120?text=No+Image";
                       }}
                     />
                   </div>
@@ -506,4 +696,4 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
       )}
     </div>
   );
-} 
+}

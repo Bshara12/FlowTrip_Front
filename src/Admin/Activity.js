@@ -14,7 +14,7 @@ const Activity = () => {
   const [confirmDeleteData, setConfirmDeleteData] = useState(null); // <-- بدل ID
   const modalRef = useRef(null);
 
-  const token = "G3SNaKPlCWuy2mAbgxSgpq7zz8BaVh2w7oSsRuxwec6795ec";
+  const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
 
   const fetchActivities = () => {
     axios

@@ -78,15 +78,6 @@ export default function DashBourd() {
         </div>
         <div style={{ width: "100%" }}>
           <Link
-            to="homepage"
-            className={
-              activeLink === "/Accommodation/dashboard/homepage" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-clipboard-list"></i>
-            <p>HomePage</p>
-          </Link>
-          <Link
             to="profile"
             className={
               activeLink === "/Accommodation/dashboard/profile" ? "active-link" : ""

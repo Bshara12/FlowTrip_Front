@@ -13,7 +13,6 @@ import Category from "./Admin/Category";
 import Activity from "./Admin/Activity";
 import SelectCountry from "./Auth/SelectCountry";
 import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
-import DashBoardVehiclyOwner from "./VehiclyOwner/DashBoardVehiclyOwner";
 import Verification from "./Auth/Verification";
 import OwnerCategoryList from "./Auth/OwnerCategoryList";
 import OwnerDetails from "./Admin/OwnerDetails";
@@ -43,50 +42,42 @@ function App() {
 
       {/* Admin */}
       <Route>
-=======
-      <Route path="ownerrigester" element={<OwnerRigester />} />
-      <Route path="plans" element={<Plans />}>
-  <Route path="showallplans" element={<ShowAllPlans />} />
-  <Route path="showallplans/:planeId" element={<PlanDetails />} />
-  <Route path="/plans/edit/:planeId" element={<EditPlane />} />
-  <Route path="/plans/add" element={<AddPlane />} />
-
-</Route>
-
-      <Route> 
-        <Route path="Admin/dashbord" element={<DashBourd />}>
-          <Route path="requist" element={<Requist />} />
-          <Route path="packages" element={<Packages />} />
-          <Route path="owners" element={<Owner />} />
-          <Route path="subadmin" element={<SubAdmin />} />
-          <Route path="users" element={<Users />} />
-          <Route path="catigory" element={<Category />} />
-          <Route path="activity" element={<Activity />} />
+        =======
+        <Route path="ownerrigester" element={<OwnerRigester />} />
+        <Route path="plans" element={<Plans />}>
+          <Route path="showallplans" element={<ShowAllPlans />} />
+          <Route path="showallplans/:planeId" element={<PlanDetails />} />
+          <Route path="/plans/edit/:planeId" element={<EditPlane />} />
+          <Route path="/plans/add" element={<AddPlane />} />
         </Route>
-        <Route path="/package/:id" element={<PackageDetails />} />
-        <Route path="/request/:id" element={<RequestDetails />} />
-        <Route path="/element-details" element={<PackageElementDetails />} />
-        <Route path="/owner_details/:id" element={<OwnerDetails />} />
-      </Route>
-
-      <Route path="Accommodation/dashboard" element={<DashBoard2 />}>
-      <Route path="profile" element={<Profile/>}/>
-      <Route path="records" element={<ShowRecords/>}/>
-      <Route path="rooms" element={<RoomsHome/>}/>
-      <Route path="offers" element={<Offers/>}/>
-      </Route>
-
-
+        <Route>
+          <Route path="Admin/dashbord" element={<DashBourd />}>
+            <Route path="requist" element={<Requist />} />
+            <Route path="packages" element={<Packages />} />
+            <Route path="owners" element={<Owner />} />
+            <Route path="subadmin" element={<SubAdmin />} />
+            <Route path="users" element={<Users />} />
+            <Route path="catigory" element={<Category />} />
+            <Route path="activity" element={<Activity />} />
+          </Route>
+          <Route path="/package/:id" element={<PackageDetails />} />
+          <Route path="/request/:id" element={<RequestDetails />} />
+          <Route path="/element-details" element={<PackageElementDetails />} />
+          <Route path="/owner_details/:id" element={<OwnerDetails />} />
+        </Route>
+        <Route path="Accommodation/dashboard" element={<DashBoard2 />}>
+          <Route path="profile" element={<Profile />} />
+          <Route path="records" element={<ShowRecords />} />
+          <Route path="rooms" element={<RoomsHome />} />
+          <Route path="offers" element={<Offers />} />
+        </Route>
         <Route path="room-details/:id" element={<RoomDetails />} />
         <Route path="add-room" element={<AddRoom />} />
-    
-    
-          <Route path="catigory" element={<Category/>}/>
-        </Route>
-        <Route path="/package/:id" element={<PackageDetails />} />
-        <Route path="/request/:id" element={<RequestDetails/>} />
-        <Route path="/element-details" element={<PackageElementDetails/>} />
-
+        <Route path="catigory" element={<Category />} />
+      </Route>
+      <Route path="/package/:id" element={<PackageDetails />} />
+      <Route path="/request/:id" element={<RequestDetails />} />
+      <Route path="/element-details" element={<PackageElementDetails />} />
     </Routes>
   );
 }

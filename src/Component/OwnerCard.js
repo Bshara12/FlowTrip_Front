@@ -1,11 +1,11 @@
-import React from "react";
+// import React from "react";
 import "./OwnerCard.css";
 
 const OwnerCard = ({ name, location, phoneNumber, category, style, onClick, isUserView }) => {
   return (
-    <div className="card" style={style} onClick={onClick}>
-      <div className="card-image"></div>
-      <div className="card-description">
+    <div className="owner-card" style={style} onClick={onClick}>
+      <div className="owner-card-image"></div>
+      <div className="owner-card-description">
         <p className="text-title">{name}</p>
         <p className="text-body">
           {isUserView ? (
@@ -47,7 +47,7 @@ const OwnerCard = ({ name, location, phoneNumber, category, style, onClick, isUs
           )}
         </p>
       </div>
-      <div className="card-review">Review</div>
+      <div className="owner-card-review">Review</div>
     </div>
   );
 };

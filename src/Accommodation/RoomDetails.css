@@ -28,7 +28,7 @@ html {
   color: #b23c3c;
 }
 
-.room-pictures-section {
+.room-details-pictures-section {
   width: 100%;
   background: var(--color5);
   border-radius: 20px;
@@ -37,7 +37,7 @@ html {
   box-shadow: 0 2px 17px var(--color4);
 }
 
-.room-pictures-title {
+.room-details-pictures-title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 24px;
@@ -45,7 +45,7 @@ html {
   letter-spacing: 1px;
 }
 
-.room-pictures-slider-wrapper {
+.room-details-pictures-slider-wrapper {
   width: 100%;
   max-width: 1320px;
   margin: 0 auto;
@@ -60,7 +60,7 @@ html {
   box-shadow: 0 4px 20px var(--color4);
 }
 
-.room-pictures-slider {
+.room-details-pictures-slider {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -72,11 +72,11 @@ html {
   height: 150px;
 }
 
-.room-pictures-slider::-webkit-scrollbar {
+.room-details-pictures-slider::-webkit-scrollbar {
   display: none;
 }
 
-.room-picture-card {
+.room-details-picture-card {
   height: 90%;
   background: var(--color7);
   border-radius: 16px;
@@ -90,18 +90,18 @@ html {
   flex-shrink: 0;
 }
 
-.room-picture-card:hover {
+.room-details-picture-card:hover {
   transform: translateY(-4px) scale(1.03);
 }
 
-.room-picture-img {
+.room-details-picture-img {
   width: 180px;
   height: 120px;
   object-fit: cover;
   border-radius: 12px;
 }
 
-.room-picture-empty {
+.room-details-picture-empty {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,7 +114,7 @@ html {
   box-shadow: 0 2px 10px var(--color4);
 }
 
-.slider-arrow {
+.room-details-slider-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -133,20 +133,20 @@ html {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.slider-arrow:hover {
+.room-details-slider-arrow:hover {
   background: var(--color1);
   transform: translateY(-50%) scale(1.1);
 }
 
-.slider-arrow.left {
+.room-details-slider-arrow.left {
   left: 10px;
 }
 
-.slider-arrow.right {
+.room-details-slider-arrow.right {
   right: 10px;
 }
 
-.slider-arrow i {
+.room-details-slider-arrow i {
   font-size: 16px;
 }
 
@@ -244,7 +244,7 @@ html {
   }
 }
 
-.floating-edit-btn {
+.room-details-floating-edit-btn {
   position: fixed;
   right: 1rem;
   top: 3rem;
@@ -265,23 +265,22 @@ html {
   justify-content: center;
 }
 
-.floating-edit-btn:hover {
+.room-details-floating-edit-btn:hover {
   transform: translateY(-50%) scale(1.1);
   box-shadow: 0 6px 25px var(--color3);
 }
 
-.floating-edit-btn:active {
+.room-details-floating-edit-btn:active {
   transform: translateY(-50%) scale(0.95);
 }
 
-.room-edit-container {
+.room-details-edit-container {
   min-height: 100vh;
   background: var(--color5);
   padding: 20px;
-  direction: rtl;
 }
 
-.room-edit-header {
+.room-details-edit-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -292,18 +291,18 @@ html {
   box-shadow: 0 2px 10px var(--color4);
 }
 
-.room-edit-header h2 {
+.room-details-edit-header h2 {
   color: var(--color2);
   margin: 0;
   font-size: 1.8rem;
 }
 
-.edit-actions {
+.room-details-edit-actions {
   display: flex;
   gap: 15px;
 }
 
-.edit-btn {
+.room-details-edit-btn {
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
@@ -313,34 +312,34 @@ html {
   transition: all 0.3s ease;
 }
 
-.edit-btn.save {
+.room-details-edit-btn.room-details-save {
   background: linear-gradient(135deg, var(--color2) 0%, var(--color4) 100%);
   color: var(--color5);
 }
 
-.edit-btn.save:hover {
+.room-details-edit-btn.room-details-save:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px var(--color4);
 }
 
-.edit-btn.cancel {
+.room-details-edit-btn.room-details-cancel {
   background: var(--color7);
   color: var(--color3);
   border: 2px solid var(--color6);
 }
 
-.edit-btn.cancel:hover {
+.room-details-edit-btn.room-details-cancel:hover {
   background: var(--color5);
   border-color: var(--color3);
 }
 
-.edit-btn:disabled {
+.room-details-edit-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none !important;
 }
 
-.room-edit-content {
+.room-details-edit-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
@@ -348,16 +347,16 @@ html {
   margin: 0 auto;
 }
 
-.edit-form-section,
-.edit-pictures-section {
+.room-details-edit-form-section,
+.room-details-edit-pictures-section {
   background: var(--color7);
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.edit-form-section h3,
-.edit-pictures-section h3 {
+.room-details-edit-form-section h3,
+.room-details-edit-pictures-section h3 {
   color: var(--color2);
   margin-bottom: 25px;
   font-size: 1.4rem;
@@ -365,11 +364,11 @@ html {
   padding-bottom: 10px;
 }
 
-.form-group {
+.room-details-form-group {
   margin-bottom: 20px;
 }
 
-.form-group label {
+.room-details-form-group label {
   display: block;
   margin-bottom: 8px;
   color: var(--color1);
@@ -377,8 +376,8 @@ html {
   font-size: 1rem;
 }
 
-.form-group input,
-.form-group textarea {
+.room-details-form-group input,
+.room-details-form-group textarea {
   width: 100%;
   padding: 12px 16px;
   border: 2px solid var(--color6);
@@ -388,26 +387,26 @@ html {
   direction: ltr;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
+.room-details-form-group input:focus,
+.room-details-form-group textarea:focus {
   outline: none;
   border-color: var(--color4);
   box-shadow: 0 0 0 3px var(--color5);
 }
 
-.form-group textarea {
+.room-details-form-group textarea {
   resize: vertical;
   min-height: 100px;
 }
 
-.pictures-grid {
+.room-details-pictures-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 15px;
   margin-bottom: 20px;
 }
 
-.picture-item {
+.room-details-picture-item {
   position: relative;
   border-radius: 8px;
   overflow: hidden;
@@ -415,18 +414,18 @@ html {
   transition: transform 0.3s ease;
 }
 
-.picture-item:hover {
+.room-details-picture-item:hover {
   transform: scale(1.05);
 }
 
-.picture-item img {
+.room-details-picture-item img {
   width: 100%;
   height: 120px;
   object-fit: cover;
   display: block;
 }
 
-.delete-picture-btn {
+.room-details-delete-picture-btn {
   position: absolute;
   top: 5px;
   right: 5px;
@@ -445,12 +444,12 @@ html {
   transition: all 0.3s ease;
 }
 
-.delete-picture-btn:hover {
+.room-details-delete-picture-btn:hover {
   background: var(--color4);
   color: var(--color2);
   transform: scale(1.1);
 }
-.add-picture-section {
+.room-details-add-picture-section {
   text-align: center;
   padding: 20px;
   border: 2px dashed var(--color6);
@@ -458,11 +457,11 @@ html {
   transition: border-color 0.3s ease;
 }
 
-.add-picture-section:hover {
+.room-details-add-picture-section:hover {
   border-color: var(--color4);
 }
 
-.add-picture-btn {
+.room-details-add-picture-btn {
   display: inline-block;
   padding: 12px 24px;
   background: linear-gradient(135deg, var(--color2) 0%, var(--color4) 100%);
@@ -473,47 +472,47 @@ html {
   transition: all 0.3s ease;
 }
 
-.add-picture-btn:hover {
+.room-details-add-picture-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px var(--color4);
 }
 
 @media (max-width: 768px) {
-  .room-edit-content {
+  .room-details-edit-content {
     grid-template-columns: 1fr;
     gap: 20px;
   }
 
-  .room-edit-header {
+  .room-details-edit-header {
     flex-direction: column;
     gap: 15px;
     text-align: center;
   }
 
-  .edit-actions {
+  .room-details-edit-actions {
     width: 100%;
     justify-content: center;
   }
 
-  .floating-edit-btn {
+  .room-details-floating-edit-btn {
     right: 20px;
     width: 50px;
     height: 50px;
     font-size: 16px;
   }
 
-  .pictures-grid {
+  .room-details-pictures-grid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
 }
 
-.inputbox {
+.room-details-inputbox {
   position: relative;
   width: 100%;
   margin-bottom: 20px;
 }
 
-.inputbox input {
+.room-details-inputbox input {
   position: relative;
   width: 100%;
   padding: 20px 10px 10px;
@@ -529,7 +528,7 @@ html {
   direction: ltr;
 }
 
-.inputbox span {
+.room-details-inputbox span {
   position: absolute;
   left: 0;
   padding: 20px 10px 10px;
@@ -540,27 +539,27 @@ html {
   pointer-events: none;
 }
 
-.inputbox input:valid ~ span,
-.inputbox input:focus ~ span,
-.inputbox textarea:valid ~ span,
-.inputbox textarea:focus ~ span {
+.room-details-inputbox input:valid ~ span,
+.room-details-inputbox input:focus ~ span,
+.room-details-inputbox textarea:valid ~ span,
+.room-details-inputbox textarea:focus ~ span {
   color: var(--color4);
   transform: translateX(-10px) translateY(-34px);
   font-size: 0.75em;
 }
 
-.description {
+.room-details-description {
   background: var(--color4);
   color: var(--color2);
 }
 
-.form-group label {
+.room-details-form-group label {
   direction: ltr;
   color: var(--color4);
   font-size: 0.75em;
 }
 
-.inputbox i {
+.room-details-inputbox i {
   position: absolute;
   left: 0;
   bottom: 0;
@@ -573,23 +572,23 @@ html {
   z-index: 9;
 }
 
-.inputbox input:valid ~ i,
-.inputbox input:focus ~ i,
-.inputbox textarea:valid ~ i,
-.inputbox textarea:focus ~ i {
+.room-details-inputbox input:valid ~ i,
+.room-details-inputbox input:focus ~ i,
+.room-details-inputbox textarea:valid ~ i,
+.room-details-inputbox textarea:focus ~ i {
   height: 44px;
 }
 
-.inputbox input[type="number"]::-webkit-outer-spin-button,
-.inputbox input[type="number"]::-webkit-inner-spin-button {
+.room-details-inputbox input[type="number"]::-webkit-outer-spin-button,
+.room-details-inputbox input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.inputbox input[type="number"] {
+.room-details-inputbox input[type="number"] {
   -moz-appearance: textfield;
 }
 
-.floating-delete-btn {
+.room-details-floating-delete-btn {
   position: fixed;
   right: 1rem;
   top: 6rem;
@@ -606,14 +605,14 @@ html {
   justify-content: center;
   font-size: 20px;
   cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  transition: all 0.2s, box-shadow 0.2s, transform 0.2s;
 }
-.floating-delete-btn:hover:not(:disabled) {
+.room-details-floating-delete-btn:hover:not(:disabled) {
   background: #b71c1c;
   box-shadow: 0 6px 20px rgba(229, 57, 53, 0.3);
   transform: translateY(-2px) scale(1.08);
 }
-.floating-delete-btn:disabled {
+.room-details-floating-delete-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

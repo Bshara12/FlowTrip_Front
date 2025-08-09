@@ -4,21 +4,24 @@ import SubAdminCard from "../Component/SubAdminCard";
 import ConfirmDialog from "../Component/ConfirmDialog";
 import "./OwnerSearch.css";
 import Loader from "../Component/Loader";
-import { baseURL, FILTER_USERS, GET_ALL_SUBADMIN, GET_ALL_UESER, REMOVE_SUBADMIN, TOKEN } from "../Api/Api";
-
+import {
+  baseURL,
+  FILTER_SUBADMINS,
+  GET_ALL_SUBADMIN,
+  GET_ALL_UESER,
+  REMOVE_SUBADMIN,
+  TOKEN,
+} from "../Api/Api";
 
 export default function SubAdmin() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [search, setSearch] = useState("");
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
 
-<<<<<<< HEAD
-  const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
-=======
   const token = TOKEN;
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
   useEffect(() => {
     const loadInfo = async () => {
@@ -53,7 +56,7 @@ export default function SubAdmin() {
           Authorization: `Bearer ${token}`,
         },
       });
-      
+
       const res = await axios.get(`${baseURL}/${GET_ALL_SUBADMIN}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -74,8 +77,6 @@ export default function SubAdmin() {
     setSelectedUserId(null);
   };
 
-<<<<<<< HEAD
-=======
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!search) {
@@ -86,9 +87,9 @@ export default function SubAdmin() {
     setError(null);
     try {
       const res = await axios.post(
-        `${baseURL}/${FILTER_USERS}`,
+        `${baseURL}/${FILTER_SUBADMINS}`,
         {
-          'name' : search
+          name: search,
         },
         {
           headers: {
@@ -108,27 +109,28 @@ export default function SubAdmin() {
     }
   };
 
-  const reloadAllUsers = async (clearCountry = false, clearCategory = false) => {
+  const reloadAllUsers = async (
+    clearCountry = false,
+    clearCategory = false
+  ) => {
     setLoading(true);
     setError(null);
     try {
-        const res = await axios.get(`${baseURL}/${GET_ALL_UESER}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUsers(res.data.data);
-      }
-    catch (err) {
+      const res = await axios.get(`${baseURL}/${GET_ALL_UESER}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUsers(res.data.data);
+    } catch (err) {
       setError(err);
     } finally {
       setLoading(false);
     }
   };
 
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
   if (loading) {
-    return <Loader/>
+    return <Loader />;
   }
 
   if (error) {
@@ -137,6 +139,31 @@ export default function SubAdmin() {
 
   return (
     <div className="fs">
+      <div className="owner-flex">
+        <div className="search-flex users">
+          <div className="owner-input-container">
+            <input
+              placeholder="Enter name"
+              type="text"
+              value={search}
+              onChange={(e) => {
+                const value = e.target.value;
+                console.log(value)
+                setSearch(value);
+                if (value === "") {
+                  reloadAllUsers();
+                }
+              }}
+            />
+          </div>
+          <button className="owner-search-button users" onClick={handleSearch}>
+            <svg viewBox="0 0 512 512" className="svgIcon">
+              <path d="M505 442.7L405.3 343c28.4-34.9 45.5-79 45.5-127C450.8 96.5 354.3 0 225.4 0S0 96.5 0 216.1s96.5 216.1 216.1 216.1c48 0 92.1-17.1 127-45.5l99.7 99.7c4.5 4.5 10.6 7 17 7s12.5-2.5 17-7c9.4-9.4 9.4-24.6 0-34zM216.1 392.2c-97.2 0-176.1-78.9-176.1-176.1S118.9 39.9 216.1 39.9s176.1 78.9 176.1 176.1-78.9 176.1-176.1 176.1z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
       <div className="owner-list-container">
         {users.map((item, idx) => (
           <SubAdminCard
@@ -151,14 +178,14 @@ export default function SubAdmin() {
         ))}
       </div>
 
-              {showConfirmDialog && (
-          <ConfirmDialog
-            message="Do you want to make this user as normal user?"
-            onConfirm={removeSubAdmin}
-            onCancel={cancelRemove}
-            color="true"
-          />
-        )}
+      {showConfirmDialog && (
+        <ConfirmDialog
+          message="Do you want to make this user as normal user?"
+          onConfirm={removeSubAdmin}
+          onCancel={cancelRemove}
+          color="true"
+        />
+      )}
     </div>
   );
 }

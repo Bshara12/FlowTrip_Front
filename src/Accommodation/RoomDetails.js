@@ -1,16 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ConfirmDialog from "../Component/ConfirmDialog";
 import Loader from "../Component/Loader";
-<<<<<<< HEAD
-import './RoomDetails.css'
-=======
+import "./RoomDetails.css";
 import { baseURL, DELETE_ROOM, EDIT_ROOM, SHOW_ROOM, TOKEN } from "../Api/Api";
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
-
 
 export default function RoomDetails() {
+  const location = useLocation();
+  const { isAdmin } = location.state || {};
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,28 +23,21 @@ export default function RoomDetails() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const navigate = useNavigate();
-
-<<<<<<< HEAD
-  const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
-=======
   const token = TOKEN;
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
   useEffect(() => {
     const fetchRoom = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          `${baseURL}/${SHOW_ROOM}/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await axios.get(`${baseURL}/${SHOW_ROOM}/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setData(res.data);
         setCurrentPictures(res.data.pictures);
         setEditData({
+          room_number: res.data.room.room_number,
           price: res.data.room.price,
           offer_price: res.data.room.offer_price || "",
           area: res.data.room.area,
@@ -152,6 +143,7 @@ export default function RoomDetails() {
     try {
       const formData = new FormData();
 
+      formData.append("room_number", editData.room_number);
       formData.append("price", editData.price);
       formData.append("area", editData.area);
       formData.append("people_count", editData.people_count);
@@ -169,11 +161,23 @@ export default function RoomDetails() {
       });
 
       if (oldPictures.length > 0) {
-        const oldPictureIds = oldPictures.map((pic) => pic.id);
-        formData.append("remaining_picture_ids", JSON.stringify(oldPictureIds));
+        oldPictures.forEach((pic) => {
+          formData.append("remaining_picture_ids[]", pic.id);
+        });
       }
 
+      if (deletedPictures.length > 0) {
+        deletedPictures.forEach((pic) => {
+          formData.append("deleted_picture_ids[]", pic.id);
+        });
+      }
+      // if (deletedPictures.length > 0) {
+      //   const deletedPictureIds = deletedPictures.map((pic) => pic.id);
+      //   formData.append("deleted_picture_ids", JSON.stringify(deletedPictureIds));
+      // }
+
       console.log("Saving changes with FormData:", {
+        room_number: editData.room_number,
         price: editData.price,
         area: editData.area,
         people_count: editData.people_count,
@@ -184,13 +188,15 @@ export default function RoomDetails() {
         deletedPictureIds: deletedPictures.map((pic) => pic.id),
       });
 
-      await axios.post(`${baseURL}/${EDIT_ROOM}/${id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // important for images
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios
+        .post(`${baseURL}/${EDIT_ROOM}/${id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // important for images
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => console.log(res.data));
 
       // delete temporary urls
       currentPictures.forEach((pic) => {
@@ -209,6 +215,7 @@ export default function RoomDetails() {
       setData(res.data);
       setCurrentPictures(res.data.pictures);
       setEditData({
+        room_number: res.data.room.room_number,
         price: res.data.room.price,
         offer_price: res.data.room.offer_price || "",
         area: res.data.room.area,
@@ -220,9 +227,7 @@ export default function RoomDetails() {
       setDeletedPictures([]);
     } catch (err) {
       console.error("Error saving changes:", err);
-      alert(
-          (err.response?.data?.message || err.message)
-      );
+      alert(err.response?.data?.message || err.message);
     } finally {
       setEditLoading(false);
     }
@@ -242,6 +247,7 @@ export default function RoomDetails() {
     setIsEditing(false);
     if (data) {
       setEditData({
+        room_number: data.room.room_number,
         price: data.room.price,
         offer_price: data.room.offer_price || "",
         area: data.room.area,
@@ -262,15 +268,16 @@ export default function RoomDetails() {
       });
       navigate("/Accommodation/dashboard/rooms");
     } catch (err) {
-      alert("Error deleting room: " + (err.response?.data?.message || err.message));
+      alert(
+        "Error deleting room: " + (err.response?.data?.message || err.message)
+      );
     } finally {
       setDeleteLoading(false);
       setShowDeleteDialog(false);
     }
   };
 
-  if (loading)
-    return <Loader/>;
+  if (loading) return <Loader />;
   if (error) return <div className="room-details-error">{error}</div>;
   if (!data) return null;
 
@@ -278,19 +285,19 @@ export default function RoomDetails() {
 
   if (isEditing) {
     return (
-      <div className="room-edit-container">
-        <div className="room-edit-header">
+      <div className="room-details-edit-container">
+        <div className="room-details-edit-header">
           <h2>Room {room.id} Editing</h2>
-          <div className="edit-actions">
+          <div className="room-details-edit-actions">
             <button
-              className="edit-btn cancel"
+              className="room-details-edit-btn room-details-cancel"
               onClick={handleCancelEdit}
               disabled={editLoading}
             >
               Cancel
             </button>
             <button
-              className="edit-btn save"
+              className="room-details-edit-btn room-details-save"
               onClick={handleSaveChanges}
               disabled={editLoading}
             >
@@ -299,10 +306,22 @@ export default function RoomDetails() {
           </div>
         </div>
 
-        <div className="room-edit-content">
-          <div className="edit-form-section">
+        <div className="room-details-edit-content">
+          <div className="room-details-edit-form-section">
             <h3>Room Information</h3>
-            <div className="inputbox">
+            <div className="room-details-inputbox">
+              <input
+                required="required"
+                type="number"
+                value={editData.room_number}
+                onChange={(e) =>
+                  handleInputChange("room_number", parseInt(e.target.value))
+                }
+              />
+              <span>Room Number</span>
+              <i></i>
+            </div>
+            <div className="room-details-inputbox">
               <input
                 required="required"
                 type="number"
@@ -314,22 +333,22 @@ export default function RoomDetails() {
               <span>Price</span>
               <i></i>
             </div>
-              <div className="inputbox">
-                <input
-                  type="number"
-                  required="required"
-                  value={editData.offer_price === "" ? "" : editData.offer_price}
-                  onChange={e =>
-                    handleInputChange(
-                      "offer_price",
-                      e.target.value === "" ? "" : parseFloat(e.target.value)
-                    )
-                  }
-                />
-                <span>Offer Price (Optinal)</span>
-                <i></i>
-              </div>
-            <div className="inputbox">
+            <div className="room-details-inputbox">
+              <input
+                type="number"
+                required="required"
+                value={editData.offer_price === "" ? "" : editData.offer_price}
+                onChange={(e) =>
+                  handleInputChange(
+                    "offer_price",
+                    e.target.value === "" ? "" : parseFloat(e.target.value)
+                  )
+                }
+              />
+              <span>Offer Price (Optinal)</span>
+              <i></i>
+            </div>
+            <div className="room-details-inputbox">
               <input
                 required="required"
                 type="number"
@@ -341,7 +360,7 @@ export default function RoomDetails() {
               <span>Area</span>
               <i></i>
             </div>
-            <div className="inputbox">
+            <div className="room-details-inputbox">
               <input
                 required="required"
                 type="number"
@@ -353,10 +372,10 @@ export default function RoomDetails() {
               <span>Person's number</span>
               <i></i>
             </div>
-            <div className="form-group">
+            <div className="room-details-form-group">
               <label>Description:</label>
               <textarea
-              className="description"
+                className="room-details-description"
                 value={editData.description}
                 onChange={(e) =>
                   handleInputChange("description", e.target.value)
@@ -367,11 +386,11 @@ export default function RoomDetails() {
             </div>
           </div>
 
-          <div className="edit-pictures-section">
+          <div className="room-details-edit-pictures-section">
             <h3>Room's Photos</h3>
-            <div className="pictures-grid">
+            <div className="room-details-pictures-grid">
               {currentPictures.map((pic) => (
-                <div key={pic.id} className="picture-item">
+                <div key={pic.id} className="room-details-picture-item">
                   <img
                     src={
                       pic.isNew
@@ -383,7 +402,7 @@ export default function RoomDetails() {
                     alt={`Room picture ${pic.id}`}
                   />
                   <button
-                    className="delete-picture-btn"
+                    className="room-details-delete-picture-btn"
                     onClick={() => handlePictureDelete(pic.id)}
                   >
                     ×
@@ -391,7 +410,7 @@ export default function RoomDetails() {
                 </div>
               ))}
             </div>
-            <div className="add-picture-section">
+            <div className="room-details-add-picture-section">
               <input
                 type="file"
                 multiple
@@ -400,7 +419,7 @@ export default function RoomDetails() {
                 id="picture-upload"
                 style={{ display: "none" }}
               />
-              <label htmlFor="picture-upload" className="add-picture-btn">
+              <label htmlFor="picture-upload" className="room-details-add-picture-btn">
                 Add Photo
               </label>
             </div>
@@ -412,22 +431,26 @@ export default function RoomDetails() {
 
   return (
     <div className="room-details-container">
-      <button
-        className="floating-edit-btn"
-        onClick={() => setIsEditing(true)}
-        title="Edit Room"
-      >
-        <i className="fa-solid fa-edit"></i>
-      </button>
-      <button
-        className="floating-delete-btn"
-        style={{ bottom: 80 }}
-        onClick={() => setShowDeleteDialog(true)}
-        title="Delete Room"
-        disabled={deleteLoading}
-      >
-        <i className="fa-solid fa-trash"></i>
-      </button>
+      {!isAdmin && (
+        <button
+          className="room-details-floating-edit-btn"
+          onClick={() => setIsEditing(true)}
+          title="Edit Room"
+        >
+          <i className="fa-solid fa-edit"></i>
+        </button>
+      )}
+      {!isAdmin && (
+        <button
+          className="room-details-floating-delete-btn"
+          style={{ bottom: 80 }}
+          onClick={() => setShowDeleteDialog(true)}
+          title="Delete Room"
+          disabled={deleteLoading}
+        >
+          <i className="fa-solid fa-trash"></i>
+        </button>
+      )}
       {showDeleteDialog && (
         <ConfirmDialog
           message="Are you sure you want to delete this room? This action cannot be undone."
@@ -436,15 +459,15 @@ export default function RoomDetails() {
         />
       )}
 
-      <div className="room-pictures-section" style={{ width: "85%" }}>
-        <h2 className="room-pictures-title">Pictures</h2>
+      <div className="room-details-pictures-section" style={{ width: "85%" }}>
+        <h2 className="room-details-pictures-title">Pictures</h2>
         <div
-          className="room-pictures-slider-wrapper"
+          className="room-details-pictures-slider-wrapper"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
           <div
-            className="room-pictures-slider"
+            className="room-details-pictures-slider"
             ref={sliderRef}
             style={{
               overflowX: "auto",
@@ -455,47 +478,55 @@ export default function RoomDetails() {
             }}
           >
             {pictures.length > 0 ? (
-              pictures.length > 4
-                ? [...pictures, ...pictures, ...pictures].map((pic, idx) => (
-                    <div className="room-picture-card" key={`pic-${pic.id}-${idx}`}>
-                      <img
-                        className="room-picture-img"
-                        src={
-                          pic.room_picture.startsWith("http")
-                            ? pic.room_picture
-                            : `http://localhost:8000/${pic.room_picture}`
-                        }
-                        alt={`Room pic ${(idx % pictures.length) + 1}`}
-                      />
-                    </div>
-                  ))
-                : pictures.map((pic, idx) => (
-                    <div className="room-picture-card" key={`pic-${pic.id}-${idx}`}>
-                      <img
-                        className="room-picture-img"
-                        src={
-                          pic.room_picture.startsWith("http")
-                            ? pic.room_picture
-                            : `http://localhost:8000/${pic.room_picture}`
-                        }
-                        alt={`Room pic ${idx + 1}`}
-                      />
-                    </div>
-                  ))
+              pictures.length > 4 ? (
+                [...pictures, ...pictures, ...pictures].map((pic, idx) => (
+                  <div
+                    className="room-details-picture-card"
+                    key={`pic-${pic.id}-${idx}`}
+                  >
+                    <img
+                      className="room-details-picture-img"
+                      src={
+                        pic.room_picture.startsWith("http")
+                          ? pic.room_picture
+                          : `http://localhost:8000/${pic.room_picture}`
+                      }
+                      alt={`Room pic ${(idx % pictures.length) + 1}`}
+                    />
+                  </div>
+                ))
+              ) : (
+                pictures.map((pic, idx) => (
+                  <div
+                    className="room-details-picture-card"
+                    key={`pic-${pic.id}-${idx}`}
+                  >
+                    <img
+                      className="room-details-picture-img"
+                      src={
+                        pic.room_picture.startsWith("http")
+                          ? pic.room_picture
+                          : `http://localhost:8000/${pic.room_picture}`
+                      }
+                      alt={`Room pic ${idx + 1}`}
+                    />
+                  </div>
+                ))
+              )
             ) : (
-              <div className="room-picture-empty">No pictures available</div>
+              <div className="room-details-picture-empty">No pictures available</div>
             )}
           </div>
           {pictures.length >= 4 && (
             <>
               <button
-                className="slider-arrow left"
+                className="room-details-slider-arrow room-details-left"
                 onClick={() => scrollSlider("left")}
               >
                 <i className="fa-solid fa-arrow-left"></i>
               </button>
               <button
-                className="slider-arrow right"
+                className="room-details-slider-arrow room-details-right"
                 onClick={() => scrollSlider("right")}
               >
                 <i className="fa-solid fa-arrow-right"></i>
@@ -510,7 +541,7 @@ export default function RoomDetails() {
       >
         <h2 className="room-details-title">Room Details</h2>
         <div className="room-details-section">
-          <b>ID:</b> {room.id}
+          <b>ID:</b> {room.room_number}
         </div>
         <div className="room-details-section">
           <b>Price:</b>{" "}

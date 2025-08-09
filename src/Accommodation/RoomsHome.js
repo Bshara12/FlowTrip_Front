@@ -4,11 +4,7 @@ import ShowRecordsContainer from "../Component/ShowRecordsContainer";
 import { baseURL, SHOW_ALL_ROOMS, TOKEN } from "../Api/Api";
 
 export default function RoomsHome() {
-<<<<<<< HEAD
-  var token = "bOJYVAykGuPS02EwMu3KndnhrJ2Ff6t6yMP1uE9O68ab63f0";
-=======
   var token = TOKEN;
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

@@ -4,16 +4,20 @@ import { useNavigate } from "react-router-dom";
 import "./OwnerDetailsComponent.css";
 import ToggleButton from "./ToggleButton";
 import Loader from "../Component/Loader";
-<<<<<<< HEAD
 import Button from "./AddButton";
 import ConfirmDialog from "./ConfirmDialog";
 import CloseButton from "../Component/CloseButton";
 import EditButton from "./EditButton";
-=======
-import { baseURL,SHOW_PROFILE,SHOW_OWNER ,BLOCK_OWNER, TOKEN} from "../Api/Api";
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
+import {
+  baseURL,
+  SHOW_PROFILE,
+  SHOW_OWNER,
+  BLOCK_OWNER,
+  TOKEN,
+} from "../Api/Api";
+import { style } from "framer-motion/client";
 
-export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
+export default function OwnerDetailsComponent({ id, token, isAdmin }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,10 +32,16 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   const [serviceToDelete, setServiceToDelete] = useState(null);
   const [serviceToDelete2, setServiceToDelete2] = useState(null);
   const [newService, setNewService] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editLoading, setEditLoading] = useState(false);
+  const [currentPictures, setCurrentPictures] = useState([]);
+  const [deletedPictures, setDeletedPictures] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCountryId, setSelectedCountryId] = useState("");
 
   const authToken = TOKEN;
 
-<<<<<<< HEAD
   const fetchData = async () => {
     setLoading(true);
     setError(null);
@@ -41,35 +51,6 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
         url = `http://127.0.0.1:8000/api/ShowOwner/${id}`;
       } else {
         url = `http://127.0.0.1:8000/api/ShowProfile`;
-=======
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        let url;
-        if (id) {
-          url = `${baseURL}/${SHOW_OWNER}/${id}`;
-        } else {
-          url = `${baseURL}/${SHOW_PROFILE}`;
-        }
-
-        const res = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
-        setData(res.data);
-        
-        if (isAdmin && res.data?.owner?.user?.status === 2) {
-          setIsBlocked(true);
-        }
-      } catch (err) {
-        console.error(err);
-        setError(err);
-      } finally {
-        setLoading(false);
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
       }
 
       const res = await axios.get(url, {
@@ -78,6 +59,28 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
         },
       });
       setData(res.data);
+      setSelectedCountry(res.data.owner.country);
+      setSelectedCountryId(res.data.owner.countryId);
+
+      // تهيئة نموذج التحرير للعرض
+      const user = res.data.owner.user;
+      setEditData({
+        name: user.name || "",
+        email: user.email || "",
+        phone_number: user.phone_number || "",
+        description: res.data.owner.description || "",
+        location: res.data.owner.location || "",
+        country_id: res.data.owner.country || "",
+      });
+
+      // صور المالك
+      setCurrentPictures(
+        (res.data.pictures || []).map((pic) => ({
+          id: pic.id,
+          reference: pic.reference,
+          isNew: false,
+        }))
+      );
 
       if (isAdmin && res.data?.owner?.user?.status === 2) {
         setIsBlocked(true);
@@ -90,8 +93,18 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
     }
   };
 
+  const fetchCountries = async () => {
+    try {
+      const res = await axios.get("http://127.0.0.1:8000/api/GetAllCountries");
+      setCountries(res.data.countries || []);
+    } catch {
+      setCountries([]);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    fetchCountries();
   }, [id, authToken, isAdmin]);
 
   useEffect(() => {
@@ -145,11 +158,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
 
     try {
       const response = await axios.get(
-<<<<<<< HEAD
         `http://127.0.0.1:8000/api/BlockOwner/${data.owner.user.id}`,
-=======
-       `${baseURL}/${BLOCK_OWNER}/${data?.owner?.user?.id}`,
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -164,6 +173,15 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
       console.error(error);
     }
   };
+
+  const [editData, setEditData] = useState({
+    name: "",
+    email: "",
+    phone_number: "",
+    description: "",
+    location: "",
+    country_id: "",
+  });
 
   const handleOpenServicesModal = async () => {
     setShowServicesModal(true);
@@ -242,6 +260,110 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
     }
   };
 
+  // تحديث الحقول في نموذج التحرير
+  const handleInputChange = (field, value) => {
+    setEditData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // حذف صورة من المعرض
+  const handlePictureDelete = (picId) => {
+    const pic = currentPictures.find((p) => p.id === picId);
+    if (!pic) return;
+
+    // لو صورة جديدة فقط نتخلص من الـ URL المؤقت
+    if (pic.isNew) URL.revokeObjectURL(pic.reference);
+    else setDeletedPictures((prev) => [...prev, picId]);
+
+    setCurrentPictures((prev) => prev.filter((p) => p.id !== picId));
+  };
+
+  // رفع صور جديدة
+  const handlePictureUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const newPics = files.map((file, idx) => ({
+      id: `temp-${Date.now()}-${idx}`,
+      reference: URL.createObjectURL(file),
+      file,
+      isNew: true,
+    }));
+    setCurrentPictures((prev) => [...prev, ...newPics]);
+    e.target.value = "";
+  };
+
+  // حفظ التعديلات
+  const handleSaveProfile = async () => {
+    setEditLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("name", editData.name);
+      formData.append("email", editData.email);
+      formData.append("phone_number", editData.phone_number);
+      formData.append("description", editData.description);
+      formData.append("location", editData.location);
+      formData.append("country_id", selectedCountryId);
+
+      // صور جديدة
+      currentPictures
+        .filter((p) => p.isNew)
+        .forEach((p) => formData.append("images[]", p.file));
+
+      // صور قديمة باقية
+      const oldIds = currentPictures.filter((p) => !p.isNew).map((p) => p.id);
+      if (oldIds.length > 0) {
+        oldIds.forEach((id) => {
+          formData.append("remaining_picture_ids[]", id);
+        });
+      }
+
+      // صور محذوفة
+      if (deletedPictures.length > 0) {
+        deletedPictures.forEach((pic) => {
+          formData.append("deleted_picture_ids[]", pic.id);
+        });
+      }
+
+      const res = await axios.post(
+        "http://127.0.0.1:8000/api/EditProfile",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(res.data);
+
+      // تحرير الـ URLs المؤقتة
+      currentPictures.forEach((p) => {
+        if (p.isNew) URL.revokeObjectURL(p.reference);
+      });
+
+      setIsEditing(false);
+      fetchData();
+      setDeletedPictures([]);
+    } catch (err) {
+      console.error("Error saving profile:", err);
+      alert(err.response?.data?.message || err.message);
+    } finally {
+      setEditLoading(false);
+    }
+  };
+
+  // إلغاء التحرير
+  const handleCancelEditProfile = () => {
+    // تحرير الـ URLs للصور المرفوعة مؤقتاً
+    currentPictures.forEach((p) => {
+      if (p.isNew) URL.revokeObjectURL(p.reference);
+    });
+
+    // إعادة تهيئة الصور والحالة
+    setDeletedPictures([]);
+    fetchData();
+    setIsEditing(false);
+  };
+
   if (loading) return <Loader />;
   if (error) return <div className="owner-details-error">{error}</div>;
   if (!data) return null;
@@ -249,18 +371,18 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
   const { owner, details, vehicles, services, pictures, packages } = data;
   const user = owner.user;
   const country = owner.country;
-  const ownerCategory = owner.owner_category_id;
 
-  function renderCategoryDetails() {
-    switch (ownerCategory) {
+  function renderCategoryDetails($id) {
+    switch (owner.owner_category_id) {
       case 1:
         return (
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">🏨</span>Accommodation Type:
+              <span className="owner-details-icon">🏨</span>
+              Accommodation Type:
             </span>
             <span className="owner-details-value">
-              {details?.accommodation_type || "-"}
+              {details.accommodation_type || "-"}
             </span>
           </div>
         );
@@ -268,10 +390,11 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
         return (
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">✈️</span>Air Line Name:
+              <span className="owner-details-icon">✈️</span>
+              Air Line Name:
             </span>
             <span className="owner-details-value">
-              {details?.air_line_name || "-"}
+              {details.air_line_name || "-"}
             </span>
           </div>
         );
@@ -279,10 +402,11 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
         return (
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">🏢</span>Company Name:
+              <span className="owner-details-icon">🏢</span>
+              Company Name:
             </span>
             <span className="owner-details-value">
-              {details?.company_name || "-"}
+              {details.company_name || "-"}
             </span>
           </div>
         );
@@ -290,10 +414,11 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
         return (
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">🧑‍💼</span>Owner Name:
+              <span className="owner-details-icon">🧑‍💼</span>
+              Owner Name:
             </span>
             <span className="owner-details-value">
-              {details?.owner_name || "-"}
+              {details.owner_name || "-"}
             </span>
           </div>
         );
@@ -302,18 +427,20 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
           <>
             <div className="owner-details-section">
               <span className="owner-details-label">
-                <span className="owner-details-icon">🧑‍💼</span>Owner Name:
+                <span className="owner-details-icon">🧑‍💼</span>
+                Owner Name:
               </span>
               <span className="owner-details-value">
-                {details?.activity_owner.owner_name || "-"}
+                {details.activity_owner.owner_name || "-"}
               </span>
             </div>
             <div className="owner-details-section">
               <span className="owner-details-label">
-                <span className="owner-details-icon">🎯</span>Activity:
+                <span className="owner-details-icon">🎯</span>
+                Activity:
               </span>
               <span className="owner-details-value">
-                {details?.activity || "-"}
+                {details.activity || "-"}
               </span>
             </div>
           </>
@@ -323,13 +450,212 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
     }
   }
 
+  if (isEditing) {
+    return (
+      <div className="owner-edit-container">
+        <div className="owner-edit-header">
+          <h2>Profile Editing</h2>
+          <div className="edit-actions">
+            <button
+              className="owner-edit-btn cancel"
+              onClick={handleCancelEditProfile}
+              disabled={editLoading}
+            >
+              Cancel
+            </button>
+            <button
+              className="owner-edit-btn save"
+              onClick={handleSaveProfile}
+              disabled={editLoading}
+            >
+              {editLoading ? "Saving..." : "Done"}
+            </button>
+          </div>
+        </div>
+        <div className="owner-edit-content">
+          <div className="edit-form-section">
+            <h3>User Information</h3>
+            <div className="owner-inputbox">
+              <input
+                type="text"
+                required
+                value={editData.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
+              />
+              <span>Name</span>
+              <i></i>
+            </div>
+            <div className="owner-inputbox">
+              <input
+                type="email"
+                required
+                value={editData.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+              />
+              <span>Email</span>
+              <i></i>
+            </div>
+            <div className="owner-inputbox">
+              <input
+                type="tel"
+                required
+                value={editData.phone_number}
+                onChange={(e) =>
+                  handleInputChange("phone_number", e.target.value)
+                }
+              />
+              <span>Phone Number</span>
+              <i></i>
+            </div>
+            <div className="form-group">
+              <label>Description:</label>
+              <textarea
+                rows="3"
+                className="description"
+                value={editData.description}
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value)
+                }
+              />
+            </div>
+            <div className="owner-inputbox">
+              <input
+                type="text"
+                required
+                value={editData.location}
+                onChange={(e) => handleInputChange("location", e.target.value)}
+              />
+              <span>Location</span>
+              <i></i>
+            </div>
+          </div>
+
+          <div className="edit-pictures-section">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                width: "100%",
+                paddingBottom: "25px",
+              }}
+            >
+              <span className="CountryWord">Country</span>
+              <div className="owner-menu country-menu">
+                <div className="owner-item">
+                  <a
+                    href="#"
+                    className="link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    <span>{selectedCountry || ""}</span>
+                    <svg
+                      viewBox="0 0 360 360"
+                      xml="space"
+                      className="dropdown-arrow"
+                    >
+                      <g id="SVGRepo_iconCarrier">
+                        <path
+                          id="XMLID_225_"
+                          d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"
+                        />
+                      </g>
+                    </svg>
+                  </a>
+                  <div className="owner-submenu">
+                    <div className="owner-submenu-item">
+                      <a
+                        href="#"
+                        className="owner-submenu-link"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedCountry("");
+                          setSelectedCountryId("");
+                        }}
+                      ></a>
+                    </div>
+                    {countries.map((country) => (
+                      <div className="owner-submenu-item" key={country.id}>
+                        <a
+                          href="#"
+                          className="owner-submenu-link"
+                          onClick={async (e) => {
+                            e.preventDefault();
+                            setSelectedCountry(country.name);
+                            setSelectedCountryId(country.id);
+                          }}
+                        >
+                          {country.name}
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h3>Pictures</h3>
+            <div className="pictures-grid">
+              {currentPictures.map((pic) => (
+                <div key={pic.id} className="picture-item">
+                  <img
+                    src={
+                      pic.isNew
+                        ? pic.reference
+                        : pic.reference.startsWith("http")
+                        ? pic.reference
+                        : `http://127.0.0.1:8000/${pic.reference}`
+                    }
+                    alt={`Owner picture ${pic.id}`}
+                  />
+                  <button
+                    className="owner-delete-picture-btn"
+                    onClick={() => handlePictureDelete(pic.id)}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className="add-picture-section">
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                id="profile-upload"
+                onChange={handlePictureUpload}
+                style={{ display: "none" }}
+              />
+              <label htmlFor="profile-upload" className="add-picture-btn">
+                Add Picture
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="owner-details-container" style={{ position: "relative" }}>
+    <div
+      className={`owner-details-container ${isAdmin ? "fullWidth" : ""}`}
+      style={{ position: "relative" }}
+    >
       {!isAdmin && (
-        <div style={{ position: "fixed", top: 16, right: 16, zIndex: 10 }}>
+        <div
+          onClick={() => setIsEditing(true)}
+          style={{
+            position: "fixed",
+            top: "2rem",
+            right: "1.5rem",
+            zIndex: "100",
+          }}
+        >
           <EditButton />
         </div>
       )}
+
       <div className="owner-details-top">
         <div className="owner-details-card">
           <h2 className="owner-details-title">Business Information</h2>
@@ -337,25 +663,21 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
             <span className="owner-details-label">
               <span className="owner-details-icon">🏷️</span>Category:
             </span>
-            <span className="owner-details-value">
-              {owner?.category || "-"}
-            </span>
+            <span className="owner-details-value">{owner.category || "-"}</span>
           </div>
-          {renderCategoryDetails()}
+          {renderCategoryDetails(owner.owner_category_id)}{" "}
           <div className="owner-details-section">
             <span className="owner-details-label">
               <span className="owner-details-icon">📍</span>Location:
             </span>
-            <span className="owner-details-value">
-              {owner?.location || "-"}
-            </span>
+            <span className="owner-details-value">{owner.location || "-"}</span>
           </div>
           <div className="owner-details-section">
             <span className="owner-details-label">
               <span className="owner-details-icon">📝</span>Description:
             </span>
             <span className="owner-details-value">
-              {owner?.description || "-"}
+              {owner.description || "-"}
             </span>
           </div>
           <div className="owner-details-section">
@@ -363,30 +685,31 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
               <span className="owner-details-icon">📅</span>Creation date:
             </span>
             <span className="owner-details-value">
-              {owner?.created_at?.slice(0, 10) || "-"}
+              {owner.created_at?.slice(0, 10) || "-"}
             </span>
           </div>
         </div>
+
         <div className="owner-details-card">
           <h2 className="owner-details-title">User Information</h2>
           <div className="owner-details-section">
             <span className="owner-details-label">
               <span className="owner-details-icon">👤</span>User Name:
             </span>
-            <span className="owner-details-value">{user?.name || "-"}</span>
+            <span className="owner-details-value">{user.name || "-"}</span>
           </div>
           <div className="owner-details-section">
             <span className="owner-details-label">
               <span className="owner-details-icon">✉️</span>Email:
             </span>
-            <span className="owner-details-value">{user?.email || "-"}</span>
+            <span className="owner-details-value">{user.email || "-"}</span>
           </div>
           <div className="owner-details-section">
             <span className="owner-details-label">
               <span className="owner-details-icon">📞</span>Phone Number:
             </span>
             <span className="owner-details-value">
-              {user?.phone_number || "-"}
+              {user.phone_number || "-"}
             </span>
           </div>
           <div className="owner-details-section">
@@ -397,38 +720,39 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
           </div>
         </div>
       </div>
+
       <div className="more-info-section">
         <div
           className="owner-services-section"
           style={{ position: "relative" }}
         >
-          <Button
-            text="Add Service"
-            style={{ position: "absolute", top: 0, left: 0, zIndex: 2 }}
-            onClick={handleOpenServicesModal}
-          />
+          {!isAdmin && (
+            <Button
+              text="Add Service"
+              style={{ position: "absolute", top: 0, left: 0, zIndex: 2 }}
+              onClick={handleOpenServicesModal}
+            />
+          )}
           <h2 className="owner-services-title">Services</h2>
           <div className="owner-services-list">
             {services && services.length > 0 ? (
-              services.map((service) => (
+              services.map((svc) => (
                 <div
+                  key={svc.id}
                   className="owner-service-card"
-                  key={service.id}
                   style={{ position: "relative" }}
-                  onMouseEnter={() => {
-                    setServiceToDelete(service.id);
-                    setServiceToDelete2(service.id);
-                  }}
+                  onMouseEnter={() => setServiceToDelete(svc.id)}
                   onMouseLeave={() => setServiceToDelete(null)}
                 >
                   <span className="owner-service-icon">🛎️</span>
-                  <span className="owner-service-name">{service.name}</span>
-                  {serviceToDelete === service.id && (
+                  <span className="owner-service-name">{svc.name}</span>
+                  {!isAdmin && serviceToDelete === svc.id && (
                     <button
                       className="delete-service-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
+                      onClick={() => {
                         setShowDeleteDialog(true);
+                        setServiceToDelete(svc.id);
+                        setServiceToDelete2(svc.id);
                       }}
                       style={{
                         position: "absolute",
@@ -441,7 +765,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
                       <i
                         className="fa-solid fa-trash"
                         style={{ color: "var(--color2)" }}
-                      ></i>
+                      />
                     </button>
                   )}
                 </div>
@@ -450,30 +774,30 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
               <div className="owner-service-empty">No services available</div>
             )}
           </div>
+
+          {/* Add / Remove Services Modal */}
           {showServicesModal && (
-            <div className="modal-overlay">
-              <div className="modal-content">
+            <div className="service-modal-overlay">
+              <div className="service-modal-content">
                 <div
                   onClick={handleCloseServicesModal}
                   style={{ float: "left" }}
                 >
-                  <CloseButton></CloseButton>
+                  <CloseButton />
                 </div>
-                <h3>All Services</h3>
+                <h3 style={{ textAlign: "end" }}>All Services</h3>
                 <div className="services-grid">
                   {allServices.length > 0 ? (
-                    allServices.map((service) => (
+                    allServices.map((svc) => (
                       <div
+                        key={svc.id}
                         className={`service-card${
-                          selectedServices.includes(service.name)
-                            ? " selected"
-                            : ""
+                          selectedServices.includes(svc.name) ? " selected" : ""
                         }`}
-                        key={service.id}
-                        onClick={() => toggleService(service.name)}
+                        onClick={() => toggleService(svc.name)}
                       >
                         <span className="service-icon">🛎️</span>
-                        <span className="service-name">{service.name}</span>
+                        <span className="service-name">{svc.name}</span>
                       </div>
                     ))
                   ) : (
@@ -483,9 +807,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
                 <div className="service-input">
                   <input
                     type="text"
-                    autocomplete="off"
-                    name="text"
-                    class="new-service-input"
+                    className="new-service-input"
                     placeholder="New Service"
                     value={newService}
                     onChange={(e) => setNewService(e.target.value)}
@@ -498,6 +820,8 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
             </div>
           )}
         </div>
+
+        {/* Delete Service Confirmation */}
         {showDeleteDialog && (
           <ConfirmDialog
             message="Are you sure you want to delete this service?"
@@ -510,9 +834,10 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
               setShowDeleteDialog(false);
               setServiceToDelete(null);
             }}
-            color="false"
           />
         )}
+
+        {/* Owner Pictures Slider (display only) */}
         <div className="owner-pictures-section">
           <h2 className="owner-pictures-title">Pictures</h2>
           <div
@@ -526,7 +851,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
                 className="slider-arrow left"
                 onClick={() => scrollSlider("left")}
               >
-                <i className="fa-solid fa-arrow-left"></i>
+                <i className="fa-solid fa-arrow-left" />
               </button>
             )}
             <div
@@ -548,9 +873,9 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
                     <img
                       className="owner-picture-img"
                       src={
-                        pic.reference && pic.reference.startsWith("http")
+                        pic.reference.startsWith("http")
                           ? pic.reference
-                          : `http://localhost:8000/${pic.reference}`
+                          : `http://127.0.0.1:8000/${pic.reference}`
                       }
                       alt={`Owner pic ${(idx % pictures.length) + 1}`}
                       onError={(e) => {
@@ -569,16 +894,18 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
                 className="slider-arrow right"
                 onClick={() => scrollSlider("right")}
               >
-                <i className="fa-solid fa-arrow-right"></i>
+                <i className="fa-solid fa-arrow-right" />
               </button>
             )}
           </div>
         </div>
-        {owner?.owner_category_id === 3 && packages.length > 0 && (
+
+        {/* Packages (for category_id === 3) */}
+        {owner.owner_category_id === 3 && packages.length > 0 && (
           <div className="owner-services-section">
             <h2 className="owner-services-title">Packages</h2>
             <div className="owner-services-list">
-              {packages.map((pkg, idx) => (
+              {packages.map((pkg) => (
                 <div className="owner-service-card" key={pkg.id}>
                   <div
                     style={{ display: "flex", flexDirection: "column", gap: 4 }}
@@ -603,11 +930,10 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
                       </span>
                     </span>
                     <span style={{ color: "var(--color1)" }}>
-                      <b>Description:</b>
+                      <b>Description:</b>{" "}
                       <span
                         style={{ color: "var(--color2)", fontWeight: "600" }}
                       >
-                        {" "}
                         {pkg.discription && pkg.discription.length > 30
                           ? pkg.discription.slice(0, 30) + "..."
                           : pkg.discription}
@@ -619,11 +945,13 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
             </div>
           </div>
         )}
-        {owner?.owner_category_id === 4 && vehicles.length > 0 && (
+
+        {/* Vehicles (for category_id === 4) */}
+        {owner.owner_category_id === 4 && vehicles.length > 0 && (
           <div className="owner-services-section">
             <h2 className="owner-services-title">Vehicles</h2>
             <div className="owner-services-list">
-              {vehicles.map((v, idx) => (
+              {vehicles.map((v) => (
                 <div className="owner-service-card" key={v.id}>
                   <div
                     style={{ display: "flex", flexDirection: "column", gap: 4 }}
@@ -640,11 +968,10 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
                       </span>
                     </div>
                     <span style={{ color: "var(--color1)" }}>
-                      <b>Description:</b>
+                      <b>Description:</b>{" "}
                       <span
                         style={{ color: "var(--color2)", fontWeight: "w600" }}
                       >
-                        {" "}
                         {v.car_discription && v.car_discription.length > 38
                           ? v.car_discription.slice(0, 38) + "..."
                           : v.car_discription}
@@ -656,8 +983,10 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
             </div>
           </div>
         )}
-        {owner?.owner_category_id === 1 &&
-          details?.accommodation_type === "Hotel" &&
+
+        {/* Hotel Rooms (for category_id === 1 and Hotel) */}
+        {owner.owner_category_id === 1 &&
+          details.accommodation_type === "Hotel" &&
           Array.isArray(data.rooms) &&
           data.rooms.length > 0 && (
             <div className="hotel-rooms-section">
@@ -668,15 +997,19 @@ export default function OwnerDetailsComponent({ id, token, isAdmin = false }) {
                     className="hotel-room-card"
                     key={room.id}
                     style={{ cursor: "pointer" }}
-                    onClick={() => navigate(`/room-details/${room.id}`)}
+                    onClick={() =>
+                      navigate(`/room-details/${room.id}`, {
+                        state: {
+                          ...(isAdmin && { isAdmin: true }),
+                        },
+                      })
+                    }
                     title="Show room details"
                   >
                     <div className="hotel-room-info">
                       <div>
                         <b>Price:</b>{" "}
-                        {room.offer_price !== null &&
-                        room.offer_price !== "" &&
-                        room.offer_price !== 0.0 ? (
+                        {room.offer_price ? (
                           <>
                             <span
                               style={{

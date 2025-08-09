@@ -22,11 +22,7 @@ export default function Packages() {
         const res = await axios.get(`${baseURL}/${GET_ALL_PACKAGE}`,{
           headers: {
             'Content-Type': 'application/json',
-<<<<<<< HEAD
-            'Authorization': 'Bearer ' +"yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd"
-=======
             'Authorization': `Bearer ${token}`
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
             }
         });
         if (res.data && res.data.data) {

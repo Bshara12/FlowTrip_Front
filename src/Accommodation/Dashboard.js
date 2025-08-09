@@ -5,7 +5,6 @@ import "./HomePage.css";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { baseURL,LOGOUT } from "../Api/Api";
 
 export default function DashBourd() {
   const location = useLocation();
@@ -25,7 +24,7 @@ export default function DashBourd() {
   const handleLogout = async () => {
     const token = Cookies.get("authToken");
     try {
-      const response = await fetch(`${baseURL}/${LOGOUT}`, {
+      const response = await fetch("http://127.0.0.1:8000/api/logout", {
         method: "GET",
         headers: {
           Authorization: ` Bearer ${token}`,
@@ -113,6 +112,15 @@ export default function DashBourd() {
           >
             <i className="fas fa-clipboard-list"></i>
             <p>Offers</p>
+          </Link>
+          <Link
+            to="advanced"
+            className={
+              activeLink === "/Accommodation/dashboard/advanced" ? "active-link" : ""
+            }
+          >
+            <i className="fas fa-clipboard-list"></i>
+            <p>Advanced</p>
           </Link>
           
           <div

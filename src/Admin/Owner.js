@@ -18,8 +18,7 @@ export default function Owner() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
-<<<<<<< HEAD
-  const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
+  const token = TOKEN;
 
   useEffect(() => {
     const loadInfo = async () => {
@@ -37,22 +36,6 @@ export default function Owner() {
           setError(err);
           setLoading(false);
         });
-=======
-  const token = TOKEN;
-
-  useEffect(() => {
-    const loadInfo = async () => {
-      try {
-        const [ownersRes, countriesRes, categoriesRes] = await Promise.all([
-          axios.get(`${baseURL}/${GET_ALL_OWNERS}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get(`${baseURL}/${GET_ALL_COUNTRIES}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get(`${baseURL}/${GET_ALL_OWNER_CATEGORIES}`),
-        ]);
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
       await axios
         .get("http://127.0.0.1:8000/api/GetAllCountries", {
@@ -94,7 +77,6 @@ export default function Owner() {
       if (selectedCountry) body.country = selectedCountry;
       if (categoryIdToUse) body.category_id = categoryIdToUse;
 
-<<<<<<< HEAD
       const res = await axios.post(
         "http://127.0.0.1:8000/api/AdminSearch",
         body,
@@ -109,13 +91,6 @@ export default function Owner() {
       } else {
         setOwners([]);
       }
-=======
-      const res = await axios.post(`${baseURL}/${ADMIN_SEARCH}`, body, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setOwners(res.data.data || []);
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
     } catch (err) {
       setError(err);
     } finally {
@@ -132,7 +107,6 @@ export default function Owner() {
         if (search) body.name = search;
         if (selectedCountry && !clearCountry) body.country = selectedCountry;
         if (selectedCategory && !clearCategory) body.category_id = selectedCategoryId;
-<<<<<<< HEAD
         
         const res = await axios.post(
           "http://127.0.0.1:8000/api/AdminSearch",
@@ -149,17 +123,6 @@ export default function Owner() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-=======
-
-        const res = await axios.post(`${baseURL}/${ADMIN_SEARCH}`, body, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        setOwners(res.data.data || []);
-      } else {
-        const res = await axios.get(`${baseURL}/${GET_ALL_OWNERS}`, {
-          headers: { Authorization: `Bearer ${token}` },
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
         });
         setOwners(res.data.data);
       }
@@ -182,9 +145,9 @@ export default function Owner() {
 
   return (
     <div className="fs">
-      <div className="flex">
+      <div className="search-flex">
         <div className="search-bar-modern">
-          <div className="input-container">
+          <div className="owner-input-container">
             <input
               placeholder="Add Item"
               type="text"
@@ -192,8 +155,8 @@ export default function Owner() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <div className="menu country-menu">
-            <div className="item">
+          <div className="owner-menu country-menu">
+            <div className="owner-item">
               <a
                 href="#"
                 className="link"
@@ -215,11 +178,11 @@ export default function Owner() {
                   </g>
                 </svg>
               </a>
-              <div className="submenu">
-                <div className="submenu-item">
+              <div className="owner-submenu">
+                <div className="owner-submenu-item">
                   <a
                     href="#"
-                    className="submenu-link"
+                    className="owner-submenu-link"
                     onClick={(e) => {
                       e.preventDefault();
                       setSelectedCountry("");
@@ -230,10 +193,10 @@ export default function Owner() {
                   </a>
                 </div>
                 {countries.map((country) => (
-                  <div className="submenu-item" key={country.id}>
+                  <div className="owner-submenu-item" key={country.id}>
                     <a
                       href="#"
-                      className="submenu-link"
+                      className="owner-submenu-link"
                       onClick={(e) => {
                         e.preventDefault();
                         setSelectedCountry(country.name);
@@ -246,15 +209,15 @@ export default function Owner() {
               </div>
             </div>
           </div>
-          <button className="button" onClick={handleSearch}>
+          <button className="owner-search-button" onClick={handleSearch}>
             <svg viewBox="0 0 512 512" className="svgIcon">
               <path d="M505 442.7L405.3 343c28.4-34.9 45.5-79 45.5-127C450.8 96.5 354.3 0 225.4 0S0 96.5 0 216.1s96.5 216.1 216.1 216.1c48 0 92.1-17.1 127-45.5l99.7 99.7c4.5 4.5 10.6 7 17 7s12.5-2.5 17-7c9.4-9.4 9.4-24.6 0-34zM216.1 392.2c-97.2 0-176.1-78.9-176.1-176.1S118.9 39.9 216.1 39.9s176.1 78.9 176.1 176.1-78.9 176.1-176.1 176.1z" />
             </svg>
           </button>
         </div>
 
-        <div className="menu country-menu">
-          <div className="item">
+        <div className="owner-menu country-menu">
+          <div className="owner-item">
             <a
               href="#"
               className="link"
@@ -272,11 +235,11 @@ export default function Owner() {
                 </g>
               </svg>
             </a>
-            <div className="submenu">
-              <div className="submenu-item">
+            <div className="owner-submenu">
+              <div className="owner-submenu-item">
                 <a
                   href="#"
-                  className="submenu-link"
+                  className="owner-submenu-link"
                   onClick={(e) => {
                     e.preventDefault();
                     setSelectedCategory("");
@@ -288,10 +251,10 @@ export default function Owner() {
                 </a>
               </div>
               {categories.map((category) => (
-                <div className="submenu-item" key={category.id}>
+                <div className="owner-submenu-item" key={category.id}>
                   <a
                     href="#"
-                    className="submenu-link"
+                    className="owner-submenu-link"
                     onClick={async (e) => {
                       e.preventDefault();
                       setSelectedCategory(category.name);

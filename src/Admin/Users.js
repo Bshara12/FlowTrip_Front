@@ -14,12 +14,7 @@ export default function Users() {
   const [search, setSearch] = useState("");
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
-
-<<<<<<< HEAD
-  const token = "yPlMu9DzUniMPPQSqt81DD2YMmSv1zhX7RMGS74i6b055edd";
-=======
   const token = TOKEN;
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
   useEffect(() => {
     const loadInfo = async () => {
@@ -136,9 +131,9 @@ export default function Users() {
 
   return (
     <div className="fs">
-      <div className="flex">
-        <div className="search-bar-modern">
-          <div className="input-container">
+      <div className="owner-flex">
+        <div className="search-flex users">
+          <div className="owner-input-container">
             <input
               placeholder="Enter name"
               type="text"
@@ -152,7 +147,7 @@ export default function Users() {
               }}
             />
           </div>
-          <button className="button" onClick={handleSearch}>
+          <button className="owner-search-button users" onClick={handleSearch}>
             <svg viewBox="0 0 512 512" className="svgIcon">
               <path d="M505 442.7L405.3 343c28.4-34.9 45.5-79 45.5-127C450.8 96.5 354.3 0 225.4 0S0 96.5 0 216.1s96.5 216.1 216.1 216.1c48 0 92.1-17.1 127-45.5l99.7 99.7c4.5 4.5 10.6 7 17 7s12.5-2.5 17-7c9.4-9.4 9.4-24.6 0-34zM216.1 392.2c-97.2 0-176.1-78.9-176.1-176.1S118.9 39.9 216.1 39.9s176.1 78.9 176.1 176.1-78.9 176.1-176.1 176.1z" />
             </svg>

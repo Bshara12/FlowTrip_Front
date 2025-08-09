@@ -85,7 +85,6 @@ export default function DashBourd() {
             }
           >
             <i className="fas fa-clipboard-list"></i>
-            <i class="fas fa-clipboard-list"></i>
             <p>Requists</p>
           </Link>
           <Link
@@ -95,7 +94,6 @@ export default function DashBourd() {
             }
           >
             <i className="fas fa-cubes"></i>
-            <i class="fas fa-cubes"></i>
 
             <p>Packages</p>
           </Link>
@@ -106,8 +104,6 @@ export default function DashBourd() {
             }
           >
             <i className="fas fa-user-tie"></i>
-            <i class="fas fa-user-tie"></i>
-
             <p>Owners</p>
           </Link>
 
@@ -118,11 +114,9 @@ export default function DashBourd() {
             }
           >
             <i className="fas fa-chess-king"></i>
-            <i class="fas fa-chess-king"></i>
 
             <p>SubAdmin</p>
           </Link>
-
 
           <Link
             to="/Admin/dashbord/users"
@@ -131,7 +125,6 @@ export default function DashBourd() {
             }
           >
             <i className="fas fa-users"></i>
-
             <p>Users</p>
           </Link>
 
@@ -142,7 +135,6 @@ export default function DashBourd() {
             }
           >
             <i className="fas fa-running"></i>
-            <i class="fas fa-running"></i>
 
             <p>Activitys</p>
           </Link>
@@ -153,8 +145,7 @@ export default function DashBourd() {
               activeLink === "/Admin/dashbord/catigory" ? "active-link" : ""
             }
           >
-            <i className="fas fa-layer-group"></i> 
-            <i class="fas fa-layer-group"></i> 
+            <i className="fas fa-layer-group"></i>
             <p>Catigory</p>
           </Link>
 

@@ -17,11 +17,7 @@ export default function ShowRecords() {
   const [originalRecords, setOriginalRecords] = useState([]);
   const [originalRoomRecords, setOriginalRoomRecords] = useState([]);
 
-<<<<<<< HEAD
-  var token = "bOJYVAykGuPS02EwMu3KndnhrJ2Ff6t6yMP1uE9O68ab63f0";
-=======
   var token = TOKEN;
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
 
   useEffect(() => {
     const checkUserType = async () => {

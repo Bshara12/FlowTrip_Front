@@ -16,7 +16,7 @@ import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
 import Verification from "./Auth/Verification";
 import OwnerCategoryList from "./Auth/OwnerCategoryList";
 import OwnerDetails from "./Admin/OwnerDetails";
-import RoomDetails from "./Admin/RoomDetails";
+import RoomDetails from "./Accommodation/RoomDetails";
 import DashBoard2 from "./Accommodation/Dashboard";
 import Profile from "./Accommodation/Profile";
 import ShowRecords from "./Accommodation/ShowRecords";
@@ -25,7 +25,7 @@ import RoomsHome from "./Accommodation/RoomsHome";
 import SubAdmin from "./Admin/SubAdmin";
 import Users from "./Admin/Users";
 import AddRoom from "./Accommodation/AddRoom";
-
+import Advanced from './Accommodation/Advanced'
 import Plans from "./Airline/plans";
 import ShowAllPlans from "./Airline/Showallplans";
 import PlanDetails from "./Airline/planditels";
@@ -70,6 +70,7 @@ function App() {
           <Route path="records" element={<ShowRecords />} />
           <Route path="rooms" element={<RoomsHome />} />
           <Route path="offers" element={<Offers />} />
+          <Route path="advanced" element={<Advanced />} />
         </Route>
         <Route path="room-details/:id" element={<RoomDetails />} />
         <Route path="add-room" element={<AddRoom />} />

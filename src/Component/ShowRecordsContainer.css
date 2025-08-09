@@ -21,7 +21,7 @@
 }
 
 /* Header Section */
-.header-section {
+.show-records-header-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -36,14 +36,14 @@
   overflow: hidden;
 }
 
-.header-left {
+.show-records-header-left {
   display: flex;
   align-items: flex-end;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.header-section::before {
+.show-records-header-section::before {
   content: '';
   position: absolute;
   top: -50%;
@@ -120,7 +120,7 @@
   transform-origin: bottom right;
 }
 
-.main-title {
+.show-records-main-title {
   font-size: 2.2rem;
   font-weight: 800;
   background: linear-gradient(135deg, var(--color2), var(--color4), var(--color4));
@@ -314,7 +314,7 @@
 }
 
 /* Card Header - Horizontal Layout */
-.card-header {
+.show-records-card-header {
   display: flex;
   align-items: center;
   margin-bottom: 1.2rem;
@@ -323,7 +323,7 @@
   position: relative;
 }
 
-.user-avatar {
+.show-records-user-avatar {
   width: 50px;
   height: 50px;
   background: linear-gradient(135deg, var(--color3), var(--color3), var(--color4));
@@ -341,7 +341,7 @@
   flex-shrink: 0;
 }
 
-.user-avatar::before {
+.show-records-user-avatar::before {
   content: '';
   position: absolute;
   top: 0;
@@ -393,7 +393,7 @@
 }
 
 /* Card Content - Horizontal Layout */
-.card-content {
+.show-records-card-content {
   margin-bottom: 1.2rem;
   flex: 1;
 }
@@ -470,7 +470,7 @@
 }
 
 /* Card Footer - Horizontal Layout */
-.card-footer {
+.show-records-card-footer {
   display: flex;
   gap: 0.8rem;
   padding-top: 1rem;
@@ -544,19 +544,19 @@
     padding: 1rem;
   }
   
-  .header-section {
+  .show-records-header-section {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
     padding: 1.5rem;
   }
 
-  .header-left {
+  .show-records-header-left {
     flex-direction: column;
     gap: 1rem;
   }
   
-  .main-title {
+  .show-records-main-title {
     font-size: 1.8rem;
   }
   
@@ -574,7 +574,7 @@
     gap: 0.6rem;
   }
   
-  .card-footer {
+  .show-records-card-footer {
     flex-direction: column;
   }
 }
@@ -584,13 +584,13 @@
     padding: 1rem;
   }
   
-  .card-header {
+  .show-records-card-header {
     flex-direction: column;
     text-align: center;
     gap: 0.8rem;
   }
   
-  .user-avatar {
+  .show-records-user-avatar {
     margin-right: 0;
   }
   
@@ -598,7 +598,7 @@
     align-self: center;
   }
   
-  .main-title {
+  .show-records-main-title {
     font-size: 1.5rem;
   }
 }

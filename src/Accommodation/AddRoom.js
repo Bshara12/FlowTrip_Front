@@ -3,14 +3,10 @@ import { useNavigate } from "react-router-dom";
 import "./AddRoom.css";
 import axios from "axios";
 import Loader from "../Component/Loader";
-import { baseURL,ADD_ROOM ,TOKEN} from "../Api/Api";
+import { baseURL, ADD_ROOM, TOKEN } from "../Api/Api";
 
 export default function AddRoom() {
-<<<<<<< HEAD
-  var token = "bOJYVAykGuPS02EwMu3KndnhrJ2Ff6t6yMP1uE9O68ab63f0";
-=======
-  var token =TOKEN;
->>>>>>> 192ae829312c3ed5f9f2dd98cd4963df58110318
+  var token = TOKEN;
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -45,19 +41,17 @@ export default function AddRoom() {
     try {
       if (images.length > 0) {
         const formDataToSend = new FormData();
-        formDataToSend.append('price', formData.price);
-        formDataToSend.append('area', formData.area);
-        formDataToSend.append('people_count', formData.people_count);
-        formDataToSend.append('room_number', formData.room_number);
-        formDataToSend.append('description', formData.description);
+        formDataToSend.append("price", formData.price);
+        formDataToSend.append("area", formData.area);
+        formDataToSend.append("people_count", formData.people_count);
+        formDataToSend.append("room_number", formData.room_number);
+        formDataToSend.append("description", formData.description);
         images.forEach((image) => {
-          formDataToSend.append('images[]', image);
+          formDataToSend.append("images[]", image);
         });
 
-
-
         const response = await axios.post(
-          `${baseURL}`/`${ADD_ROOM}`,
+          `${baseURL}` / `${ADD_ROOM}`,
           formDataToSend,
           {
             headers: {
@@ -67,10 +61,10 @@ export default function AddRoom() {
         );
 
         if (response.status == 200) {
-          console.log(response)
+          console.log(response);
           navigate("/Accommodation/dashboard/rooms");
         } else {
-          setError('Failed to add room');
+          setError("Failed to add room");
         }
       } else {
         const response = await axios.post(
@@ -85,7 +79,7 @@ export default function AddRoom() {
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           }
         );
@@ -93,7 +87,7 @@ export default function AddRoom() {
         if (response.status == 200) {
           navigate("/Accommodation/dashboard/rooms");
         } else {
-          setError('Failed to add room');
+          setError("Failed to add room");
         }
       }
     } catch (err) {
@@ -115,11 +109,13 @@ export default function AddRoom() {
     setError("");
   };
 
-  return loading ? <Loader/> : (
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="add-room-container">
-      <div className="form-container">
-        <div className="form">
-          <span className="heading">Add New Room</span>
+      <div className="add-room-form-container">
+        <div className="add-room-form">
+          <span className="add-room-heading">Add New Room</span>
 
           {error && <div className="error-message">{error}</div>}
 
@@ -130,7 +126,7 @@ export default function AddRoom() {
               name="room_number"
               value={formData.room_number}
               onChange={handleInputChange}
-              className="input"
+              className="add-room-input"
               required
               min={1}
             />
@@ -141,7 +137,7 @@ export default function AddRoom() {
               name="price"
               value={formData.price}
               onChange={handleInputChange}
-              className="input"
+              className="add-room-input"
               required
               min={1}
             />
@@ -152,7 +148,7 @@ export default function AddRoom() {
               name="people_count"
               value={formData.people_count}
               onChange={handleInputChange}
-              className="input"
+              className="add-room-input"
               required
               min={1}
             />
@@ -163,7 +159,7 @@ export default function AddRoom() {
               name="area"
               value={formData.area}
               onChange={handleInputChange}
-              className="input"
+              className="add-room-input"
               required
               min={1}
             />
@@ -175,7 +171,7 @@ export default function AddRoom() {
               name="description"
               value={formData.description}
               onChange={handleInputChange}
-              className="textarea"
+              className="add-room-textarea"
               required
             />
 
@@ -189,20 +185,20 @@ export default function AddRoom() {
                 multiple
                 accept="image/*"
                 onChange={handleImageChange}
-                className="image-input"
+                className="add-room-image-input"
               />
               {images.length > 0 && (
-                <div className="selected-images">
+                <div className="add-room-selected-images">
                   <p>Selected {images.length} image(s)</p>
-                  <div className="image-preview">
+                  <div className="add-room-image-preview">
                     {images.map((image, index) => (
-                      <div key={index} className="image-preview-item">
+                      <div key={index} className="add-room-image-preview-item">
                         <img
                           src={URL.createObjectURL(image)}
                           alt={`Preview ${index + 1}`}
-                          className="preview-image"
+                          className="add-room-preview-image"
                         />
-                        <span className="image-name">{image.name}</span>
+                        <span className="add-room-image-name">{image.name}</span>
                       </div>
                     ))}
                   </div>
@@ -210,15 +206,15 @@ export default function AddRoom() {
               )}
             </div>
 
-            <div className="button-container">
-              <button type="submit" className="send-button" disabled={loading}>
+            <div className="add-room-button-container">
+              <button type="submit" className="add-room-send-button" disabled={loading}>
                 {loading ? "Adding..." : "Add Room"}
               </button>
-              <div className="reset-button-container">
+              <div className="add-room-reset-button-container">
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="reset-button"
+                  className="add-room-reset-button"
                 >
                   Reset
                 </button>

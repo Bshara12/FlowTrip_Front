@@ -3,9 +3,9 @@ import "./OwnerCard.css";
 
 const SubAdminCard = ({ name, email, phoneNumber, style, onClick, buttonText}) => {
   return (
-    <div className="card" style={style} onClick={onClick}>
-      <div className="card-image"></div>
-      <div className="card-description">
+    <div className="owner-card" style={style} onClick={onClick}>
+      <div className="owner-card-image"></div>
+      <div className="owner-card-description">
         <p className="text-title">{name}</p>
         <p className="text-body">
           <span className="info-row">
@@ -20,7 +20,7 @@ const SubAdminCard = ({ name, email, phoneNumber, style, onClick, buttonText}) =
           </span>
         </p>
       </div>
-      <div className="card-review">
+      <div className="owner-card-review">
         {buttonText || "Review"}
       </div>
     </div>

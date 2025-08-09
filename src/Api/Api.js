@@ -49,6 +49,7 @@ export const DELETE_ACTIVITY ="deleteactivity";
 
 
 export const FILTER_USERS="filterusers";
+export const FILTER_SUBADMINS="filterSubAdmins";
 export const ADMIN_SEARCH ="AdminSearch";
 
 //airplane api
@@ -92,4 +93,9 @@ export const EDIT_VEHICLE="editVehicle";
 
 
 //token
-export const TOKEN = localStorage.getItem("token");
+// Hotel
+// HhjwOdBKNsY72Ilf9uIflG1dt59aqSRfKoBUo1i0e643e697
+// Admin
+// iByUvfk1dIx5Sx2jxfVKrHFcaaZbGCKfdEUu49R7fd0f350b
+export const TOKEN = "iByUvfk1dIx5Sx2jxfVKrHFcaaZbGCKfdEUu49R7fd0f350b";
+// export const TOKEN = localStorage.getItem("token");

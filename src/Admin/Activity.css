@@ -33,7 +33,7 @@
   max-width: 1000px;
 }
 
-.modal-overlay {
+.activity-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -46,7 +46,7 @@
   z-index: 1000;
 }
 
-.modal-content {
+.activity-modal-content {
   background-color: var(--color5);
   padding: 30px;
   border-radius: 15px;
@@ -62,7 +62,7 @@
   color: var(--color1);
 }
 
-.modal-content input {
+.activity-modal-content input {
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
@@ -71,13 +71,13 @@
   font-size: 16px;
 }
 
-.modal-buttons {
+.activity-modal-buttons {
   display: flex;
   justify-content: space-between;
   gap: 10px;
 }
 
-.animated-btn {
+.activity-animated-btn {
   flex: 1;
   padding: 10px 15px;
   font-size: 16px;
@@ -89,20 +89,20 @@
   transition: transform 0.2s, background-color 0.3s;
 }
 
-.animated-btn:hover {
+.activity-animated-btn:hover {
   background-color: var(--color1);
   transform: scale(1.05);
 }
 
-.animated-btn:active {
+.activity-animated-btn:active {
   transform: scale(0.95);
 }
 
-.animated-btn.cancel {
+.activity-animated-btn.activity-cancel {
   background-color: rgb(203, 72, 72);
 }
 
-.animated-btn.cancel:hover {
+.activity-animated-btn.activity-cancel:hover {
   background-color: rgb(172, 43, 43);
 }
 

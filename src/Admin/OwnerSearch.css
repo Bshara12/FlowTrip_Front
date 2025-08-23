@@ -1,17 +1,22 @@
-
-.fs{
+.fs {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.flex {
+.search-flex {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 40px 50px 0 50px;
+}
 
+.search-flex.users {
+  justify-content: flex-start;
+}
+.owner-search-button.users{
+  margin-left: 1rem;
 }
 
 /* Modern search bar styles */
@@ -19,47 +24,41 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.input-container {
+.owner-input-container {
   display: flex;
   background: white;
   border-radius: 1rem;
   background: linear-gradient(173deg, var(--color1) 0%, var(--color2) 100%);
-  box-shadow:
-    10px 10px 20px var(--color1),
-    -10px -10px 40px var(--color2);
   padding: 0.3rem;
   gap: 0.3rem;
   min-width: 250px;
 }
 
-.input-container input {
+.owner-input-container input {
   border-radius: 0.8rem;
   background: var(--color1);
-  box-shadow:
-    inset 5px 5px 10px var(--color2),
-    inset -5px -5px 10px var(--color2),
-    0px 0px 20px var(--color2),
+  box-shadow: inset 5px 5px 10px var(--color2),
+    inset -5px -5px 10px var(--color2), 0px 0px 20px var(--color2),
     0px 0px 20px var(--color2);
   width: 100%;
   flex-basis: 100%;
   padding: 1rem;
   border: none;
   border: 1px solid transparent;
-  color:var(--color4);
+  color: var(--color4);
   transition: all 0.2s ease-in-out;
   font-size: 17px;
 }
 
-.input-container input:focus {
+.owner-input-container input:focus {
   border: 1px solid var(--color4);
   outline: none;
-  box-shadow:
-    inset 0px 0px 10px var(--color3),
-    inset 0px 0px 10px var(--color2),
-    0px 0px 100px var(--color2),
-    0px 0px 100px var(--color4);
+  box-shadow: inset 0px 0px 10px var(--color3), inset 0px 0px 10px var(--color2),
+    0px 0px 100px var(--color2), 0px 0px 100px var(--color4);
 }
 
 .country-dropdown {
@@ -81,8 +80,8 @@
   outline: none;
 }
 
-/* From Uiverse.io by vinodjangid07 */ 
-.button {
+/* From Uiverse.io by vinodjangid07 */
+.owner-search-button {
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -94,48 +93,48 @@
   justify-content: center;
   box-shadow: 0px 0px 20px var(--color4);
   cursor: pointer;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   overflow: hidden;
   position: relative;
 }
 
 .svgIcon {
   width: 12px;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 
 .svgIcon path {
   fill: var(--color4);
 }
 
-.button:hover {
+.owner-search-button:hover {
   width: 140px;
   border-radius: 50px;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   background-color: var(--color2);
   align-items: center;
 }
 
-.button:hover .svgIcon {
+.owner-search-button:hover .svgIcon {
   width: 50px;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   transform: translateY(60%);
 }
 
-.button::before {
+.owner-search-button::before {
   position: absolute;
   top: -20px;
   content: "Search";
   color: var(--color4);
-  transition: all .3s linear;
+  transition: all 0.3s linear;
   font-size: 2px;
 }
 
-.button:hover::before {
+.owner-search-button:hover::before {
   font-size: 13px;
   opacity: 1;
   transform: translateY(30px);
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 
 @media (max-width: 600px) {
@@ -144,14 +143,16 @@
     gap: 0.7rem;
     align-items: stretch;
   }
-  .input-container, .country-dropdown, .button {
+  .owner-input-container,
+  .country-dropdown,
+  .owner-search-button {
     width: 100%;
     min-width: 0;
     margin-left: 0;
   }
 }
 
-.menu {
+.owner-menu {
   font-size: 16px;
   line-height: 1.6;
   color: var(--color1);
@@ -160,11 +161,11 @@
   list-style: none;
 }
 
-.menu .two{
-  align-self:  flex-end
+.owner-menu .two {
+  align-self: flex-end;
 }
 
-.menu a {
+.owner-menu a {
   text-decoration: none;
   color: inherit;
   font-family: inherit;
@@ -172,7 +173,8 @@
   line-height: inherit;
 }
 
-.menu .link {
+.owner-menu .link {
+  width: 200px;
   position: relative;
   display: flex;
   align-items: center;
@@ -181,10 +183,11 @@
   padding: 12px 36px;
   border-radius: 16px;
   overflow: hidden;
+  background-color: var(--color4);
   transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.menu .link::after {
+.owner-menu .link::after {
   content: "";
   position: absolute;
   top: 0;
@@ -198,18 +201,18 @@
   transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.menu .link svg {
+.owner-menu .link svg {
   width: 14px;
   height: 14px;
   fill: var(--color1);
   transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.menu .item {
+.owner-menu .owner-item {
   position: relative;
 }
 
-.menu .item .submenu {
+.owner-menu .owner-item .owner-submenu {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -232,15 +235,15 @@
   overflow-y: auto;
 }
 
-.menu .item .submenu::-webkit-scrollbar {
+.owner-menu .owner-item .owner-submenu::-webkit-scrollbar {
   display: none;
 }
-.menu .item .submenu::-webkit-scrollbar-thumb {
+.owner-menu .owner-item .owner-submenu::-webkit-scrollbar-thumb {
   background: var(--color4);
   border-radius: 8px;
 }
 
-.menu .item:hover .submenu {
+.owner-menu .owner-item:hover .owner-submenu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -249,27 +252,31 @@
   border-color: var(--color5);
 }
 
-.menu .item:hover .link {
+.owner-menu .owner-item:hover .link {
   color: var(--color2);
   border-radius: 16px 16px 0 0;
 }
 
-.menu .item:hover .link::after {
+.owner-menu .owner-item.dd:hover .link {
+  border-radius: 16px;
+}
+
+.owner-menu .owner-item:hover .link::after {
   transform: scaleX(1);
   transform-origin: right;
 }
 
-.menu .item:hover .link svg {
+.owner-menu .owner-item:hover .link svg {
   fill: var(--color2);
   transform: rotate(-180deg);
 }
 
-.submenu .submenu-item {
+.owner-submenu .owner-submenu-item {
   width: 100%;
   transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.submenu .submenu-link {
+.owner-submenu .owner-submenu-link {
   display: block;
   padding: 12px 24px;
   width: 100%;
@@ -278,11 +285,11 @@
   transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.submenu .submenu-item:last-child .submenu-link {
+.owner-submenu .owner-submenu-item:last-child .owner-submenu-link {
   border-bottom: none;
 }
 
-.submenu .submenu-link::before {
+.owner-submenu .owner-submenu-link::before {
   content: "";
   position: absolute;
   top: 0;
@@ -296,11 +303,15 @@
   transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.submenu .submenu-link:hover:before {
+.owner-submenu .owner-submenu-link:hover:before {
   transform: scaleX(1);
   transform-origin: right;
 }
 
-.submenu .submenu-link:hover {
+.owner-submenu .owner-submenu-link:hover {
   color: var(--color4);
+}
+.CountryWord{
+  color:var(--color4);
+  font-size: 14px;
 }

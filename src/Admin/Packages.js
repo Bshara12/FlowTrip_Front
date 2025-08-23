@@ -5,6 +5,10 @@ import "./Packages.css";
 import Button from "../Component/AddButton";
 import PackageCard from "../Component/PackageCard";
 import loadingImage from "../Assets/Loading_icon.gif"; 
+import Loader from "../Component/Loader";
+import { baseURL, GET_ALL_PACKAGE, TOKEN } from "../Api/Api";
+
+  const token = TOKEN;
 
 export default function Packages() {
   const navigate = useNavigate();
@@ -23,11 +27,15 @@ export default function Packages() {
       }
 
       try {
-        const res = await axios.get("http://127.0.0.1:8000/api/getallpackage",{
+        const res = await axios.get(`${baseURL}/${GET_ALL_PACKAGE}`,{
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
-          }
+// <<<<<<< HEAD
+//           }
+// =======
+            }
+// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
         });
         if (res.data && res.data.data) {
           setPackages(res.data.data);
@@ -56,11 +64,15 @@ export default function Packages() {
       <h1 style={{ margin: "10px 0 0 30px" }}>Packages</h1>
       <div className="cards">
         {loading ? (
-          <img
-            src={loadingImage}
-            alt="Loading..."
-            style={{ width: "100px", margin: "50px auto" }}
-          />
+         <>
+  <Loader />
+  <img
+    src={loadingImage}
+    alt="Loading..."
+    style={{ width: "100px", margin: "50px auto" }}
+  />
+</>
+
         ) : (
           packages.map((pkg) => (
             <PackageCard

@@ -4,16 +4,18 @@ import axios from "axios";
 import VehicleCard from "../Component/VehicleCard";
 import { useNavigate } from "react-router-dom";
 import Button from "../Component/AddButton";
+import { baseURL, GET_ALL_VICLYFORUSER, TOKEN, VEHICLE_OWNER } from "../Api/Api";
 
 const Vehiclys = () => {
   const [vehicles, setVehicles] = useState([]);
   const navigate = useNavigate();
   const userId = 7;
-  const token = "2|XiOK7khnh4qRbcThf9jLcrn4KMLtdH8EPzWRHeQSad1bea29";
-
+  const token = TOKEN;
+console.log("first");
+console.log(token);
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/vehicleowner/getAllViclyForuser/${userId}`, {
+      .get(`${baseURL}/${VEHICLE_OWNER}/${GET_ALL_VICLYFORUSER}/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

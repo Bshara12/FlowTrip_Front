@@ -5,6 +5,7 @@ import "./DashBourd.css";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { baseURL, LOGOUT } from "../Api/Api";
 
 export default function DashBourd() {
   const location = useLocation();
@@ -24,7 +25,7 @@ export default function DashBourd() {
   const handleLogout = async () => {
     const token = Cookies.get("authToken");
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/logout", {
+      const response = await fetch(`${baseURL}/${LOGOUT}`, {
         method: "GET",
         headers: {
           Authorization: ` Bearer ${token}`,
@@ -103,7 +104,6 @@ export default function DashBourd() {
             }
           >
             <i className="fas fa-user-tie"></i>
-
             <p>Owners</p>
           </Link>
 
@@ -116,6 +116,16 @@ export default function DashBourd() {
             <i className="fas fa-chess-king"></i>
 
             <p>SubAdmin</p>
+          </Link>
+
+          <Link
+            to="/Admin/dashbord/users"
+            className={
+              activeLink === "/Admin/dashbord/users" ? "active-link" : ""
+            }
+          >
+            <i className="fas fa-users"></i>
+            <p>Users</p>
           </Link>
 
           <Link
@@ -135,7 +145,7 @@ export default function DashBourd() {
               activeLink === "/Admin/dashbord/catigory" ? "active-link" : ""
             }
           >
-            <i className="fas fa-layer-group"></i> 
+            <i className="fas fa-layer-group"></i>
             <p>Catigory</p>
           </Link>
 

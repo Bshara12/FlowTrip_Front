@@ -10,6 +10,7 @@ import ConfirmDialog from "./ConfirmDialog";
 import CategoryPopup from "../Admin/CategoryPopup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ACCEPT_REQUEST, baseURL, DELETE_REQUEST, SHOW_REQUEST, TOKEN } from "../Api/Api";
 
 const RequestDetails = () => {
   const { id } = useParams();
@@ -19,7 +20,11 @@ const RequestDetails = () => {
   const [showCategoryPopup, setShowCategoryPopup] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const token = localStorage.getItem("token");
+// <<<<<<< HEAD
+//   const token = localStorage.getItem("token");
+// =======
+  const token = TOKEN;
+// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -33,7 +38,7 @@ const RequestDetails = () => {
 
       try {
         const res = await axios.get(
-          `http://127.0.0.1:8000/api/ShowRequest/${id}`,
+         `${baseURL}/${SHOW_REQUEST}/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -67,7 +72,7 @@ const RequestDetails = () => {
     }
 
     try {
-      await axios.get(`http://127.0.0.1:8000/api/AcceptRequest/${id}`, {
+      await axios.get(`${baseURL}/${ACCEPT_REQUEST}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -103,7 +108,7 @@ const RequestDetails = () => {
     }
 
     try {
-      await axios.get(`http://127.0.0.1:8000/api/DeleteRequest/${id}`, {
+      await axios.get(`${baseURL}/${DELETE_REQUEST}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -144,6 +149,8 @@ const RequestDetails = () => {
 
   if (loading) return <p className="request-loading">Loading...</p>;
   if (!request) return <p className="request-error">Failed to load data.</p>;
+  if (loading) return <p className="loading">Loading...</p>;
+  if (!request) return <p className="error">Failed to load data.</p>;
 
   const { request: req, user_name, email, phone_number } = request;
 
@@ -160,7 +167,18 @@ const RequestDetails = () => {
         </section>
 
         <section className="request-info-section">
+                </section>
+
           <h3 className="request-info-title">Request Details</h3>
+        <section className="request-section">
+          <h3 className="section-title">Owner Information</h3>
+          <p className="section-text">Name: {user_name}</p>
+          <p className="section-text">Email: {email}</p>
+          <p className="section-text">Phone: {phone_number}</p>
+        </section>
+
+        <section className="request-section">
+          <h3 className="section-title">Request Details</h3>
           <p><strong className="field-label">Description:</strong> {req.description}</p>
           <p><strong className="field-label">Location:</strong> {req.location}</p>
           <p><strong className="field-label">Category:</strong> {req.owner_category_id}</p>

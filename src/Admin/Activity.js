@@ -5,19 +5,23 @@ import Button from "../Component/AddButton";
 import ActivityCard from "../Component/ActivityCard";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { ADD_ACTIVITY, baseURL,DELETE_ACTIVITY,GET_ALL_ACTIVITY, TOKEN } from "../Api/Api";
 const Activity = () => {
   const [activities, setActivities] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newActivityName, setNewActivityName] = useState("");
   const [confirmDeleteData, setConfirmDeleteData] = useState(null);
   const modalRef = useRef(null);
+// <<<<<<< HEAD
 
-  const token = "4|PCc1qvBuuP7iWyayeJhQDMAsq2WnUY5MGAmu7Lkx2ebc86ed";
+//   const token = "4|PCc1qvBuuP7iWyayeJhQDMAsq2WnUY5MGAmu7Lkx2ebc86ed";
+// =======
+  const token = TOKEN;
+// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
   const fetchActivities = () => {
     axios
-      .get("http://127.0.0.1:8000/api/getAllActivity", {
+      .get(`${baseURL}/${GET_ALL_ACTIVITY}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -45,17 +49,17 @@ const Activity = () => {
   const confirmDelete = () => {
     const { id, name } = confirmDeleteData;
     axios
-      .delete(`http://127.0.0.1:8000/api/deleteactivity/${id}`, {
+      .delete(`${baseURL}/${DELETE_ACTIVITY}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then(() => {
-        toast.success(`تم حذف النشاط "${name}" بنجاح`);
+        toast.success("deleted Successfully");
         setActivities((prev) => prev.filter((act) => act.id !== id));
       })
       .catch((error) => {
-        toast.error("فشل في حذف النشاط");
+        toast.error(error);
         console.error(error);
       })
       .finally(() => {
@@ -69,30 +73,30 @@ const Activity = () => {
 
   const handleAddActivity = () => {
     if (newActivityName.trim() === "") {
-      toast.error("يرجى إدخال اسم النشاط.");
+      toast.error("Enter activity name");
       return;
     }
 
     axios
       .post(
-        "http://127.0.0.1:8000/api/addActivity",
+        `${baseURL}/${ADD_ACTIVITY}`,
         { name: newActivityName },
         {
           headers: {
             "Content-Type": "application/json",
             Authorization:
-              "Bearer " + "1|lIqv1X1fZ4XjqQk9Wt7wDWYKoHqznzN1tNx92WJ6319fc32f",
+              `Bearer ${token}`,
           },
         }
       )
       .then(() => {
-        toast.success("تمت إضافة النشاط بنجاح");
+        toast.success("Success");
         setNewActivityName("");
         setShowModal(false);
         fetchActivities();
       })
       .catch((error) => {
-        toast.error(`خطأ: ${error.message}`);
+        toast.error(`${error.message}`);
         console.log(error.message);
       });
   };
@@ -134,8 +138,8 @@ const Activity = () => {
       </div>
 
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content" ref={modalRef}>
+        <div className="activity-modal-overlay">
+          <div className="activity-modal-content" ref={modalRef}>
             <h2>Add a new activity</h2>
             <input
               type="text"
@@ -143,12 +147,12 @@ const Activity = () => {
               value={newActivityName}
               onChange={(e) => setNewActivityName(e.target.value)}
             />
-            <div className="modal-buttons">
-              <button className="animated-btn" onClick={handleAddActivity}>
+            <div className="activity-modal-buttons">
+              <button className="activity-animated-btn" onClick={handleAddActivity}>
                 Add
               </button>
               <button
-                className="animated-btn cancel"
+                className="activity-animated-btn activity-cancel"
                 onClick={() => setShowModal(false)}
               >
                 Cancel
@@ -157,18 +161,17 @@ const Activity = () => {
           </div>
         </div>
       )}
-
       {confirmDeleteData !== null && (
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div className="activity-modal-overlay">
+          <div className="activity-modal-content">
             <h2>Confirm deletion</h2>
             <p style={{ marginBottom:"15px" }}>Are you sure you want to delete the activity: "{confirmDeleteData.name}"?</p>
-            <div className="modal-buttons">
-              <button className="animated-btn" onClick={confirmDelete}>
+            <div className="activity-modal-buttons">
+              <button className="activity-animated-btn" onClick={confirmDelete}>
                 Yes, delete
               </button>
               <button
-                className="animated-btn cancel"
+                className="activity-animated-btn activity-cancel"
                 onClick={() => setConfirmDeleteData(null)}
               >
                 cancell

@@ -3,6 +3,7 @@ import axios from "axios";
 import "./OwnerCategoryList.css";
 import { useNavigate } from "react-router-dom";
 import OwnerCatigoryCard from "../Component/OwnerCatigoryCard";
+import { baseURL, GET_ALL_OWNER_CATEGORIES } from "../Api/Api";
 
 const OwnerCategoryList = () => {
   const [categories, setCategories] = useState([]);
@@ -11,7 +12,7 @@ const OwnerCategoryList = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/GetAllOwnerCategories")
+      .get(`${baseURL}/${GET_ALL_OWNER_CATEGORIES}`)
       .then((res) => {
         if (Array.isArray(res.data.owners_categories)) {
           setCategories(res.data.owners_categories);

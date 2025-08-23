@@ -4,16 +4,17 @@ import "./Category.css";
 import Button from "../Component/AddButton";
 import { ToastContainer, toast } from "react-toastify";
 import CategoryCard from "../Component/CategoryCard";
-
+import { ADD_CATIGORY, baseURL, GET_ALL_OWNER_CATEGORIES, TOKEN } from "../Api/Api";
 const Category = () => {
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const modalRef = useRef(null);
+  const token = TOKEN;
 
   const fetchCategories = () => {
     axios
-      .get("http://127.0.0.1:8000/api/GetAllOwnerCategories")
+      .get(`${baseURL}/${GET_ALL_OWNER_CATEGORIES}`)
       .then((response) => {
         const fetched = response.data.owners_categories.map((cat) => ({
           id: cat.id,
@@ -45,12 +46,12 @@ const Category = () => {
     }
 
     axios
-      .post("http://127.0.0.1:8000/api/addcatigory", {
+      .post(`${baseURL}/${ADD_CATIGORY}`, {
         name: newCategoryName,
       },{
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' +"1|lIqv1X1fZ4XjqQk9Wt7wDWYKoHqznzN1tNx92WJ6319fc32f"
+            'Authorization':`Bearer ${token}`
             }
       })
       .then(() => {
@@ -94,6 +95,10 @@ const Category = () => {
         {categories.map((cat) => (
           <CategoryCard
             title={cat.text}
+            key={cat.id}
+            id={cat.id}
+            text={cat.text}
+            onDelete={() => handleDelete(cat.id)}
           />
         ))}
       </div>
@@ -115,6 +120,14 @@ const Category = () => {
               <button className="animated-btn cancel" onClick={() => setShowModal(false)}>
                 cansle
               </button>
+              <button
+  type="button"
+  className="animated-btn cancel"
+  onClick={() => setShowModal(false)}
+>
+  إلغاء
+</button>
+
             </div>
           </div>
         </div>

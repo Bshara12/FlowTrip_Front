@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import OwnerCard from "../Component/OwnerCard";
-import "./Owner.css";
+import Loader from "../Component/Loader";
 import "./OwnerSearch.css";
 import { useNavigate } from "react-router-dom";
+import { ADMIN_SEARCH, baseURL, GET_ALL_COUNTRIES, GET_ALL_OWNER_CATEGORIES, GET_ALL_OWNERS, TOKEN } from "../Api/Api";
 
 export default function Owner() {
   const navigate = useNavigate();
@@ -17,7 +18,11 @@ export default function Owner() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
-  const token = "Gh6ICqUwu2z85S8vh7DhlUXfoyuqRKuOQAfb12y44ad53c67";
+// <<<<<<< HEAD
+//   const token = "Gh6ICqUwu2z85S8vh7DhlUXfoyuqRKuOQAfb12y44ad53c67";
+// =======
+  const token = TOKEN;
+// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
   useEffect(() => {
     const loadInfo = async () => {
@@ -32,7 +37,7 @@ export default function Owner() {
           setLoading(false);
         })
         .catch((err) => {
-          setError("حدث خطأ أثناء جلب البيانات");
+          setError(err);
           setLoading(false);
         });
 
@@ -91,38 +96,7 @@ export default function Owner() {
         setOwners([]);
       }
     } catch (err) {
-      setError("حدث خطأ أثناء البحث");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCategory = async (e, categoryId) => {
-    e.preventDefault();
-    if (!categories) {
-      return;
-    }
-    setLoading(true);
-    setError(null);
-    try {
-      const body = {};
-      if (search) body.name = search;
-      if (selectedCountry) body.country = selectedCountry;
-      if (categoryId) body.category_id = categoryId;
-      
-      const res = await axios.post(
-        "http://127.0.0.1:8000/api/AdminSearch",
-        body,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(res.data.data);
-      setOwners(res.data.data || []);
-    } catch (err) {
-      setError("حدث خطأ أثناء البحث");
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -157,28 +131,27 @@ export default function Owner() {
         setOwners(res.data.data);
       }
     } catch (err) {
-      setError("حدث خطأ أثناء جلب البيانات");
+      setError(err);
     } finally {
       setLoading(false);
     }
   };
 
   if (loading) {
-    return <div className="owner-loading">Loading...</div>;
+    return <Loader/>;
   }
 
   if (error) {
     return <div className="owner-error">{error}</div>;
   }
 
-  // فلترة المالكين حسب البحث والبلد
   const filteredOwners = owners;
 
   return (
     <div className="fs">
-      <div className="flex">
+      <div className="search-flex">
         <div className="search-bar-modern">
-          <div className="input-container">
+          <div className="owner-input-container">
             <input
               placeholder="Add Item"
               type="text"
@@ -186,8 +159,8 @@ export default function Owner() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <div className="menu country-menu">
-            <div className="item">
+          <div className="owner-menu country-menu">
+            <div className="owner-item">
               <a
                 href="#"
                 className="link"
@@ -209,11 +182,11 @@ export default function Owner() {
                   </g>
                 </svg>
               </a>
-              <div className="submenu">
-                <div className="submenu-item">
+              <div className="owner-submenu">
+                <div className="owner-submenu-item">
                   <a
                     href="#"
-                    className="submenu-link"
+                    className="owner-submenu-link"
                     onClick={(e) => {
                       e.preventDefault();
                       setSelectedCountry("");
@@ -224,10 +197,10 @@ export default function Owner() {
                   </a>
                 </div>
                 {countries.map((country) => (
-                  <div className="submenu-item" key={country.id}>
+                  <div className="owner-submenu-item" key={country.id}>
                     <a
                       href="#"
-                      className="submenu-link"
+                      className="owner-submenu-link"
                       onClick={(e) => {
                         e.preventDefault();
                         setSelectedCountry(country.name);
@@ -240,15 +213,15 @@ export default function Owner() {
               </div>
             </div>
           </div>
-          <button className="button" onClick={handleSearch}>
+          <button className="owner-search-button" onClick={handleSearch}>
             <svg viewBox="0 0 512 512" className="svgIcon">
               <path d="M505 442.7L405.3 343c28.4-34.9 45.5-79 45.5-127C450.8 96.5 354.3 0 225.4 0S0 96.5 0 216.1s96.5 216.1 216.1 216.1c48 0 92.1-17.1 127-45.5l99.7 99.7c4.5 4.5 10.6 7 17 7s12.5-2.5 17-7c9.4-9.4 9.4-24.6 0-34zM216.1 392.2c-97.2 0-176.1-78.9-176.1-176.1S118.9 39.9 216.1 39.9s176.1 78.9 176.1 176.1-78.9 176.1-176.1 176.1z" />
             </svg>
           </button>
         </div>
 
-        <div className="menu country-menu">
-          <div className="item">
+        <div className="owner-menu country-menu">
+          <div className="owner-item">
             <a
               href="#"
               className="link"
@@ -266,11 +239,11 @@ export default function Owner() {
                 </g>
               </svg>
             </a>
-            <div className="submenu">
-              <div className="submenu-item">
+            <div className="owner-submenu">
+              <div className="owner-submenu-item">
                 <a
                   href="#"
-                  className="submenu-link"
+                  className="owner-submenu-link"
                   onClick={(e) => {
                     e.preventDefault();
                     setSelectedCategory("");
@@ -282,10 +255,10 @@ export default function Owner() {
                 </a>
               </div>
               {categories.map((category) => (
-                <div className="submenu-item" key={category.id}>
+                <div className="owner-submenu-item" key={category.id}>
                   <a
                     href="#"
-                    className="submenu-link"
+                    className="owner-submenu-link"
                     onClick={async (e) => {
                       e.preventDefault();
                       setSelectedCategory(category.name);
@@ -310,6 +283,7 @@ export default function Owner() {
             location={item.owner.location}
             phoneNumber={item.user.phone_number}
             category={item.category}
+            isUserView={true}
             style={{ animationDelay: `${(idx + 1) * 0.1}s` }}
             onClick={() => navigate(`/owner_details/${item.owner.id}`)}
           />

@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import RequestCard from "../Component/RequestCard";
+import Loader from "../Component/Loader";
+import { baseURL, GET_ALL_REQUESTS, TOKEN } from "../Api/Api";
 
 const Requist = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token");
+// <<<<<<< HEAD
+//   const token = localStorage.getItem("token");
+// =======
+  const token = TOKEN;
+// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -17,7 +23,7 @@ const Requist = () => {
       }
 
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/GetAllRequests", {
+        const response = await axios.get(`${baseURL}/${GET_ALL_REQUESTS}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -27,6 +33,7 @@ const Requist = () => {
           setRequests(response.data.data);
         }
       } catch (error) {
+// <<<<<<< HEAD
         console.error("Error fetching requests:", error);
         
         // Handle unauthorized error (token expired or invalid)
@@ -35,6 +42,10 @@ const Requist = () => {
           // Optionally redirect to login page
           // window.location.href = "/auth";
         }
+// =======
+        console.error("Error:", error);
+        console.error("حدث خطأ أثناء جلب الطلبات:", error);
+// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
       } finally {
         setLoading(false);
       }
@@ -48,7 +59,11 @@ const Requist = () => {
       <h1 style={{ color: "var(--color1)", marginBottom: "1.5rem" }}>Current orders</h1>
 
       {loading ? (
-        <p>Loading...</p>
+
+        <>
+    <Loader />
+    <p>جاري التحميل...</p>
+  </>
       ) : (
         requests.map((item) => {
           const { id, description, business_name } = item.request;

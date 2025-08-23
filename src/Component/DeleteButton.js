@@ -1,4 +1,4 @@
-// DeleteButton.jsx
+
 import React from "react";
 import "./DeleteButton.css";
 

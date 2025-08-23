@@ -28,12 +28,18 @@
 }
 
 .request-info-title {
+.request-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
   color: var(--color2);
   margin-bottom: 0.5rem;
   font-size: 18px;
 }
 
 .request-info-text {
+.section-text {
   color: var(--color3);
   margin: 4px 0;
 }
@@ -104,8 +110,10 @@
 
 .request-loading,
 .request-error {
+.loading,
+.error {
   padding: 2rem;
   color: var(--color2);
   font-size: 18px;
   text-align: center;
-}
+}}}};

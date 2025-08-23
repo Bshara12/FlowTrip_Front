@@ -19,7 +19,8 @@ const ButtonAuth = ({ label = 'Log In', disabled = false, onClick }) => {
         }}
       >
         <div className="user-profile-inner">
-          {isLoading ? (
+{/* <<<<<<< HEAD */}
+          {/* {isLoading ? (
             // أيقونة التحميل
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="loading-spinner">
               <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" opacity="0.25"/>
@@ -33,13 +34,16 @@ const ButtonAuth = ({ label = 'Log In', disabled = false, onClick }) => {
                 />
               </path>
             </svg>
-          ) : isRegister ? (
-            // أيقونة "إضافة مستخدم"
+          ) : isRegister ? ( */}
+            {/* // أيقونة "إضافة مستخدم" */}
+{/* // ======= */}
+          {isRegister ? (
+
+// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M15 14a6 6 0 1 0-6 0 8 8 0 0 0-6 7 1 1 0 0 0 1 1h8.26a7.87 7.87 0 0 1-.26-2 8 8 0 0 1 5-7.42zm-6-2a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm13 7h-2v-2a1 1 0 0 0-2 0v2h-2a1 1 0 0 0 0 2h2v2a1 1 0 0 0 2 0v-2h2a1 1 0 0 0 0-2z" />
             </svg>
           ) : (
-            // أيقونة "تسجيل دخول"
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="m15.626 11.769a6 6 0 1 0 -7.252 0 9.008 9.008 0 0 0 -5.374 8.231 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 9.008 9.008 0 0 0 -5.374-8.231zm-7.626-4.769a4 4 0 1 1 4 4 4 4 0 0 1 -4-4zm10 14h-12a1 1 0 0 1 -1-1 7 7 0 0 1 14 0 1 1 0 0 1 -1 1z" />
             </svg>

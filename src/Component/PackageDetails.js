@@ -5,6 +5,7 @@ import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./PackageDetails.css";
+// <<<<<<< HEAD
 
 import EditButton from "../Component/EditButton";
 import DeleteButton from "../Component/DeleteButton";
@@ -12,11 +13,16 @@ import { colors } from "../Component/Color";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmDialog from "../Component/ConfirmDialog";
+// =======
+// import { useNavigate } from "react-router-dom";
+import { baseURL, GET_PACKAGE, TOKEN } from "../Api/Api";
+// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
 const PackageDetails = () => {
   const { id } = useParams();
   const [packageData, setPackageData] = useState(null);
   const [loading, setLoading] = useState(true);
+// <<<<<<< HEAD
   const [showEditModal, setShowEditModal] = useState(false);
   const [editDescription, setEditDescription] = useState("");
   const [editPrice, setEditPrice] = useState("");
@@ -28,13 +34,20 @@ const PackageDetails = () => {
 
   const fallbackImage = "https://images.unsplash.com/photo-1504674900247-0877df9cc836";
   const navigate = useNavigate();
+// =======
+      const token = TOKEN;
+// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
   useEffect(() => {
     const fetchPackage = async () => {
       try {
-        const res = await axios.get(`http://127.0.0.1:8000/api/getPackage/${id}`, {
+        const res = await axios.get(`${baseURL}/${GET_PACKAGE}/${id}`, {
           headers: {
-            "Authorization": "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c"
+// <<<<<<< HEAD
+//             "Authorization": "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c"
+// =======
+          Authorization: `Bearer ${token}`,
+// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
           }
         });
         if (res.data && res.data.data) {

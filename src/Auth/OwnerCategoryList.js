@@ -55,6 +55,7 @@ const handleClick = (category) => {
       <div className="category-grid-search">
         {filteredCategories.map((cat) => (
           <OwnerCatigoryCard
+          className="col-lg-12 col-md-12 col-sm-12 col-xs-12"
             key={cat.id}
             name={cat.name}
             onClick={() => handleClick(cat)}

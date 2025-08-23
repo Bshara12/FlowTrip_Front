@@ -1,4 +1,3 @@
-// ✅ Packages.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -14,18 +13,32 @@ export default function Packages() {
 
   useEffect(() => {
     const fetchPackages = async () => {
+      // Get token from localStorage
+      const token = localStorage.getItem("token");
+      
+      if (!token) {
+        console.error("No token found in localStorage");
+        setLoading(false);
+        return;
+      }
+
       try {
         const res = await axios.get("http://127.0.0.1:8000/api/getallpackage",{
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' +"1|lIqv1X1fZ4XjqQk9Wt7wDWYKoHqznzN1tNx92WJ6319fc32f"
-            }
+            'Authorization': `Bearer ${token}`
+          }
         });
         if (res.data && res.data.data) {
           setPackages(res.data.data);
         }
       } catch (err) {
         console.error("Error fetching packages:", err);
+        
+        // Handle unauthorized error (token expired or invalid)
+        if (err.response && err.response.status === 401) {
+          console.error("Token is invalid or expired");
+        }
       } finally {
         setLoading(false);
       }
@@ -53,7 +66,7 @@ export default function Packages() {
             <PackageCard
               key={pkg.id}
               id={pkg.id}
-              image="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=800&q=80"
+              image={pkg.package_picture ? `http://127.0.0.1:8000/storage/${pkg.package_picture}` : "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=800&q=80"}
               title={pkg.tourism_company?.company_name || "Unknown Company"}
               description={pkg.discription}
               price={pkg.total_price}

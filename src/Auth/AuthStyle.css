@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-.container {
+.registercontainer {
   position: relative;
   width: 100vw;
   min-height: 100vh;
@@ -12,7 +12,7 @@
   overflow: hidden;
 }
 
-.container::before {
+.registercontainer::before {
   content: "";
   position: absolute;
   width: 2000px;
@@ -138,7 +138,7 @@
   padding: 0.7rem 0;
 }
 
-.btn.transparent {
+.re_button.transparent {
   margin: 0;
   background: none;
   border: 2px solid #fff;
@@ -158,50 +158,50 @@
   transform: translateX(800px);
 }
 
-.container.sign-up-mode::before {
+.registercontainer.sign-up-mode::before {
   transform: translate(100%, -50%);
   right: 52%;
 }
 
-.container.sign-up-mode .left_panel .image,
-.container.sign-up-mode .left_panel .content {
+.registercontainer.sign-up-mode .left_panel .image,
+.registercontainer.sign-up-mode .left_panel .content {
   transform: translateX(-800px);
 }
 
-.container.sign-up-mode .right_panel .content,
-.container.sign-up-mode .right_panel .image {
+.registercontainer.sign-up-mode .right_panel .content,
+.registercontainer.sign-up-mode .right_panel .image {
   transform: translateX(0px);
 }
 
-.container.sign-up-mode .left_panel {
+.registercontainer.sign-up-mode .left_panel {
   pointer-events: none;
 }
 
-.container.sign-up-mode .right_panel {
+.registercontainer.sign-up-mode .right_panel {
   pointer-events: all;
 }
 
-.container.sign-up-mode .signin_signup {
+.registercontainer.sign-up-mode .signin_signup {
   left: 25%;
 }
 
-.container.sign-up-mode form.sign_in_form {
+.registercontainer.sign-up-mode form.sign_in_form {
   z-index: 1;
   opacity: 0;
 }
 
-.container.sign-up-mode form.sign_up_form {
+.registercontainer.sign-up-mode form.sign_up_form {
   z-index: 2;
   opacity: 1;
 }
 
 @media (max-width: 870px) {
-  .container {
+  .registercontainer {
     min-height: 800px;
     height: 100vh;
   }
 
-  .container:before {
+  .registercontainer:before {
     width: 1500px;
     height: 1500px;
     left: 30%;
@@ -265,18 +265,18 @@
     transform: translateY(300px);
   }
 
-  .container.sign-up-mode:before {
+  .registercontainer.sign-up-mode:before {
     transform: translate(-50%, 100%);
     bottom: 32%;
     right: initial;
   }
 
-  .container.sign-up-mode .left_panel .image,
-  .container.sign-up-mode .left_panel .content {
+  .registercontainer.sign-up-mode .left_panel .image,
+  .registercontainer.sign-up-mode .left_panel .content {
     transform: translateY(-300px);
   }
 
-  .container.sign-up-mode .signin_signup {
+  .registercontainer.sign-up-mode .signin_signup {
     top: 5%;
     transform: translate(-50%, 0);
     left: 50%;
@@ -298,12 +298,12 @@
     padding: 0.5rem 1rem;
   }
 
-  .container:before {
+  .registercontainer:before {
     bottom: 72%;
     left: 50%;
   }
 
-  .container.sign-up-mode:before {
+  .registercontainer.sign-up-mode:before {
     bottom: 28%;
     left: 50%;
   }
@@ -574,4 +574,24 @@
 
 .forgot-password:hover{
   transform: scale(1.1);
+}
+
+.auth-button:hover {
+  background-color: rgba(69, 87, 109, 0.7) !important;
+  box-shadow: 0 0 10px rgba(69, 87, 109, 0.5);
+}
+
+.auth-button:focus {
+  outline: none;
+  background-color: rgba(69, 87, 109, 0.7) !important;
+  box-shadow: 0 0 10px rgba(69, 87, 109, 0.5);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

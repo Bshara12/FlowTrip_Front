@@ -2,6 +2,7 @@ import React from "react";
 import "./VehicleCard.css";
 
 const VehicleCard = ({ vehicle, onClick }) => {
+  console.log(vehicle.picture_url);
   return (
     <div className="vehicle-card" onClick={onClick}>
       <img
@@ -11,7 +12,7 @@ const VehicleCard = ({ vehicle, onClick }) => {
         onError={(e) => {
           e.target.src = "/fallback.jpg";
         }}
-      />
+        />
       <div className="vehicle-info">
         <h3>{vehicle.name}</h3>
         <p>

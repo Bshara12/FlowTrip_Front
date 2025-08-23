@@ -19,6 +19,7 @@ const Vehiclys = () => {
         },
       })
       .then((res) => {
+        console.log(res.data.data)
         const allVehicles = res.data.data;
         const uniqueVehiclesMap = new Map();
         allVehicles.forEach((vehicle) => {

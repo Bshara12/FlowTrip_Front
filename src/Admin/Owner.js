@@ -17,7 +17,7 @@ export default function Owner() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
-  const token = "8izVrtthWL2vU0kXrWV1w4wWqT9JT2z3M1gKY0hlfe25f76e";
+  const token = "Gh6ICqUwu2z85S8vh7DhlUXfoyuqRKuOQAfb12y44ad53c67";
 
   useEffect(() => {
     const loadInfo = async () => {

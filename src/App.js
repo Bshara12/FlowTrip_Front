@@ -20,6 +20,17 @@ import Vehiclys from "./VehiclyOwner/Vehiclys";
 import VehicleDetails from "./Component/VehicleDetails";
 import CreateVehicle from "./VehiclyOwner/CreateVehicle";
 import AddVehicleImages from "./VehiclyOwner/AddVehicleImages";
+import Tourism_company_DashBoard from "./Tourism Company/Tourism_company_DashBoard";
+import PackagesTourism from "./Tourism Company/Packages";
+import AddPackageElement from "./Component/AddPackageElement";
+import AddPackageStep1 from "./Tourism Company/AddPackageStep1";
+import TourismRecords from "./Tourism Company/TourismRecords";
+import PackageRecords from "./Tourism Company/PackageRecords";
+import FlightSearch from "./User/FlightSearch";
+import FlightDetails from "./User/FlightDetails";
+import FlightsList from "./User/FlightsList";
+import ChatBot from "./User/ChatBot";
+import TripForm from "./User/TripForm";
 
 function App() {
   return (
@@ -48,11 +59,31 @@ function App() {
 
       {/* Vehicly Owner */}
       <Route path="VehiclyOwner/dashboard" element={<DashBoardVehiclyOwner />}>
-        <Route path="vehiclys" element={<Vehiclys/>} />
+        <Route path="vehiclys" element={<Vehiclys />} />
       </Route>
-      <Route path="/vehicle/:id" element={<VehicleDetails/>}/>
-      <Route path="/create-vehicle" element={<CreateVehicle/>}/>
+      <Route path="/vehicle/:id" element={<VehicleDetails />} />
+      <Route path="/create-vehicle" element={<CreateVehicle />} />
       <Route path="/vehicle/add-images/:id" element={<AddVehicleImages />} />
+
+      {/* Tourism company */}
+      <Route
+        path="TourismCompany/dashboard"
+        element={<Tourism_company_DashBoard />}
+      >
+        <Route path="packages" element={<PackagesTourism />} />
+        <Route path="records" element={<TourismRecords />} />
+        <Route path="records/:id" element={<PackageRecords />} />
+      </Route>
+      <Route path="/add-package-element/:id" element={<AddPackageElement/>}/>
+      <Route path="/add-package/step1" element={<AddPackageStep1 />} />
+
+
+      {/* User */}
+      <Route path="/flight-search" element={<FlightSearch />} />
+      <Route path="/flight-details" element={<FlightDetails />} />
+      <Route path="/flights-list" element={<FlightsList />} />
+      <Route path="/chatBot" element={<ChatBot/>}/>
+      <Route path="/trip" element={<TripForm/>}/>
     </Routes>
   );
 }

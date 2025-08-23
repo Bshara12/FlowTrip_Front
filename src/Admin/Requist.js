@@ -6,10 +6,16 @@ const Requist = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const token = "2|DHyYOULZGrRqxduJ6xvIpDZx3TSfrrhGMC11NW32133b858e";
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchRequests = async () => {
+      if (!token) {
+        console.error("No token found in localStorage");
+        setLoading(false);
+        return;
+      }
+
       try {
         const response = await axios.get("http://127.0.0.1:8000/api/GetAllRequests", {
           headers: {
@@ -21,14 +27,21 @@ const Requist = () => {
           setRequests(response.data.data);
         }
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error fetching requests:", error);
+        
+        // Handle unauthorized error (token expired or invalid)
+        if (error.response && error.response.status === 401) {
+          console.error("Token is invalid or expired");
+          // Optionally redirect to login page
+          // window.location.href = "/auth";
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchRequests();
-  }, []);
+  }, [token]);
 
   return (
     <div style={{ padding: "2rem", backgroundColor: "var(--color5)", minHeight: "100vh" }}>

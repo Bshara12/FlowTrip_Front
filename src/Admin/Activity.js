@@ -10,10 +10,10 @@ const Activity = () => {
   const [activities, setActivities] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newActivityName, setNewActivityName] = useState("");
-  const [confirmDeleteData, setConfirmDeleteData] = useState(null); // <-- بدل ID
+  const [confirmDeleteData, setConfirmDeleteData] = useState(null);
   const modalRef = useRef(null);
 
-  const token = "2|DHyYOULZGrRqxduJ6xvIpDZx3TSfrrhGMC11NW32133b858e";
+  const token = "4|PCc1qvBuuP7iWyayeJhQDMAsq2WnUY5MGAmu7Lkx2ebc86ed";
 
   const fetchActivities = () => {
     axios

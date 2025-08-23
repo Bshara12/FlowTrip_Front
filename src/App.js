@@ -25,12 +25,15 @@ import RoomsHome from "./Accommodation/RoomsHome";
 import SubAdmin from "./Admin/SubAdmin";
 import Users from "./Admin/Users";
 import AddRoom from "./Accommodation/AddRoom";
-import Advanced from './Accommodation/Advanced'
+import Advanced from "./Accommodation/Advanced";
 import Plans from "./Airline/plans";
 import ShowAllPlans from "./Airline/Showallplans";
 import PlanDetails from "./Airline/planditels";
 import EditPlane from "./Airline/editplane";
 import AddPlane from "./Airline/AddPlane";
+import GetEvaluation from "./Airline/GetEvaluation";
+import UserDashboard from "./User/UserDashboard";
+import AccommodationFilter from "./User/AccommodationFilter";
 function App() {
   return (
     <Routes>
@@ -49,6 +52,7 @@ function App() {
           <Route path="showallplans/:planeId" element={<PlanDetails />} />
           <Route path="/plans/edit/:planeId" element={<EditPlane />} />
           <Route path="/plans/add" element={<AddPlane />} />
+          <Route path="getevaluation" element={<GetEvaluation />} />
         </Route>
         <Route>
           <Route path="Admin/dashbord" element={<DashBourd />}>
@@ -65,6 +69,7 @@ function App() {
           <Route path="/element-details" element={<PackageElementDetails />} />
           <Route path="/owner_details/:id" element={<OwnerDetails />} />
         </Route>
+        {/* Accommodation */}
         <Route path="Accommodation/dashboard" element={<DashBoard2 />}>
           <Route path="profile" element={<Profile />} />
           <Route path="records" element={<ShowRecords />} />
@@ -76,6 +81,12 @@ function App() {
         <Route path="add-room" element={<AddRoom />} />
         <Route path="catigory" element={<Category />} />
       </Route>
+
+      {/* User */}
+      <Route path="User" element={<UserDashboard />}>
+        <Route path="accommodation-filter" element={<AccommodationFilter/>}/>
+      </Route>
+
       <Route path="/package/:id" element={<PackageDetails />} />
       <Route path="/request/:id" element={<RequestDetails />} />
       <Route path="/element-details" element={<PackageElementDetails />} />

@@ -93,9 +93,9 @@ export const EDIT_VEHICLE="editVehicle";
 
 
 //token
-// Hotel
-// HhjwOdBKNsY72Ilf9uIflG1dt59aqSRfKoBUo1i0e643e697
+// User
+// woYFIF0Vopo8MKTqDcQXw6C2vI2XBPke23dmVZ3sf6e6812e
 // Admin
-// iByUvfk1dIx5Sx2jxfVKrHFcaaZbGCKfdEUu49R7fd0f350b
-export const TOKEN = "iByUvfk1dIx5Sx2jxfVKrHFcaaZbGCKfdEUu49R7fd0f350b";
+// rNQFdc49Ke2LQdhqxSipfH4X6PAfcrL9a8aTII6eecd56c35
+export const TOKEN = "woYFIF0Vopo8MKTqDcQXw6C2vI2XBPke23dmVZ3sf6e6812e";
 // export const TOKEN = localStorage.getItem("token");

@@ -1,30 +1,30 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import "../Accommodation/HomePage.css";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
-import AddPlane from "./AddPlane";
-import { baseURL, LOGOUT } from "../Api/Api";
-export default function Plans() {
-  const [collapsed, setCollapsed] = useState(false);
-  const [activeLink, setActiveLink] = useState("/plans/showallplans");
-  const [showAddPlaneModal, setShowAddPlaneModal] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+import "react-toastify/dist/ReactToastify.css";
 
-  const handleToggleCollapse = () => {
-    setCollapsed(!collapsed);
-  };
+export default function UserDashboard() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [activeLink, setActiveLink] = useState("/User/dashbord");
+  const [collapsed, setCollapsed] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   useEffect(() => {
     setActiveLink(location.pathname);
   }, [location.pathname]);
 
+  const handleToggleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
+
   const handleLogout = async () => {
     const token = Cookies.get("authToken");
     try {
-      const response = await fetch(`${baseURL}/${LOGOUT}`, {
+      const response = await fetch("http://127.0.0.1:8000/api/logout", {
         method: "GET",
         headers: {
           Authorization: ` Bearer ${token}`,
@@ -78,43 +78,15 @@ export default function Plans() {
         </div>
         <div style={{ width: "100%" }}>
           <Link
-            to="/plans/showallplans"
+            to="accommodation-filter"
             className={
-              activeLink === "/plans/showallplans" ? "active-link" : ""
+              activeLink === "/User/accommodation-filter" ? "active-link" : ""
             }
           >
             <i className="fas fa-clipboard-list"></i>
-            <p>Show plans</p>
+            <p>Accommodations</p>
           </Link>
-
-          <Link
-            to="/plans/getevaluation"
-            className={
-              activeLink === "/plans/getevaluation" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-star"></i>
-            <p>Evaluation</p>
-          </Link>
-
-          <div
-            onClick={() => setShowAddPlaneModal(true)}
-            className={`logout-link ${showAddPlaneModal ? "active-link" : ""}`}
-            style={{ cursor: "pointer" }}
-          >
-            <i className="fas fa-cubes"></i>
-            <p>Add Plane</p>
-          </div>
-
-          <div
-            onClick={() => window.open("https://wa.me/0938246910", "_blank")}
-            className="logout-link"
-            style={{ cursor: "pointer" }}
-          >
-            <i className="fa-solid fa-phone"></i>
-            <p>Contact us</p>
-          </div>
-
+          
           <div
             onClick={() => setShowLogoutConfirm(true)}
             className="logout-link"
@@ -124,6 +96,8 @@ export default function Plans() {
           </div>
         </div>
       </div>
+
+      <Outlet />
 
       {showLogoutConfirm && (
         <div className="popup-overlay">
@@ -137,20 +111,12 @@ export default function Plans() {
                 onClick={() => setShowLogoutConfirm(false)}
                 className="cancel-btn"
               >
-                Cancel
+                Cuncle
               </button>
             </div>
           </div>
         </div>
       )}
-
-      {showAddPlaneModal && (
-        <AddPlane onClose={() => setShowAddPlaneModal(false)} />
-      )}
-
-      <div className="RightPare">
-        <Outlet />
-      </div>
     </div>
   );
 }

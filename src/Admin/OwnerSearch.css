@@ -24,6 +24,8 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .owner-input-container {
@@ -253,6 +255,10 @@
 .owner-menu .owner-item:hover .link {
   color: var(--color2);
   border-radius: 16px 16px 0 0;
+}
+
+.owner-menu .owner-item.dd:hover .link {
+  border-radius: 16px;
 }
 
 .owner-menu .owner-item:hover .link::after {

@@ -539,9 +539,9 @@ html {
   pointer-events: none;
 }
 
-.room-details-inputbox input:valid ~ span,
+.room-details-inputbox input:not(:placeholder-shown) ~ span,
 .room-details-inputbox input:focus ~ span,
-.room-details-inputbox textarea:valid ~ span,
+.room-details-inputbox textarea:not(:placeholder-shown) ~ span,
 .room-details-inputbox textarea:focus ~ span {
   color: var(--color4);
   transform: translateX(-10px) translateY(-34px);
@@ -572,9 +572,9 @@ html {
   z-index: 9;
 }
 
-.room-details-inputbox input:valid ~ i,
+.room-details-inputbox input:not(:placeholder-shown) ~ i,
 .room-details-inputbox input:focus ~ i,
-.room-details-inputbox textarea:valid ~ i,
+.room-details-inputbox textarea:not(:placeholder-shown) ~ i,
 .room-details-inputbox textarea:focus ~ i {
   height: 44px;
 }
@@ -585,7 +585,75 @@ html {
   margin: 0;
 }
 .room-details-inputbox input[type="number"] {
-  -moz-appearance: textfield;
+  appearance: textfield; /* standard */
+  -moz-appearance: textfield; /* Firefox */
+}
+
+/* Animated show/hide for Guests field inside the search bar */
+.search-bar-modern .guests-field {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  margin: 0 !important; /* override .room-details-inputbox default margin */
+  transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.3s ease;
+}
+
+.search-bar-modern .guests-field.open {
+  max-height: 100px; /* enough to fully show the input */
+  opacity: 1;
+  margin: 0 6px !important;
+}
+
+/* --- React Date Range fixes: make selected range continuous with proper edges --- */
+.owner-submenu .rdrCalendarWrapper,
+.owner-submenu .rdrDateRangeWrapper {
+  direction: ltr; /* avoid RTL side-effects inside the picker */
+}
+
+/* Remove any pill-like styling on day numbers possibly inherited */
+.owner-submenu .rdrDayNumber span {
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+/* Ensure range is a continuous rectangle between start and end */
+.owner-submenu .rdrInRange {
+  border-radius: 0 !important;
+}
+
+/* Start and end edges rounded on their outer sides only */
+.owner-submenu .rdrStartEdge {
+  border-radius: 20px 0 0 20px !important;
+}
+.owner-submenu .rdrEndEdge {
+  border-radius: 0 20px 20px 0 !important;
+}
+
+/* When start and end are the same day, show a full pill */
+.owner-submenu .rdrSelected.rdrStartEdge.rdrEndEdge {
+  border-radius: 20px !important;
+}
+
+/* Apply the same fixes globally (e.g., inside modal) */
+.rdrCalendarWrapper,
+.rdrDateRangeWrapper {
+  direction: ltr;
+}
+.rdrDayNumber span {
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+.rdrInRange {
+  border-radius: 0 !important;
+}
+.rdrStartEdge {
+  border-radius: 20px 0 0 20px !important;
+}
+.rdrEndEdge {
+  border-radius: 0 20px 20px 0 !important;
+}
+.rdrSelected.rdrStartEdge.rdrEndEdge {
+  border-radius: 20px !important;
 }
 
 .room-details-floating-delete-btn {

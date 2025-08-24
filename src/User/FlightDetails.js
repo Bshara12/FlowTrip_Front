@@ -22,7 +22,6 @@ export default function FlightDetails() {
   const [adults, setAdults] = useState(1);
   const [infants, setInfants] = useState(0);
 
-  // دالة لحفظ التاريخ المحلي بشكل صحيح لأي منطقة زمنية
   const toLocalDateString = (date) => {
     const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
     return local.toISOString().split("T")[0];
@@ -44,12 +43,11 @@ export default function FlightDetails() {
 
   return (
     <div className="flight-step2-container">
-      <h2 className="title">اختر تفاصيل الرحلة</h2>
+      <h2 className="titleFlightDetails">Select flight details</h2>
       <p className="subtitle">
-        <strong>من:</strong> {departure} | <strong>إلى:</strong> {arrival}
+        <strong>from:</strong> {departure} | <strong>to:</strong> {arrival}
       </p>
 
-      {/* اختيار نوع الرحلة */}
       <div className="trip-type">
         <label>
           <input
@@ -58,7 +56,7 @@ export default function FlightDetails() {
             checked={tripType === "oneway"}
             onChange={() => setTripType("oneway")}
           />
-          ذهاب فقط
+          One way
         </label>
         <label>
           <input
@@ -67,11 +65,10 @@ export default function FlightDetails() {
             checked={tripType === "roundtrip"}
             onChange={() => setTripType("roundtrip")}
           />
-          ذهاب وعودة
+          Back and forth
         </label>
       </div>
 
-      {/* اختيار التاريخ */}
       <div className="calendar-wrapper">
         <DateRangePicker
           onChange={handleDateChange}
@@ -87,10 +84,9 @@ export default function FlightDetails() {
         />
       </div>
 
-      {/* عدد الأشخاص */}
       <div className="passenger-section">
         <div className="passenger-row">
-          <span>البالغين</span>
+          <span>Adults</span>
           <div className="counter">
             <button onClick={() => setAdults(Math.max(1, adults - 1))}>-</button>
             <span>{adults}</span>
@@ -98,7 +94,7 @@ export default function FlightDetails() {
           </div>
         </div>
         <div className="passenger-row">
-          <span>الأطفال الرضع</span>
+          <span>Babys</span>
           <div className="counter">
             <button onClick={() => setInfants(Math.max(0, infants - 1))}>-</button>
             <span>{infants}</span>
@@ -107,7 +103,6 @@ export default function FlightDetails() {
         </div>
       </div>
 
-      {/* زر متابعة */}
       <button
         className="continue-btn"
         onClick={() => {
@@ -124,7 +119,7 @@ export default function FlightDetails() {
           });
         }}
       >
-        متابعة
+        Next
       </button>
     </div>
   );

@@ -99,16 +99,16 @@ const PackageElementDetails = () => {
       });
 
       if (response.ok) {
-        toast.success("تم رفع الصورة بنجاح");
+        toast.success("The image has been uploaded successfully");
         setShowUploadModal(false);
         setSelectedFile(null);
-        setRefresh(prev => !prev); // تحديث مباشر بعد رفع الصورة
+        setRefresh(prev => !prev); 
       } else {
-        toast.error("فشل في رفع الصورة");
+        toast.error("Failed to upload image");
       }
     } catch (error) {
       console.error("Upload failed:", error);
-      alert("حدث خطأ أثناء رفع الصورة");
+      alert("An error occurred while uploading the image.");
     }
   };
 
@@ -169,7 +169,7 @@ const PackageElementDetails = () => {
             className="imageControlBtn addBtn"
             onClick={() => setShowUploadModal(true)}
           >
-            <i className="fa fa-plus" /> إضافة صورة
+            <i className="fa fa-plus" /> Add a photo
           </button>
         </div>
       )}
@@ -189,7 +189,7 @@ const PackageElementDetails = () => {
               >
                 <i className="fa fa-times" />
               </button>
-              <p>قم بسحب الصورة هنا أو اختر صورة من جهازك</p>
+              <p>Drag an image here or choose an image from your device.</p>
               <input
                 type="file"
                 accept="image/*"
@@ -200,7 +200,7 @@ const PackageElementDetails = () => {
                 <p style={{ marginTop: "0.5rem" }}>✔ {selectedFile.name}</p>
               )}
               <button onClick={handleUpload} className="uploadConfirmBtn" disabled={!selectedFile}>
-                رفع
+                to lift
               </button>
             </div>
           </div>
@@ -209,7 +209,7 @@ const PackageElementDetails = () => {
 
       {showConfirm && (
         <ConfirmDialog
-          message="هل أنت متأكد من حذف الصورة؟"
+          message="Are you sure you want to delete the photo?"
           onConfirm={async () => {
             try {
               const response = await fetch(`http://127.0.0.1:8000/api/tourism/deleteElementPicture/${showConfirm}`, {
@@ -221,12 +221,12 @@ const PackageElementDetails = () => {
               if (response.ok) {
                 setShowConfirm(false);
                 setRefresh(prev => !prev);
-                toast.success("تم حذف الصورة بنجاح");
+                toast.success("The image has been successfully deleted");
               } else {
-                toast.error("فشل في حذف الصورة");
+                toast.error("Failed to delete the image");
               }
             } catch (error) {
-              alert("حدث خطأ أثناء حذف الصورة");
+              alert("An error occurred while deleting the image.");
             }
           }}
           onCancel={() => setShowConfirm(false)}
@@ -259,7 +259,7 @@ const PackageElementDetails = () => {
 
       {showDeleteDialog && (
         <ConfirmDialog
-          message="هل أنت متأكد من حذف هذا العنصر؟"
+          message="Are you sure you want to delete this item?"
           onConfirm={async () => {
             try {
               const res = await fetch(`http://127.0.0.1:8000/api/tourism/deletePackageElement/${element.id}`, {
@@ -270,13 +270,13 @@ const PackageElementDetails = () => {
               });
               if (res.ok) {
                 setShowDeleteDialog(false);
-                toast.success("تم حذف العنصر بنجاح");
+                toast.success("The item was deleted successfully");
                 setTimeout(() => { window.location.href = `/package/${element.package_id}`; }, 1200);
               } else {
-                toast.error("فشل في حذف العنصر");
+                toast.error("Failed to delete item");
               }
             } catch {
-              alert("حدث خطأ أثناء الحذف");
+              alert("An error occurred while deleting.");
             }
           }}
           onCancel={() => setShowDeleteDialog(false)}
@@ -304,7 +304,7 @@ const PackageElementDetails = () => {
             boxShadow: "0 0 16px #0002",
             position: "relative"
           }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ color: colors.color1, marginBottom: 16 }}>تعديل بيانات العنصر</h2>
+            <h2 style={{ color: colors.color1, marginBottom: 16 }}>Modify item data</h2>
             <label style={{ color: colors.color2, fontWeight: "bold" }}>الاسم</label>
             <input
               style={{ width: "100%", padding: 8, borderRadius: 6, border: `1px solid ${colors.color4}`, marginBottom: 12 }}
@@ -317,7 +317,7 @@ const PackageElementDetails = () => {
               value={editValues.type}
               onChange={e => setEditValues(v => ({ ...v, type: e.target.value }))}
             />
-            <label style={{ color: colors.color2, fontWeight: "bold" }}>الوصف</label>
+            <label style={{ color: colors.color2, fontWeight: "bold" }}>Description</label>
             <textarea
               style={{ width: "100%", padding: 8, borderRadius: 6, border: `1px solid ${colors.color4}`, marginBottom: 16, minHeight: 60 }}
               value={editValues.discription}
@@ -354,17 +354,17 @@ const PackageElementDetails = () => {
                     if (res.ok) {
                       setShowEditModal(false);
                       setRefresh(prev => !prev);
-                      toast.success("تم تحديث البيانات بنجاح");
+                      toast.success("The data has been updated successfully");
                     } else {
-                      toast.error("فشل في تحديث البيانات");
+                      toast.error("Failed to update data");
                     }
                   } catch {
-                    alert("حدث خطأ أثناء التحديث");
+                    alert("An error occurred while updating");
                   }
                   setEditLoading(false);
                 }}
               >
-                {editLoading ? "...جاري التحديث" : "تحديث"}
+                {editLoading ? "...updating" : "to update"}
               </button>
               <button
                 style={{
@@ -378,7 +378,7 @@ const PackageElementDetails = () => {
                 }}
                 onClick={() => setShowEditModal(false)}
               >
-                إلغاء
+                cancellation
               </button>
             </div>
           </div>

@@ -24,7 +24,7 @@ export default function FlightSearch() {
 
   return (
     <div className="flight-container">
-      <h2 className="title">Book Your Flight</h2>
+      <h2 className="titleFlightSearch">Book Your Flight</h2>
 
       <div className="inputs-row">
         <input

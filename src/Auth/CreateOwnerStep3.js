@@ -263,7 +263,7 @@ const CreateOwnerStep3 = () => {
             opacity: isLoading ? 0.6 : 1
           }}
         >
-          {isLoading ? "Creating..." : "إرسال"}
+          {isLoading ? "Creating..." : "Send"}
         </button>
       </form>
     </div>

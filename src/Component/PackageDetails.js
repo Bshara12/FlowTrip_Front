@@ -22,7 +22,7 @@ const PackageDetails = () => {
   const { id } = useParams();
   const [packageData, setPackageData] = useState(null);
   const [loading, setLoading] = useState(true);
-// <<<<<<< HEAD
+  // <<<<<<< HEAD
   const [showEditModal, setShowEditModal] = useState(false);
   const [editDescription, setEditDescription] = useState("");
   const [editPrice, setEditPrice] = useState("");
@@ -32,23 +32,24 @@ const PackageDetails = () => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
-  const fallbackImage = "https://images.unsplash.com/photo-1504674900247-0877df9cc836";
+  const fallbackImage =
+    "https://images.unsplash.com/photo-1504674900247-0877df9cc836";
   const navigate = useNavigate();
-// =======
-      const token = TOKEN;
-// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
+  // =======
+  const token = TOKEN;
+  // >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
   useEffect(() => {
     const fetchPackage = async () => {
       try {
         const res = await axios.get(`${baseURL}/${GET_PACKAGE}/${id}`, {
           headers: {
-// <<<<<<< HEAD
-//             "Authorization": "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c"
-// =======
-          Authorization: `Bearer ${token}`,
-// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
-          }
+            // <<<<<<< HEAD
+            //             "Authorization": "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c"
+            // =======
+            Authorization: `Bearer ${token}`,
+            // >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
+          },
         });
         if (res.data && res.data.data) {
           setPackageData(res.data.data);
@@ -56,8 +57,9 @@ const PackageDetails = () => {
           setEditPrice(res.data.data.total_price || "");
           setEditImagePreview(
             res.data.data.package_picture ||
-            "https://images.unsplash.com/photo-1504674900247-0877df9cc836"
+              "https://images.unsplash.com/photo-1504674900247-0877df9cc836"
           );
+          console.log(res.data);
         }
       } catch (err) {
         console.error("Error fetching package details:", err);
@@ -92,9 +94,10 @@ const PackageDetails = () => {
         formData,
         {
           headers: {
-            "Authorization": "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c",
-            "Content-Type": "multipart/form-data"
-          }
+            Authorization:
+              "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c",
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
       toast.success("Package updated successfully!", { position: "top-right" });
@@ -110,11 +113,15 @@ const PackageDetails = () => {
   const handleDeletePackage = async () => {
     setDeleteLoading(true);
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/tourism/deletePackage/${id}`, {
-        headers: {
-          "Authorization": "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c"
+      await axios.delete(
+        `http://127.0.0.1:8000/api/tourism/deletePackage/${id}`,
+        {
+          headers: {
+            Authorization:
+              "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c",
+          },
         }
-      });
+      );
       toast.success("Package deleted successfully", { position: "top-right" });
       setShowDeleteDialog(false);
       setTimeout(() => navigate("/TourismCompany/dashboard/packages"), 1200);
@@ -127,22 +134,30 @@ const PackageDetails = () => {
 
   const handlePayByPoints = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/paybypoint/${id}`, {
-        headers: {
-          "Authorization": "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c"
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/paybypoint/${id}`,
+        {
+          headers: {
+            Authorization:
+              "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c",
+          },
         }
-      });
-      
-      // تحديث البيانات المحلية بعد نجاح العملية
-      setPackageData(prevData => ({
+      );
+
+      setPackageData((prevData) => ({
         ...prevData,
-        payment_by_points: prevData.payment_by_points === 1 ? 0 : 1
+        payment_by_points: prevData.payment_by_points === 1 ? 0 : 1,
       }));
-      
-      const action = packageData.payment_by_points === 1 ? "removed" : "enabled";
-      toast.success(`Payment by points ${action} successfully!`, { position: "top-right" });
+
+      const action =
+        packageData.payment_by_points === 1 ? "removed" : "enabled";
+      toast.success(`Payment by points ${action} successfully!`, {
+        position: "top-right",
+      });
     } catch (err) {
-      toast.error("Failed to process payment by points.", { position: "top-right" });
+      toast.error("Failed to process payment by points.", {
+        position: "top-right",
+      });
     }
   };
 
@@ -158,31 +173,43 @@ const PackageDetails = () => {
   const sliderSettings = {
     dots: true,
     infinite: true,
-    speed: 600,
+    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    arrows: false,
+    adaptiveHeight: true
   };
 
-  // معرفة نوع المستخدم
-  const userType = localStorage.getItem("user_type"); // "tourism" أو "normal"
-  const userRole = localStorage.getItem("role"); // "admin" أو غيره
+  const userType = localStorage.getItem("user_type"); 
+  const userRole = localStorage.getItem("role"); 
 
   return (
     <div className="packageDetailsContainer">
-      <ToastContainer position="top-right" autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-      <Slider {...sliderSettings} className="packageSlider">
-        {allPictures.map((pic, index) => (
-          <div key={index}>
-            <img src={pic} alt={`slide-${index}`} className="sliderImage" />
-          </div>
-        ))}
-      </Slider>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    <Slider {...sliderSettings} className="packageSlider">
+      {allPictures.map((pic, index) => (
+        <div key={index}>
+          <img src={pic} alt={`slide-${index}`} className="sliderImage" />
+        </div>
+      ))}
+    </Slider>
+
 
       <div className="packageInfo">
-        <h1 className="companyName">{packageData.tourism_company.company_name}</h1>
+        <h1 className="companyName">
+          {packageData.tourism_company.company_name}
+        </h1>
         <p className="description">{packageData.discription}</p>
         <p className="price">${packageData.total_price}</p>
         {packageData.payment_by_points === 1 && (
@@ -197,7 +224,9 @@ const PackageDetails = () => {
             <div
               key={el.id}
               className="elementCard"
-              onClick={() => navigate("/element-details", { state: { id: el.id } })}
+              onClick={() =>
+                navigate("/element-details", { state: { id: el.id } })
+              }
             >
               <img
                 src={
@@ -220,99 +249,178 @@ const PackageDetails = () => {
 
       <div className="bookingFooter">
         {userRole === "admin" ? (
-          // أزرار المشرف - زر الدفع بالنقاط فقط
           <div style={{ display: "flex", justifyContent: "center" }}>
-                         <button
-               onClick={handlePayByPoints}
-               style={{
-                 display: 'flex',
-                 alignItems: 'center',
-                 gap: '0.8rem',
-                 padding: '1rem 2rem',
-                 border: 'none',
-                 borderRadius: '50px',
-                 background: packageData.payment_by_points === 1 
-                   ? 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)'
-                   : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                 color: '#fff',
-                 fontWeight: 700,
-                 fontSize: '1.1rem',
-                 cursor: 'pointer',
-                 boxShadow: packageData.payment_by_points === 1 
-                   ? '0 8px 25px rgba(220, 53, 69, 0.3)'
-                   : '0 8px 25px rgba(102, 126, 234, 0.3)',
-                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                 position: 'relative',
-                 overflow: 'hidden',
-                 minWidth: '200px',
-                 justifyContent: 'center'
-               }}
-               onMouseOver={e => {
-                 e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                 e.currentTarget.style.boxShadow = packageData.payment_by_points === 1 
-                   ? '0 12px 35px rgba(220, 53, 69, 0.4)'
-                   : '0 12px 35px rgba(102, 126, 234, 0.4)';
-               }}
-               onMouseOut={e => {
-                 e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                 e.currentTarget.style.boxShadow = packageData.payment_by_points === 1 
-                   ? '0 8px 25px rgba(220, 53, 69, 0.3)'
-                   : '0 8px 25px rgba(102, 126, 234, 0.3)';
-               }}
-             >
-                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                 <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none"/>
-                 <path d="M12 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                 <path d="M6 12H18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                 <circle cx="12" cy="12" r="3" fill="currentColor"/>
-               </svg>
-               <span>{packageData.payment_by_points === 1 ? "Remove Payment" : "Pay by Points"}</span>
+            <button
+              onClick={handlePayByPoints}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.8rem",
+                padding: "1rem 2rem",
+                border: "none",
+                borderRadius: "50px",
+                background:
+                  packageData.payment_by_points === 1
+                    ? "linear-gradient(135deg, #dc3545 0%, #c82333 100%)"
+                    : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "1.1rem",
+                cursor: "pointer",
+                boxShadow:
+                  packageData.payment_by_points === 1
+                    ? "0 8px 25px rgba(220, 53, 69, 0.3)"
+                    : "0 8px 25px rgba(102, 126, 234, 0.3)",
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                position: "relative",
+                overflow: "hidden",
+                minWidth: "200px",
+                justifyContent: "center",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform =
+                  "translateY(-2px) scale(1.02)";
+                e.currentTarget.style.boxShadow =
+                  packageData.payment_by_points === 1
+                    ? "0 12px 35px rgba(220, 53, 69, 0.4)"
+                    : "0 12px 35px rgba(102, 126, 234, 0.4)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = "translateY(0) scale(1)";
+                e.currentTarget.style.boxShadow =
+                  packageData.payment_by_points === 1
+                    ? "0 8px 25px rgba(220, 53, 69, 0.3)"
+                    : "0 8px 25px rgba(102, 126, 234, 0.3)";
+              }}
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                />
+                <path
+                  d="M12 6V18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M6 12H18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <circle cx="12" cy="12" r="3" fill="currentColor" />
+              </svg>
+              <span>
+                {packageData.payment_by_points === 1
+                  ? "Remove Payment"
+                  : "Pay by Points"}
+              </span>
             </button>
           </div>
         ) : userType === "tourism" ? (
-          // أزرار شركة السياحة - الإضافة والتعديل والحذف
-          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexDirection: "row-reverse" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "1rem",
+              justifyContent: "center",
+              flexDirection: "row-reverse",
+            }}
+          >
             <button
               className="customAddButton"
               onClick={() => navigate(`/add-package-element/${id}`)}
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.6rem 1.2rem',
-                border: 'none',
-                borderRadius: '30px',
-                background: 'linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)',
-                color: '#fff',
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                padding: "0.6rem 1.2rem",
+                border: "none",
+                borderRadius: "30px",
+                background: "linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)",
+                color: "#fff",
                 fontWeight: 700,
-                fontSize: '1rem',
-                cursor: 'pointer',
-                boxShadow: '0 4px 14px 0 rgba(67,233,123,0.15)',
-                transition: 'transform 0.2s cubic-bezier(.4,2,.6,1)',
-                position: 'relative',
-                overflow: 'hidden',
+                fontSize: "1rem",
+                cursor: "pointer",
+                boxShadow: "0 4px 14px 0 rgba(67,233,123,0.15)",
+                transition: "transform 0.2s cubic-bezier(.4,2,.6,1)",
+                position: "relative",
+                overflow: "hidden",
               }}
-              onMouseOver={e => e.currentTarget.style.transform = 'scale(1.08) rotate(-2deg)'}
-              onMouseOut={e => e.currentTarget.style.transform = 'none'}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.transform = "scale(1.08) rotate(-2deg)")
+              }
+              onMouseOut={(e) => (e.currentTarget.style.transform = "none")}
             >
-              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="11" cy="11" r="11" fill="rgba(255,255,255,0.15)"/>
-                  <path d="M11 6V16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                  <path d="M6 11H16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 22 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="11"
+                    cy="11"
+                    r="11"
+                    fill="rgba(255,255,255,0.15)"
+                  />
+                  <path
+                    d="M11 6V16"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M6 11H16"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
                 </svg>
               </span>
-              <span style={{ position: 'relative', zIndex: 1 }}>Add</span>
+              <span style={{ position: "relative", zIndex: 1 }}>Add</span>
             </button>
-            <div onClick={() => setShowEditModal(true)} style={{display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+            <div
+              onClick={() => setShowEditModal(true)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+            >
               <EditButton />
             </div>
-            <div onClick={() => setShowDeleteDialog(true)} style={{display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+            <div
+              onClick={() => setShowDeleteDialog(true)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+            >
               <DeleteButton />
             </div>
           </div>
         ) : (
-          // أزرار المستخدم العادي - زر الشراء
           <div
             data-tooltip={`Price: $${packageData.total_price}`}
             className="buttonpriceanimation"
@@ -337,22 +445,23 @@ const PackageDetails = () => {
       </div>
       {/* Edit Modal */}
       {showEditModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          background: 'rgba(41, 53, 65, 0.7)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 9999
-        }}
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(41, 53, 65, 0.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+          }}
           onClick={() => setShowEditModal(false)}
         >
           <form
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             onSubmit={handleEditSubmit}
             style={{
               background: colors.color4,
@@ -360,69 +469,91 @@ const PackageDetails = () => {
               padding: 32,
               minWidth: 340,
               maxWidth: 400,
-              boxShadow: '0 0 24px 0 #29354133',
+              boxShadow: "0 0 24px 0 #29354133",
               color: colors.color1,
-              position: 'relative',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 18
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+              gap: 18,
             }}
           >
             <button
               type="button"
               onClick={() => setShowEditModal(false)}
               style={{
-                position: 'absolute',
+                position: "absolute",
                 top: 12,
                 right: 16,
-                background: 'none',
-                border: 'none',
+                background: "none",
+                border: "none",
                 fontSize: 22,
                 color: colors.color2,
-                cursor: 'pointer',
-                zIndex: 2
+                cursor: "pointer",
+                zIndex: 2,
               }}
               title="Close"
-            >×</button>
-            <h2 style={{ color: colors.color2, marginBottom: 10, textAlign: 'center' }}>Edit Package</h2>
-            <label style={{ fontWeight: 'bold', color: colors.color2 }}>Description:</label>
+            >
+              ×
+            </button>
+            <h2
+              style={{
+                color: colors.color2,
+                marginBottom: 10,
+                textAlign: "center",
+              }}
+            >
+              Edit Package
+            </h2>
+            <label style={{ fontWeight: "bold", color: colors.color2 }}>
+              Description:
+            </label>
             <textarea
               value={editDescription}
-              onChange={e => setEditDescription(e.target.value)}
+              onChange={(e) => setEditDescription(e.target.value)}
               rows={3}
               style={{
-                width: '100%',
+                width: "100%",
                 padding: 8,
                 borderRadius: 6,
                 border: `1px solid ${colors.color3}`,
                 fontSize: 16,
                 background: colors.color6,
-                color: colors.color1
+                color: colors.color1,
               }}
               required
             />
-            <label style={{ fontWeight: 'bold', color: colors.color2 }}>Total Price:</label>
+            <label style={{ fontWeight: "bold", color: colors.color2 }}>
+              Total Price:
+            </label>
             <input
               type="number"
               value={editPrice}
-              onChange={e => setEditPrice(e.target.value)}
+              onChange={(e) => setEditPrice(e.target.value)}
               style={{
-                width: '100%',
+                width: "100%",
                 padding: 8,
                 borderRadius: 6,
                 border: `1px solid ${colors.color3}`,
                 fontSize: 16,
                 background: colors.color6,
-                color: colors.color1
+                color: colors.color1,
               }}
               required
             />
-            <label style={{ fontWeight: 'bold', color: colors.color2 }}>Package Image:</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <label style={{ fontWeight: "bold", color: colors.color2 }}>
+              Package Image:
+            </label>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <img
                 src={editImagePreview}
                 alt="package preview"
-                style={{ width: 90, height: 90, objectFit: 'cover', borderRadius: 10, border: `1.5px solid ${colors.color3}` }}
+                style={{
+                  width: 90,
+                  height: 90,
+                  objectFit: "cover",
+                  borderRadius: 10,
+                  border: `1.5px solid ${colors.color3}`,
+                }}
               />
               <input
                 type="file"
@@ -436,19 +567,19 @@ const PackageDetails = () => {
               disabled={editLoading}
               style={{
                 background: colors.color2,
-                color: 'white',
-                padding: '12px 0',
-                border: 'none',
+                color: "white",
+                padding: "12px 0",
+                border: "none",
                 borderRadius: 8,
                 fontSize: 18,
                 fontWeight: 600,
-                cursor: 'pointer',
+                cursor: "pointer",
                 marginTop: 12,
-                transition: 'background 0.3s',
-                width: '100%'
+                transition: "background 0.3s",
+                width: "100%",
               }}
             >
-              {editLoading ? 'Saving...' : 'Save Changes'}
+              {editLoading ? "Saving..." : "Save Changes"}
             </button>
           </form>
         </div>
@@ -456,7 +587,11 @@ const PackageDetails = () => {
       {/* Delete Confirm Dialog */}
       {showDeleteDialog && (
         <ConfirmDialog
-          message={deleteLoading ? "Deleting package..." : "Are you sure you want to delete this package?"}
+          message={
+            deleteLoading
+              ? "Deleting package..."
+              : "Are you sure you want to delete this package?"
+          }
           onCancel={() => !deleteLoading && setShowDeleteDialog(false)}
           onConfirm={!deleteLoading ? handleDeletePackage : undefined}
         />

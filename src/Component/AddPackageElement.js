@@ -92,7 +92,7 @@ const AddPackageElement = (props) => {
             if (response.ok) {
                 toast.success("Element added successfully!", { position: "top-right" });
                 setTimeout(() => {
-                    navigate(`/package/${packageId}`);
+                    navigate(`/package/${packageId}`,{ replace: true });
                 }, 1200);
                 setName("");
                 setDescription("");

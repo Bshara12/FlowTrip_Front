@@ -27,7 +27,7 @@ const TourismRecords = () => {
         const statusFlag = res?.data?.status;
         const apiMessage = res?.data?.message;
         if (statusFlag && statusFlag !== "success") {
-          setErrorDefault(apiMessage || "تعذر جلب السجلات. حاول لاحقاً.");
+          setErrorDefault(apiMessage || "Unable to retrieve records. Try again later");
           setPackages([]);
         } else {
           const data = res?.data?.data ?? [];
@@ -37,7 +37,7 @@ const TourismRecords = () => {
         const apiMessage = e?.response?.data?.message;
         const statusCode = e?.response?.status;
         const statusText = e?.response?.data?.status || e?.response?.statusText;
-        const finalMessage = apiMessage || e?.message || "تعذر جلب السجلات. حاول لاحقاً.";
+        const finalMessage = apiMessage || e?.message || "Unable to retrieve records. Try again later..";
         setErrorDefault(finalMessage);
         console.error("Fetch packages failed", {
           statusCode,
@@ -66,7 +66,7 @@ const TourismRecords = () => {
       const statusFlag = res?.data?.status;
       const apiMessage = res?.data?.message;
       if (statusFlag && statusFlag !== "success") {
-        setErrorLatest(apiMessage || "تعذر جلب الحزم الأحدث. حاول لاحقاً.");
+        setErrorLatest(apiMessage || "Unable to fetch newer packages. Try again later");
         setPopularPackages([]);
       } else {
         const data = res?.data?.data ?? [];
@@ -76,7 +76,7 @@ const TourismRecords = () => {
       const apiMessage = e?.response?.data?.message;
       const statusCode = e?.response?.status;
       const statusText = e?.response?.data?.status || e?.response?.statusText;
-      const finalMessage = apiMessage || e?.message || "تعذر جلب الحزم الأحدث. حاول لاحقاً.";
+      const finalMessage = apiMessage || e?.message || "Unable to fetch newer packages. Try again later.";
       setErrorLatest(finalMessage);
       console.error("Fetch most popular packages failed", {
         statusCode,
@@ -91,7 +91,6 @@ const TourismRecords = () => {
 
   const sortedPackages = useMemo(() => {
     const cloned = [...packages];
-    // لا يوجد created_at في الداتا، سنفرز حسب id كبديل منطقي
     cloned.sort((a, b) => (mode === "new" ? b.id - a.id : a.id - b.id));
     return cloned;
   }, [packages, mode]);
@@ -106,7 +105,7 @@ const TourismRecords = () => {
   return (
     <div className="tourism-records-container">
       <div className="tourism-records-card">
-        <h1 className="tourism-records-title">سجلات شركة السياحة</h1>
+        <h1 className="tourism-records-title">Tourism company records</h1>
 
         <div className="glass-radio-group-records">
           <input
@@ -116,7 +115,7 @@ const TourismRecords = () => {
             checked={mode === "new"}
             onChange={() => handleSelect("new")}
           />
-          <label htmlFor="glass-records-new">جديد</label>
+          <label htmlFor="glass-records-new">new</label>
 
           <input
             type="radio"
@@ -125,7 +124,7 @@ const TourismRecords = () => {
             checked={mode === "old"}
             onChange={() => handleSelect("old")}
           />
-          <label htmlFor="glass-records-old">قديم</label>
+          <label htmlFor="glass-records-old">old</label>
 
           <input
             type="radio"
@@ -134,12 +133,12 @@ const TourismRecords = () => {
             checked={mode === "latest"}
             onChange={() => handleSelect("latest")}
           />
-          <label htmlFor="glass-records-latest">الرائج</label>
+          <label htmlFor="glass-records-latest">Trending</label>
 
           <div className="glass-glider-records"></div>
         </div>
 
-        {loading && <p style={{ marginTop: 24 }}>جاري التحميل...</p>}
+        {loading && <p style={{ marginTop: 24 }}>Loading...</p>}
 
         {!loading && (
           <>

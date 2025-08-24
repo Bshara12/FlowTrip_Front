@@ -8,11 +8,7 @@ const Requist = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
-// <<<<<<< HEAD
-//   const token = localStorage.getItem("token");
-// =======
   const token = TOKEN;
-// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -33,19 +29,15 @@ const Requist = () => {
           setRequests(response.data.data);
         }
       } catch (error) {
-// <<<<<<< HEAD
         console.error("Error fetching requests:", error);
         
-        // Handle unauthorized error (token expired or invalid)
         if (error.response && error.response.status === 401) {
           console.error("Token is invalid or expired");
           // Optionally redirect to login page
           // window.location.href = "/auth";
         }
-// =======
         console.error("Error:", error);
-        console.error("حدث خطأ أثناء جلب الطلبات:", error);
-// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
+        console.error("An error occurred while fetching requests:", error);
       } finally {
         setLoading(false);
       }

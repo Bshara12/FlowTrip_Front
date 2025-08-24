@@ -11,7 +11,7 @@
 .tourism-records-card {
   /* background: #e8e8e8; color6 */
   min-width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -85,7 +85,7 @@
     inset 1px 1px 4px rgba(255, 255, 255, 0.2),
     inset -1px -1px 6px rgba(0, 0, 0, 0.3),
     0 4px 12px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
+  /* overflow: hidden; */
   width: fit-content;
 }
 

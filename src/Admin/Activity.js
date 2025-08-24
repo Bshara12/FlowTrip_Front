@@ -12,12 +12,8 @@ const Activity = () => {
   const [newActivityName, setNewActivityName] = useState("");
   const [confirmDeleteData, setConfirmDeleteData] = useState(null);
   const modalRef = useRef(null);
-// <<<<<<< HEAD
 
-//   const token = "4|PCc1qvBuuP7iWyayeJhQDMAsq2WnUY5MGAmu7Lkx2ebc86ed";
-// =======
   const token = TOKEN;
-// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
   const fetchActivities = () => {
     axios

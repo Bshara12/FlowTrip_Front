@@ -34,6 +34,8 @@
 .description {
   font-size: 16px;
   color: var(--color2);
+  padding: 10px;
+  border-left: 8px solid var(--color1);
 }
 
 .price {
@@ -69,7 +71,7 @@
   display: flex;
   flex-direction: column;
 }
-.elementCard img{
+.elementCard img {
   height: 300px;
 }
 .elementCard:hover {
@@ -79,10 +81,9 @@
 
 .sliderImage {
   width: 100%;
-  height: 360px; 
+  height: 360px;
   object-fit: cover;
 }
-
 
 .elementContent {
   padding: 15px;
@@ -128,8 +129,8 @@
   --tooltip-height: 35px;
   --tooltip-width: 110px;
   --gap-between-tooltip-to-button: 18px;
-  --button-color:var(--color1); 
-  --tooltip-color: var(--color3); 
+  --button-color: var(--color1);
+  --tooltip-color: var(--color3);
   width: var(--width);
   height: var(--height);
   background: var(--button-color);
@@ -148,7 +149,7 @@
   background-color: var(--tooltip-color);
   font-size: 0.9rem;
   color: #fff;
-  border-radius: .25em;
+  border-radius: 0.25em;
   line-height: var(--tooltip-height);
   bottom: calc(var(--height) + var(--gap-between-tooltip-to-button) + 10px);
   left: calc(50% - var(--tooltip-width) / 2);
@@ -156,7 +157,7 @@
 
 .buttonpriceanimation::after {
   position: absolute;
-  content: '';
+  content: "";
   width: 0;
   height: 0;
   border: 10px solid transparent;

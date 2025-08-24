@@ -11,12 +11,10 @@ export default function ChatBot() {
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    // أضف رسالة المستخدم
     setMessages((prev) => [...prev, { sender: "user", type: "text", text: input }]);
     const userMessage = input;
     setInput("");
 
-    // عرض مؤشر الكتابة
     setIsLoading(true);
 
     try {
@@ -30,13 +28,11 @@ export default function ChatBot() {
       setIsLoading(false);
 
       if (data.source === "code-map") {
-        // عرض رسالة التحويل
         setMessages((prev) => [
           ...prev,
           { sender: "bot", type: "text", text: "🔄 You will be transferred to the technical department..." }
         ]);
       
-        // بعد ثانيتين افتح رابط واتساب باستخدام الرقم الراجع
         setTimeout(() => {
           window.open(`https://wa.me/+${data.code}`, "_blank");
         }, 2000);

@@ -9,7 +9,7 @@ export default function FlightsList() {
 
   const [flights, setFlights] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sortBy, setSortBy] = useState(""); // زر الكل افتراضي
+  const [sortBy, setSortBy] = useState(""); 
 
   useEffect(() => {
     fetchFlights();
@@ -60,37 +60,35 @@ export default function FlightsList() {
 
   return (
     <div className="flights-container">
-      <h2 className="flights-title">✈ الرحلات المتاحة</h2>
+      <h2 className="flights-title">Available flights ✈</h2>
 
-      {/* أزرار الفلترة */}
       <div className="filter-bar">
         <button
           className={sortBy === "" ? "active" : ""}
           onClick={() => setSortBy("")}
         >
-          الكل 🌍
+          everyone 🌍
         </button>
         <button
           className={sortBy === "price" ? "active" : ""}
           onClick={() => setSortBy("price")}
         >
-          الأرخص 💰
+          The cheapest 💰
         </button>
         <button
           className={sortBy === "shortest" ? "active" : ""}
           onClick={() => setSortBy("shortest")}
         >
-          الأسرع ⚡
+          The fastest ⚡
         </button>
       </div>
 
       {loading ? (
-        <p className="loading">جارِ تحميل الرحلات...</p>
+        <p className="loading">Loading flights...</p>
       ) : flights.length === 0 ? (
-        <p className="no-results">لا توجد رحلات متاحة</p>
+        <p className="no-results">There are no flights available</p>
       ) : (
         flights.map((flight, idx) => {
-          // إذا كانت الرحلة اتجاه واحد
           if (formData.tripType === "oneway" || flight.air_line) {
             return (
               <div className="flight-card" key={idx}>
@@ -111,7 +109,6 @@ export default function FlightsList() {
             );
           }
 
-          // إذا كانت الرحلة ذهاب وعودة
           if (flight.go && flight.return) {
             return (
               <div className="roundtrip-card" key={idx}>
@@ -122,9 +119,8 @@ export default function FlightsList() {
                   </span>
                 </div>
 
-                {/* الذهاب */}
                 <div className="trip-segment">
-                  <h4>الذهاب</h4>
+                  <h4>go</h4>
                   <div className="flight-route">
                     <strong>{flight.go.starting_point_location}</strong>
                     <div className="arrow">➔</div>
@@ -136,9 +132,8 @@ export default function FlightsList() {
                   </div>
                 </div>
 
-                {/* العودة */}
                 <div className="trip-segment">
-                  <h4>العودة</h4>
+                  <h4>Return</h4>
                   <div className="flight-route">
                     <strong>{flight.return.starting_point_location}</strong>
                     <div className="arrow">➔</div>

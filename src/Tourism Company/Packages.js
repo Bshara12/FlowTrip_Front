@@ -1,4 +1,3 @@
-// TODO: Add route for /add-package/step1 in your router (e.g., in App.js or Routes.js)
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Packages.css"; 
@@ -21,6 +20,7 @@ const PackagesTourism = () => {
         });
         if (res.data && res.data.data) {
           setPackages(res.data.data);
+          console.log(res.data.data)
         }
       } catch (err) {
         console.error("Error fetching packages:", err);

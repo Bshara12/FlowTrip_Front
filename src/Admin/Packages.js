@@ -31,11 +31,7 @@ export default function Packages() {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
-// <<<<<<< HEAD
-//           }
-// =======
             }
-// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
         });
         if (res.data && res.data.data) {
           setPackages(res.data.data);

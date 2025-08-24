@@ -7,7 +7,7 @@
   }
   
   /* العناوين */
-  .title {
+  .titleFlightDetails {
     font-size: 28px;
     font-weight: bold;
     background: linear-gradient(to right, var(--color1), var(--color4));

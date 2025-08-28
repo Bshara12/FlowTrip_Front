@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Verification.css";
+import { baseURL, RESENDEMAIL, VERIFICATION } from "../Api/Api";
 
 const Verification = () => {
   const inputsRef = useRef([]);
@@ -59,7 +60,7 @@ const Verification = () => {
     try {
       console.log("Sending resend request to:", `http://127.0.0.1:8000/api/ReSendEmail/${userEmail}`);
       
-      const response = await axios.get(`http://127.0.0.1:8000/api/ReSendEmail/${userEmail}`);
+      const response = await axios.get(`${baseURL}/${RESENDEMAIL}/${userEmail}`);
 
       console.log("Resend response:", response.data);
 
@@ -116,7 +117,7 @@ const Verification = () => {
     try {
       console.log("Sending verification request to:", `http://127.0.0.1:8000/api/Verification/${userEmail}`);
       
-      const response = await axios.post(`http://127.0.0.1:8000/api/Verification/${userEmail}`, {
+      const response = await axios.post(`${baseURL}/${VERIFICATION}/${userEmail}`, {
         verification_code: code
       });
 

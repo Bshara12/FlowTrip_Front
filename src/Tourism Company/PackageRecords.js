@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import "./PackageRecords.css";
+import { BASETOURISM, baseURL, GET_RECORDS_FOR_PACKAGE } from "../Api/Api";
 
 export default function PackageRecordsTorismrecord() {
   const { id } = useParams();
@@ -17,7 +18,7 @@ export default function PackageRecordsTorismrecord() {
       try {
         const token = Cookies.get("authToken") || localStorage.getItem("token");
         const res = await axios.get(
-          `http://127.0.0.1:8000/api/tourism/getrecordsforpackage/${id}`,
+          `${baseURL}/${BASETOURISM}/${GET_RECORDS_FOR_PACKAGE}/${id}`,
           {
             headers: token ? { Authorization: `Bearer ${token}` } : undefined,
           }

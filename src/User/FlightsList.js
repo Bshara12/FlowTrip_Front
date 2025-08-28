@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import "./FlightsList.css";
+import { baseURL, FILTER_FLIGHTS } from "../Api/Api";
 
 export default function FlightsList() {
   const location = useLocation();
@@ -44,7 +45,7 @@ export default function FlightsList() {
         payload.sort_by = sortBy;
       }
 
-      const res = await axios.post("http://127.0.0.1:8000/api/filterFlights", payload);
+      const res = await axios.post(`${baseURL}/${FILTER_FLIGHTS}`, payload);
       if (res.data.status) {
         setFlights(res.data.data);
       } else {

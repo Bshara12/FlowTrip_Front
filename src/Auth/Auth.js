@@ -6,6 +6,7 @@ import "./AuthStyle.css";
 import aircraftImage from "../Assets/undraw_aircraft_usu4.svg";
 import luggageImage from "../Assets/undraw_luggage_k1gn.svg";
 import ButtonAuth from "../Component/ButtonAuth";
+import { baseURL, CREATEUSER, LOGIN } from "../Api/Api";
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -53,7 +54,7 @@ const Auth = () => {
 
     try {
       console.log("Sending request to:", "http://127.0.0.1:8000/api/Login");
-      const response = await axios.post("http://127.0.0.1:8000/api/Login", {
+      const response = await axios.post(`${baseURL}/${LOGIN}`, {
         email: loginData.email,
         password: loginData.password,
       });
@@ -171,19 +172,16 @@ const Auth = () => {
 
       console.log(
         "Sending registration request to:",
-        "http://127.0.0.1:8000/api/CreateUser"
+        `${baseURL}/${CREATEUSER}`
       );
 
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/CreateUser",
-        {
-          name: registerData.username,
-          email: registerData.email,
-          password: registerData.password,
-          role_id: role_id,
-          phone_number: registerData.phone,
-        }
-      );
+      const response = await axios.post(`${baseURL}/${CREATEUSER}`, {
+        name: registerData.username,
+        email: registerData.email,
+        password: registerData.password,
+        role_id: role_id,
+        phone_number: registerData.phone,
+      });
 
       console.log("Registration response:", response.data);
 
@@ -269,7 +267,7 @@ const Auth = () => {
               <input
                 required
                 type="email"
-                className="input"
+                className="inputregister"
                 name="email"
                 value={loginData.email}
                 onChange={handleLoginChange}
@@ -288,7 +286,7 @@ const Auth = () => {
               <input
                 required
                 type={showPasswordLogin ? "text" : "password"}
-                className="input"
+                className="inputregister"
                 name="password"
                 value={loginData.password}
                 onChange={handleLoginChange}
@@ -410,7 +408,7 @@ const Auth = () => {
               <input
                 required
                 type="text"
-                className="input"
+                className="inputregister"
                 name="username"
                 value={registerData.username}
                 onChange={handleRegisterChange}
@@ -429,7 +427,7 @@ const Auth = () => {
               <input
                 required
                 type="email"
-                className="input"
+                className="inputregister"
                 name="email"
                 value={registerData.email}
                 onChange={handleRegisterChange}
@@ -449,7 +447,7 @@ const Auth = () => {
                 required
                 type="text"
                 inputMode="numeric"
-                className="input"
+                className="inputregister"
                 name="phone"
                 value={registerData.phone}
                 onInput={(e) => {
@@ -471,7 +469,7 @@ const Auth = () => {
               <input
                 required
                 type={showPasswordRegister ? "text" : "password"}
-                className="input"
+                className="inputregister"
                 name="password"
                 value={registerData.password}
                 onChange={handleRegisterChange}

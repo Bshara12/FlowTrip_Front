@@ -15,14 +15,20 @@ import "react-toastify/dist/ReactToastify.css";
 import ConfirmDialog from "../Component/ConfirmDialog";
 // =======
 // import { useNavigate } from "react-router-dom";
-import { baseURL, GET_PACKAGE, TOKEN } from "../Api/Api";
-// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
+import {
+  BASETOURISM,
+  baseURL,
+  DELETE_PACKAGE,
+  EDIT_PACKADE,
+  GET_PACKAGE,
+  PAYBYPOINT,
+  TOKEN,
+} from "../Api/Api";
 
 const PackageDetails = () => {
   const { id } = useParams();
   const [packageData, setPackageData] = useState(null);
   const [loading, setLoading] = useState(true);
-  // <<<<<<< HEAD
   const [showEditModal, setShowEditModal] = useState(false);
   const [editDescription, setEditDescription] = useState("");
   const [editPrice, setEditPrice] = useState("");
@@ -35,20 +41,14 @@ const PackageDetails = () => {
   const fallbackImage =
     "https://images.unsplash.com/photo-1504674900247-0877df9cc836";
   const navigate = useNavigate();
-  // =======
   const token = TOKEN;
-  // >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
   useEffect(() => {
     const fetchPackage = async () => {
       try {
         const res = await axios.get(`${baseURL}/${GET_PACKAGE}/${id}`, {
           headers: {
-            // <<<<<<< HEAD
-            //             "Authorization": "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c"
-            // =======
             Authorization: `Bearer ${token}`,
-            // >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
           },
         });
         if (res.data && res.data.data) {
@@ -90,12 +90,11 @@ const PackageDetails = () => {
     }
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/tourism/editPackage/${id}`,
+        `${baseURL}/${BASETOURISM}/${EDIT_PACKADE}/${id}`,
         formData,
         {
           headers: {
-            Authorization:
-              "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c",
+            Authorization: `Bearer ${TOKEN}`,
             "Content-Type": "multipart/form-data",
           },
         }
@@ -113,15 +112,11 @@ const PackageDetails = () => {
   const handleDeletePackage = async () => {
     setDeleteLoading(true);
     try {
-      await axios.delete(
-        `http://127.0.0.1:8000/api/tourism/deletePackage/${id}`,
-        {
-          headers: {
-            Authorization:
-              "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c",
-          },
-        }
-      );
+      await axios.delete(`${baseURL}/${BASETOURISM}/${DELETE_PACKAGE}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
       toast.success("Package deleted successfully", { position: "top-right" });
       setShowDeleteDialog(false);
       setTimeout(() => navigate("/TourismCompany/dashboard/packages"), 1200);
@@ -134,15 +129,11 @@ const PackageDetails = () => {
 
   const handlePayByPoints = async () => {
     try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/api/paybypoint/${id}`,
-        {
-          headers: {
-            Authorization:
-              "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c",
-          },
-        }
-      );
+      const response = await axios.get(`${baseURL}/${PAYBYPOINT}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
 
       setPackageData((prevData) => ({
         ...prevData,
@@ -178,11 +169,11 @@ const PackageDetails = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    adaptiveHeight: true
+    adaptiveHeight: true,
   };
 
-  const userType = localStorage.getItem("user_type"); 
-  const userRole = localStorage.getItem("role"); 
+  const userType = localStorage.getItem("user_type");
+  const userRole = localStorage.getItem("role");
 
   return (
     <div className="packageDetailsContainer">
@@ -197,14 +188,13 @@ const PackageDetails = () => {
         draggable
         pauseOnHover
       />
-    <Slider {...sliderSettings} className="packageSlider">
-      {allPictures.map((pic, index) => (
-        <div key={index}>
-          <img src={pic} alt={`slide-${index}`} className="sliderImage" />
-        </div>
-      ))}
-    </Slider>
-
+      <Slider {...sliderSettings} className="packageSlider">
+        {allPictures.map((pic, index) => (
+          <div key={index}>
+            <img src={pic} alt={`slide-${index}`} className="sliderImage" />
+          </div>
+        ))}
+      </Slider>
 
       <div className="packageInfo">
         <h1 className="companyName">

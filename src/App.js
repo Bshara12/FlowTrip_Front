@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Auth from "./Auth/Auth";
 import DashBourd from "./Admin/DashBourd";
 
-import OwnerRigester from "./Auth/OwnerRigester";
+// import OwnerRigester from "./Auth/OwnerRigester";
 import Packages from "./Admin/Packages";
 import PackageDetails from "./Component/PackageDetails";
 import Requist from "./Admin/Requist";
@@ -64,7 +64,7 @@ function App() {
 
       {/* Admin */}
       <Route>
-        <Route path="ownerrigester" element={<OwnerRigester />} />
+        {/* <Route path="ownerrigester" element={<OwnerRigester />} /> */}
         <Route path="plans" element={<Plans />}>
           <Route path="showallplans" element={<ShowAllPlans />} />
           <Route path="showallplans/:planeId" element={<PlanDetails />} />

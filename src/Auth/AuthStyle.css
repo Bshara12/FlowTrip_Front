@@ -358,7 +358,7 @@
   max-width: 380px;
 }
 
-.wave-group .input {
+.wave-group .inputregister {
   font-size: 16px;
   padding: 10px 10px 10px 5px;
   display: block;
@@ -369,7 +369,7 @@
   color: #333;
 }
 
-.wave-group .input:focus {
+.wave-group .inputregister:focus {
   outline: none;
 }
 
@@ -389,8 +389,8 @@
   transition-delay: calc(var(--index) * 0.05s);
 }
 
-.wave-group .input:focus ~ .label .label-char,
-.wave-group .input:valid ~ .label .label-char {
+.wave-group .inputregister:focus ~ .label .label-char,
+.wave-group .inputregister:valid ~ .label .label-char {
   transform: translateY(-20px);
   font-size: 14px;
   color: #5264AE;
@@ -421,8 +421,8 @@
   right: 50%;
 }
 
-.wave-group .input:focus ~ .bar:before,
-.wave-group .input:focus ~ .bar:after {
+.wave-group .inputregister:focus ~ .bar:before,
+.wave-group .inputregister:focus ~ .bar:after {
   width: 50%;
 }
 

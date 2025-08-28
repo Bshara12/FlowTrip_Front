@@ -3,6 +3,7 @@ import axios from "axios";
 import "./TourismRecords.css";
 import RecordPackageCard from "../Component/RecordPackageCard";
 import Cookies from "js-cookie";
+import { BASETOURISM, baseURL, GET_MOST_POPULAR_PACKAGES_FOR_COMPANY } from "../Api/Api";
 
 const TourismRecords = () => {
   const [packages, setPackages] = useState([]);
@@ -58,7 +59,7 @@ const TourismRecords = () => {
     try {
       const token = Cookies.get("authToken") || localStorage.getItem("token");
       const res = await axios.get(
-        "http://127.0.0.1:8000/api/tourism/getMostPopularPackagesForCompany",
+        `${baseURL}/${BASETOURISM}/${GET_MOST_POPULAR_PACKAGES_FOR_COMPANY}`,
         {
           headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         }

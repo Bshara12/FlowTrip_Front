@@ -10,6 +10,7 @@ import ConfirmDialog from "../Component/ConfirmDialog";
 import { colors } from "../Component/Color";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ADD_PICTURE_ELEMENT, BASETOURISM, baseURL, DELETE_ELEMENT_PICTURE, DELETE_PACKAGE_ELEMENT, EDIT_PACKAGE_ELEMENT, GET_ELEMENT_PACKAGE_BYID, TOKEN } from "../Api/Api";
 
 const PackageElementDetails = () => {
   const { state } = useLocation();
@@ -18,7 +19,7 @@ const PackageElementDetails = () => {
   const [element, setElement] = useState(null);
   const fallbackImage = "https://images.unsplash.com/photo-1504674900247-0877df9cc836";
   const userType = localStorage.getItem("user_type");
-  const token = "3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c";
+  const token = `${TOKEN}`;
 
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -47,7 +48,7 @@ const PackageElementDetails = () => {
     if (!id) return;
     const fetchElement = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/tourism/getElementPackageById/${id}`, {
+        const response = await fetch(`${baseURL}/${BASETOURISM}/${GET_ELEMENT_PACKAGE_BYID}/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -90,7 +91,7 @@ const PackageElementDetails = () => {
     formData.append("picture", selectedFile);
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/tourism/addPictureElement/${element.id}`, {
+      const response = await fetch(`${baseURL}/${BASETOURISM}/${ADD_PICTURE_ELEMENT}/${element.id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -212,7 +213,7 @@ const PackageElementDetails = () => {
           message="Are you sure you want to delete the photo?"
           onConfirm={async () => {
             try {
-              const response = await fetch(`http://127.0.0.1:8000/api/tourism/deleteElementPicture/${showConfirm}`, {
+              const response = await fetch(`${baseURL}/${BASETOURISM}/${DELETE_ELEMENT_PICTURE}/${showConfirm}`, {
                 method: "DELETE",
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -262,7 +263,7 @@ const PackageElementDetails = () => {
           message="Are you sure you want to delete this item?"
           onConfirm={async () => {
             try {
-              const res = await fetch(`http://127.0.0.1:8000/api/tourism/deletePackageElement/${element.id}`, {
+              const res = await fetch(`${baseURL}/${BASETOURISM}/${DELETE_PACKAGE_ELEMENT}/${element.id}`, {
                 method: "DELETE",
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -339,7 +340,7 @@ const PackageElementDetails = () => {
                 onClick={async () => {
                   setEditLoading(true);
                   try {
-                    const res = await fetch(`http://127.0.0.1:8000/api/tourism/editPackageElement/${element.id}`, {
+                    const res = await fetch(`${baseURL}/${BASETOURISM}/${EDIT_PACKAGE_ELEMENT}/${element.id}`, {
                       method: "POST",
                       headers: {
                         "Content-Type": "application/json",

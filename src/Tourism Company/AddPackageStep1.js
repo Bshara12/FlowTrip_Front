@@ -4,6 +4,8 @@ import { colors } from "../Component/Color";
 import "./AddPackageStep1.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BASETOURISM, baseURL, CREATE_PACKAGE, TOKEN } from "../Api/Api";
+// import { base } from "framer-motion/client";
 
 const AddPackageStep1 = () => {
   const [image, setImage] = useState(null);
@@ -55,10 +57,10 @@ const AddPackageStep1 = () => {
     formData.append("checked", 1);
     formData.append("package_picture", image);
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/tourism/createPackage", {
+      const res = await fetch(`${baseURL}/${BASETOURISM}/${CREATE_PACKAGE}`, {
         method: "POST",
         headers: {
-          Authorization: "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c"
+          Authorization: `Bearer ${TOKEN}`
         },
         body: formData
       });

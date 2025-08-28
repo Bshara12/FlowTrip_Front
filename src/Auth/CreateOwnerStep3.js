@@ -4,7 +4,12 @@ import { useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./CreateOwnerStep3.css";
-import { baseURL, GET_ALL_ACCOMMODATION_TYPES, GET_ALL_ACTIVITY } from "../Api/Api";
+import {
+  baseURL,
+  CREATEOWNER,
+  GET_ALL_ACCOMMODATION_TYPES,
+  GET_ALL_ACTIVITY,
+} from "../Api/Api";
 
 const CreateOwnerStep3 = () => {
   const location = useLocation();
@@ -82,9 +87,13 @@ const CreateOwnerStep3 = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate required fields
-    if (!formData.business_name || !formData.location || !formData.description) {
+    if (
+      !formData.business_name ||
+      !formData.location ||
+      !formData.description
+    ) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -128,28 +137,43 @@ const CreateOwnerStep3 = () => {
         submission.activity_name = formData.activity_name;
       }
 
-      console.log("Sending owner creation request to:", `http://127.0.0.1:8000/api/CreateOwner/${userEmail}`);
+      console.log(
+        "Sending owner creation request to:",
+        `${baseURL}/${CREATEOWNER}/${userEmail}`
+      );
       console.log("Submitted Data:", submission);
 
-      const response = await axios.post(`http://127.0.0.1:8000/api/CreateOwner/${userEmail}`, submission);
+      const response = await axios.post(
+        `${baseURL}/${CREATEOWNER}/${userEmail}`,
+        submission
+      );
 
       console.log("Owner creation response:", response.data);
 
-      if (response.data.success || response.data.message === "your request has been sent to the technical team.. pleas wait until the request processed.") {
-        toast.success("your request has been sent to the technical team.. pleas wait until the request processed.");  
+      if (
+        response.data.success ||
+        response.data.message ===
+          "your request has been sent to the technical team.. pleas wait until the request processed."
+      ) {
+        toast.success(
+          "your request has been sent to the technical team.. pleas wait until the request processed."
+        );
       } else {
         toast.error(response.data.message || "Failed to create owner profile");
       }
     } catch (error) {
       console.error("Owner creation error:", error);
-      
+
       if (error.response) {
         // Server error
-        const errorMessage = error.response.data.message || "Failed to create owner profile";
+        const errorMessage =
+          error.response.data.message || "Failed to create owner profile";
         toast.error(errorMessage);
       } else if (error.request) {
         // Connection error
-        toast.error("Cannot connect to server. Please check your internet connection");
+        toast.error(
+          "Cannot connect to server. Please check your internet connection"
+        );
       } else {
         // Other error
         toast.error("An unexpected error occurred");
@@ -173,7 +197,7 @@ const CreateOwnerStep3 = () => {
         pauseOnHover
         theme="light"
       />
-      
+
       <h2 className="form-title">Create New Owner</h2>
       <form className="owner-form" onSubmit={handleSubmit}>
         <input
@@ -226,7 +250,9 @@ const CreateOwnerStep3 = () => {
                 <select
                   name="activity_name"
                   onChange={handleChange}
-                  value={showCustomActivityField ? "other" : formData.activity_name}
+                  value={
+                    showCustomActivityField ? "other" : formData.activity_name
+                  }
                   required
                   disabled={isLoading}
                 >
@@ -255,12 +281,12 @@ const CreateOwnerStep3 = () => {
           </>
         )}
 
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           disabled={isLoading}
           style={{
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            opacity: isLoading ? 0.6 : 1
+            cursor: isLoading ? "not-allowed" : "pointer",
+            opacity: isLoading ? 0.6 : 1,
           }}
         >
           {isLoading ? "Creating..." : "Send"}

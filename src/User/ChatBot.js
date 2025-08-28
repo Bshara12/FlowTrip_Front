@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ChatBot.css";
+import { baseURL, CHATBOT } from "../Api/Api";
 
 export default function ChatBot() {
   const [messages, setMessages] = useState([
@@ -18,7 +19,7 @@ export default function ChatBot() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/ai/chat", {
+      const res = await fetch(`${baseURL}/${CHATBOT}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: userMessage, lang: "ar" }),

@@ -20,6 +20,11 @@ export const FILTER_NAME_ACCOMMODATIOM ="FilterNameAccommodation";
 
 export const WHO_AMI ="WhoAmI";
 export const LOGOUT ="logout";
+export const LOGIN = "Login";
+export const CREATEUSER = "CreateUser";
+export const CREATEOWNER="CreateOwner";
+export const VERIFICATION="Verification";
+export const RESENDEMAIL="ReSendEmail";
 
 
 //admin api
@@ -51,7 +56,7 @@ export const DELETE_ACTIVITY ="deleteactivity";
 export const FILTER_USERS="filterusers";
 export const FILTER_SUBADMINS="filterSubAdmins";
 export const ADMIN_SEARCH ="AdminSearch";
-
+export const PAYBYPOINT="paybypoint";
 //airplane api
 
 export const ADD_PLANE ="AddPlane";
@@ -90,6 +95,30 @@ export const DELETE_VEHICLY="deleteVehicly";
 export const DELETE_PICTURE_CAR="deletePictureCar";
 
 export const EDIT_VEHICLE="editVehicle";
+
+
+
+
+// Tourism company api
+export const BASETOURISM="tourism";
+export const DELETE_PACKAGE="deletePackage";
+export const EDIT_PACKADE="editPackage";
+export const EDIT_PACKAGE_ELEMENT="editPackageElement";
+export const DELETE_PACKAGE_ELEMENT="deletePackageElement";
+export const DELETE_ELEMENT_PICTURE="deleteElementPicture";
+export const ADD_PICTURE_ELEMENT="addPictureElement";
+export const GET_ELEMENT_PACKAGE_BYID="getElementPackageById";
+export const CREATE_PACKAGE="createPackage";
+export const GET_RECORDS_FOR_PACKAGE="getrecordsforpackage";
+export const GET_PACKAGES_FOR_TOURISM="getPackagesfortourism";
+export const GET_MOST_POPULAR_PACKAGES_FOR_COMPANY="getMostPopularPackagesForCompany";
+
+
+//AI
+export const CHATBOT="ai/chat";
+export const FILTER_FLIGHTS="filterFlights";
+export const MAKEITINERARY="ai/itinerary"
+
 
 
 //token

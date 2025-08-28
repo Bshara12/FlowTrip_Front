@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./TripSummary.css";
+import { baseURL, MAKEITINERARY } from "../Api/Api";
 
 export default function TripSummary() {
   const location = useLocation();
@@ -20,7 +21,7 @@ export default function TripSummary() {
 
     const fetchPlan = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/ai/itinerary", {
+        const res = await fetch(`${baseURL}/${MAKEITINERARY}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

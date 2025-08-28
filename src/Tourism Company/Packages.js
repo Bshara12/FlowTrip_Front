@@ -4,6 +4,7 @@ import "./Packages.css";
 import Button from "../Component/AddButton";
 import PackageCard from "../Component/PackageCard";
 import { useNavigate } from "react-router-dom";
+import { BASETOURISM, baseURL, GET_PACKAGES_FOR_TOURISM, TOKEN } from "../Api/Api";
 
 const PackagesTourism = () => {
   const [packages, setPackages] = useState([]);
@@ -13,9 +14,9 @@ const PackagesTourism = () => {
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const res = await axios.get("http://127.0.0.1:8000/api/tourism/getPackagesfortourism", {
+        const res = await axios.get(`${baseURL}/${BASETOURISM}/${GET_PACKAGES_FOR_TOURISM}`, {
           headers: {
-            Authorization: "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c",
+            Authorization: `Bearer ${TOKEN}`,
           },
         });
         if (res.data && res.data.data) {

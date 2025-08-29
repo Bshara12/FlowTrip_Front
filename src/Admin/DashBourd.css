@@ -353,7 +353,6 @@
   }
 }
 
-/* إخفاء زر الموبايل على الشاشات الكبيرة */
 @media (min-width: 769px) {
   .mobile-menu-btn {
     display: none;

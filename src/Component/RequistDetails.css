@@ -109,3 +109,15 @@
   font-size: 18px;
   text-align: center;
 }
+
+
+@media (min-width: 768px) {
+ .request-details-card{
+  font-size: 1rem !important;
+ }
+}
+@media (max-width: 768px) {
+  .request-details-card{
+    font-size: 0.9rem !important;
+   }
+}

@@ -3,6 +3,7 @@ import axios from "axios";
 import RequestCard from "../Component/RequestCard";
 import Loader from "../Component/Loader";
 import { baseURL, GET_ALL_REQUESTS, TOKEN } from "../Api/Api";
+import RequestCardSkeleton from "../Component/RequestCardSkeleton";
 
 const Requist = () => {
   const [requests, setRequests] = useState([]);
@@ -30,7 +31,7 @@ const Requist = () => {
         }
       } catch (error) {
         console.error("Error fetching requests:", error);
-        
+
         if (error.response && error.response.status === 401) {
           console.error("Token is invalid or expired");
           // Optionally redirect to login page
@@ -53,13 +54,15 @@ const Requist = () => {
       {loading ? (
 
         <>
-    <Loader />
-    <p>جاري التحميل...</p>
-  </>
+          <RequestCardSkeleton />
+          <RequestCardSkeleton />
+          <RequestCardSkeleton />
+          <RequestCardSkeleton />
+        </>
       ) : (
         requests.map((item) => {
           const { id, description, business_name } = item.request;
-          const ownerCategory = item.user_name; 
+          const ownerCategory = item.user_name;
 
           return (
             <RequestCard

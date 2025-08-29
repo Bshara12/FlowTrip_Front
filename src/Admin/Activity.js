@@ -5,22 +5,25 @@ import Button from "../Component/AddButton";
 import ActivityCard from "../Component/ActivityCard";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ADD_ACTIVITY, baseURL,DELETE_ACTIVITY,GET_ALL_ACTIVITY, TOKEN } from "../Api/Api";
+import { ADD_ACTIVITY, baseURL, DELETE_ACTIVITY, GET_ALL_ACTIVITY, TOKEN } from "../Api/Api";
+import ActivitySkeleton from "../Component/ActivitySkeleton";
+
+
 const Activity = () => {
   const [activities, setActivities] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newActivityName, setNewActivityName] = useState("");
   const [confirmDeleteData, setConfirmDeleteData] = useState(null);
   const modalRef = useRef(null);
+  const [loading, setLoading] = useState(true);
 
   const token = TOKEN;
 
   const fetchActivities = () => {
+    setLoading(true);
     axios
       .get(`${baseURL}/${GET_ALL_ACTIVITY}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
         const fetched = response.data.data.map((act) => ({
@@ -31,8 +34,12 @@ const Activity = () => {
       })
       .catch((error) => {
         console.error("Error fetching activities:", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
+
 
   useEffect(() => {
     fetchActivities();
@@ -122,7 +129,7 @@ const Activity = () => {
         <Button onClick={handleAddClick} text="Add Activity" />
       </div>
 
-      <div className="activity-row">
+      {/* <div className="activity-row">
         {activities.map((act) => (
           <ActivityCard
             key={act.id}
@@ -131,7 +138,22 @@ const Activity = () => {
             onDelete={() => handleDelete(act.id, act.text)} 
           />
         ))}
-      </div>
+      </div> */}
+      {loading ? (
+        <ActivitySkeleton />
+      ) : (
+        <div className="activity-row">
+          {activities.map((act) => (
+            <ActivityCard
+              key={act.id}
+              id={act.id}
+              text={act.text}
+              onDelete={() => handleDelete(act.id, act.text)}
+            />
+          ))}
+        </div>
+      )}
+
 
       {showModal && (
         <div className="activity-modal-overlay">
@@ -161,7 +183,7 @@ const Activity = () => {
         <div className="activity-modal-overlay">
           <div className="activity-modal-content">
             <h2>Confirm deletion</h2>
-            <p style={{ marginBottom:"15px" }}>Are you sure you want to delete the activity: "{confirmDeleteData.name}"?</p>
+            <p style={{ marginBottom: "15px" }}>Are you sure you want to delete the activity: "{confirmDeleteData.name}"?</p>
             <div className="activity-modal-buttons">
               <button className="activity-animated-btn" onClick={confirmDelete}>
                 Yes, delete

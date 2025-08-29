@@ -5,14 +5,19 @@ import Button from "../Component/AddButton";
 import { ToastContainer, toast } from "react-toastify";
 import CategoryCard from "../Component/CategoryCard";
 import { ADD_CATIGORY, baseURL, GET_ALL_OWNER_CATEGORIES, TOKEN } from "../Api/Api";
+import ActivitySkeleton from "../Component/ActivitySkeleton";
+
+
 const Category = () => {
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const modalRef = useRef(null);
   const token = TOKEN;
+  const [loading, setLoading] = useState(true);
 
   const fetchCategories = () => {
+    setLoading(true);
     axios
       .get(`${baseURL}/${GET_ALL_OWNER_CATEGORIES}`)
       .then((response) => {
@@ -24,6 +29,9 @@ const Category = () => {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -91,6 +99,9 @@ const Category = () => {
         <Button onClick={handleAddClick} text="Add Category" />
       </div>
 
+      {loading ? (
+        <ActivitySkeleton />
+      ) :(
       <div className="category-row">
         {categories.map((cat) => (
           <CategoryCard
@@ -102,6 +113,7 @@ const Category = () => {
           />
         ))}
       </div>
+      )};
 
       {showModal && (
         <div className="modal-overlay">

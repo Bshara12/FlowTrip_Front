@@ -10,6 +10,9 @@ import CategoryPopup from "../Admin/CategoryPopup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ACCEPT_REQUEST, baseURL, DELETE_REQUEST, SHOW_REQUEST, TOKEN } from "../Api/Api";
+import RequestDetailsSkeleton from "./RequestDetailsSkeleton";
+
+
 
 const RequestDetails = () => {
   const { id } = useParams();
@@ -146,9 +149,7 @@ const RequestDetails = () => {
     }
   };
 
-  if (loading) return <p className="request-loading">Loading...</p>;
-  if (!request) return <p className="request-error">Failed to load data.</p>;
-  if (loading) return <p className="loading">Loading...</p>;
+  if (loading) return <RequestDetailsSkeleton />;
   if (!request) return <p className="error">Failed to load data.</p>;
 
   const { request: req, user_name, email, phone_number } = request;

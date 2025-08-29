@@ -1,5 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./DashBourd.css";
 import Cookies from "js-cookie";
@@ -10,17 +9,13 @@ import { baseURL, LOGOUT } from "../Api/Api";
 export default function DashBourd() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [activeLink, setActiveLink] = useState("/Admin/dashbord/restaurants");
-  const [collapsed, setCollapsed] = useState(false);
+  const [activeLink, setActiveLink] = useState(location.pathname);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setActiveLink(location.pathname);
   }, [location.pathname]);
-
-  const handleToggleCollapse = () => {
-    setCollapsed(!collapsed);
-  };
 
   const handleLogout = async () => {
     const token = Cookies.get("authToken");
@@ -28,7 +23,7 @@ export default function DashBourd() {
       const response = await fetch(`${baseURL}/${LOGOUT}`, {
         method: "GET",
         headers: {
-          Authorization: ` Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -49,35 +44,25 @@ export default function DashBourd() {
 
   return (
     <div className="maincontainer">
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      <div className={`sidpare ${collapsed ? "collapsed" : ""}`}>
+      <ToastContainer position="top-right" autoClose={3000} />
+
+      <div
+        className={`sidpare ${isMobileMenuOpen ? "open" : ""}`}
+      >
+        {/* زر فتح/إغلاق الموبايل */}
+        <div
+          className="mobile-menu-btn"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <i className="fa-solid fa-bars"></i>
+        </div>
+
         <img
           src={require("../Assets/logo-removebg-preview.png")}
           alt="Logo"
-          className={collapsed ? "small" : ""}
         />
-        <div
-          className="longright"
-          onClick={handleToggleCollapse}
-          style={{ color: "var(--color1)" }}
-        >
-          <i
-            className={`fa-solid fa-arrow-right-long ${
-              collapsed ? "expanded" : ""
-            }`}
-          ></i>
-        </div>
-        <div style={{ width: "100%" }}>
+
+        <div className="menu-links">
           <Link
             to="/Admin/dashbord/requist"
             className={
@@ -87,6 +72,7 @@ export default function DashBourd() {
             <i className="fas fa-clipboard-list"></i>
             <p>Requists</p>
           </Link>
+
           <Link
             to="/Admin/dashbord/packages"
             className={
@@ -94,9 +80,9 @@ export default function DashBourd() {
             }
           >
             <i className="fas fa-cubes"></i>
-
             <p>Packages</p>
           </Link>
+
           <Link
             to="/Admin/dashbord/owners"
             className={
@@ -114,7 +100,6 @@ export default function DashBourd() {
             }
           >
             <i className="fas fa-chess-king"></i>
-
             <p>SubAdmin</p>
           </Link>
 
@@ -135,7 +120,6 @@ export default function DashBourd() {
             }
           >
             <i className="fas fa-running"></i>
-
             <p>Activitys</p>
           </Link>
 
@@ -149,8 +133,7 @@ export default function DashBourd() {
             <p>Catigory</p>
           </Link>
 
-          {/* ********* */}
-
+          {/* Contact */}
           <div
             onClick={() => window.open("https://wa.me/0938246910", "_blank")}
             className="logout-link"
@@ -160,7 +143,7 @@ export default function DashBourd() {
             <p>Contact us</p>
           </div>
 
-          {/* ////////// */}
+          {/* Logout */}
           <div
             onClick={() => setShowLogoutConfirm(true)}
             className="logout-link"
@@ -185,7 +168,7 @@ export default function DashBourd() {
                 onClick={() => setShowLogoutConfirm(false)}
                 className="cancel-btn"
               >
-                Cuncle
+                Cancel
               </button>
             </div>
           </div>

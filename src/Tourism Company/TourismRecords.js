@@ -3,7 +3,12 @@ import axios from "axios";
 import "./TourismRecords.css";
 import RecordPackageCard from "../Component/RecordPackageCard";
 import Cookies from "js-cookie";
-import { BASETOURISM, baseURL, GET_MOST_POPULAR_PACKAGES_FOR_COMPANY } from "../Api/Api";
+import {
+  BASETOURISM,
+  baseURL,
+  GET_MOST_POPULAR_PACKAGES_FOR_COMPANY,
+} from "../Api/Api";
+import SkeletonRecordsCard from "../Component/SkeletonRecordsCard";
 
 const TourismRecords = () => {
   const [packages, setPackages] = useState([]);
@@ -25,10 +30,14 @@ const TourismRecords = () => {
             headers: token ? { Authorization: `Bearer ${token}` } : undefined,
           }
         );
+
         const statusFlag = res?.data?.status;
         const apiMessage = res?.data?.message;
+
         if (statusFlag && statusFlag !== "success") {
-          setErrorDefault(apiMessage || "Unable to retrieve records. Try again later");
+          setErrorDefault(
+            apiMessage || "Unable to retrieve records. Try again later"
+          );
           setPackages([]);
         } else {
           const data = res?.data?.data ?? [];
@@ -37,8 +46,11 @@ const TourismRecords = () => {
       } catch (e) {
         const apiMessage = e?.response?.data?.message;
         const statusCode = e?.response?.status;
-        const statusText = e?.response?.data?.status || e?.response?.statusText;
-        const finalMessage = apiMessage || e?.message || "Unable to retrieve records. Try again later..";
+        const statusText =
+          e?.response?.data?.status || e?.response?.statusText;
+        const finalMessage =
+          apiMessage || e?.message || "Unable to retrieve records. Try again later..";
+
         setErrorDefault(finalMessage);
         console.error("Fetch packages failed", {
           statusCode,
@@ -50,6 +62,7 @@ const TourismRecords = () => {
         setLoading(false);
       }
     };
+
     fetchPackages();
   }, []);
 
@@ -64,10 +77,14 @@ const TourismRecords = () => {
           headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         }
       );
+
       const statusFlag = res?.data?.status;
       const apiMessage = res?.data?.message;
+
       if (statusFlag && statusFlag !== "success") {
-        setErrorLatest(apiMessage || "Unable to fetch newer packages. Try again later");
+        setErrorLatest(
+          apiMessage || "Unable to fetch newer packages. Try again later"
+        );
         setPopularPackages([]);
       } else {
         const data = res?.data?.data ?? [];
@@ -76,8 +93,11 @@ const TourismRecords = () => {
     } catch (e) {
       const apiMessage = e?.response?.data?.message;
       const statusCode = e?.response?.status;
-      const statusText = e?.response?.data?.status || e?.response?.statusText;
-      const finalMessage = apiMessage || e?.message || "Unable to fetch newer packages. Try again later.";
+      const statusText =
+        e?.response?.data?.status || e?.response?.statusText;
+      const finalMessage =
+        apiMessage || e?.message || "Unable to fetch newer packages. Try again later.";
+
       setErrorLatest(finalMessage);
       console.error("Fetch most popular packages failed", {
         statusCode,
@@ -139,9 +159,13 @@ const TourismRecords = () => {
           <div className="glass-glider-records"></div>
         </div>
 
-        {loading && <p style={{ marginTop: 24 }}>Loading...</p>}
-
-        {!loading && (
+        {loading ? (
+          <div className="recordsGrid">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonRecordsCard key={i} />
+            ))}
+          </div>
+        ) : (
           <>
             {(mode !== "latest" ? errorDefault : errorLatest) && (
               <p style={{ marginTop: 24, color: "#b00020" }}>
@@ -178,4 +202,4 @@ const TourismRecords = () => {
   );
 };
 
-export default TourismRecords; 
+export default TourismRecords;

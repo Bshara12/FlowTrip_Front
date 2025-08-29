@@ -7,6 +7,7 @@ import "./VehicleDetails.css";
 import EditButton from "../Component/EditButton";
 import DeleteButton from "../Component/DeleteButton";
 import { baseURL, CREATE_PICTURE_CAR, DELETE_PICTURE_CAR, DELETE_VEHICLY, EDIT_VEHICLE, GET_ALL_PICTURE, GET_VEHICLE_BYID, TOKEN, VEHICLE_OWNER } from "../Api/Api";
+import VehicleDetailsSkeleton from "./VehicleDetailsSkeleton";
 
 const VehicleDetails = () => {
   const { id } = useParams();
@@ -195,7 +196,7 @@ const VehicleDetails = () => {
       });
   };
 
-  if (!vehicle) return <div className="loading">Loading...</div>;
+  if (!vehicle) return <div className="loading"><VehicleDetailsSkeleton/></div>;
 
   return (
     <div className="details-container">

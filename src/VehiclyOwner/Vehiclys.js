@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import "./Vehiclys.css";
 import axios from "axios";
 import VehicleCard from "../Component/VehicleCard";
+import VehicleSkeletonCard from "../Component/VehicleSkeletonCard";
 import { useNavigate } from "react-router-dom";
 import Button from "../Component/AddButton";
 import { baseURL, GET_ALL_VICLYFORUSER, TOKEN, VEHICLE_OWNER } from "../Api/Api";
 
 const Vehiclys = () => {
   const [vehicles, setVehicles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const userId = 7;
   const token = TOKEN;
-console.log("first");
-console.log(token);
+
   useEffect(() => {
     axios
       .get(`${baseURL}/${VEHICLE_OWNER}/${GET_ALL_VICLYFORUSER}/${userId}`, {
@@ -21,7 +22,6 @@ console.log(token);
         },
       })
       .then((res) => {
-        console.log(res.data.data)
         const allVehicles = res.data.data;
         const uniqueVehiclesMap = new Map();
         allVehicles.forEach((vehicle) => {
@@ -31,9 +31,11 @@ console.log(token);
         });
         const uniqueVehicles = Array.from(uniqueVehiclesMap.values());
         setVehicles(uniqueVehicles);
+        setLoading(false);
       })
       .catch((err) => {
         console.error("An error occurred while fetching data:", err);
+        setLoading(false);
       });
   }, []);
 
@@ -45,9 +47,15 @@ console.log(token);
       </div>
 
       <div className="vehicle-grid">
-        {vehicles.map((vehicle) => (
-          <VehicleCard key={vehicle.vehicle_id} vehicle={vehicle}  onClick={() => navigate(`/vehicle/${vehicle.vehicle_id}`)} />
-        ))}
+        {loading
+          ? Array(3).fill(null).map((_, i) => <VehicleSkeletonCard key={i} />)
+          : vehicles.map((vehicle) => (
+              <VehicleCard
+                key={vehicle.vehicle_id}
+                vehicle={vehicle}
+                onClick={() => navigate(`/vehicle/${vehicle.vehicle_id}`)}
+              />
+            ))}
       </div>
     </div>
   );

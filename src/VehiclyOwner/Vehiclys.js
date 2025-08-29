@@ -40,13 +40,13 @@ const Vehiclys = () => {
   }, []);
 
   return (
-    <div className="vehicle-container">
-      <div className="vehicle-header">
+    <div className="vehicle-container col-12">
+      <div className="vehicle-header col-12">
         <h2 className="vehicle-title">Your Vehiclys</h2>
         <Button onClick={() => navigate("/create-vehicle")}>+ Add vehicle</Button>
       </div>
 
-      <div className="vehicle-grid">
+      <div className="vehicle-grid col-lg-12">
         {loading
           ? Array(3).fill(null).map((_, i) => <VehicleSkeletonCard key={i} />)
           : vehicles.map((vehicle) => (

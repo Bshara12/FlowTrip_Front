@@ -1,5 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../Admin/DashBourd.css";
 import Cookies from "js-cookie";
@@ -12,6 +11,7 @@ export default function Tourism_company_DashBoard() {
   const [activeLink, setActiveLink] = useState(location.pathname);
   const [collapsed, setCollapsed] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setActiveLink(location.pathname);
@@ -59,24 +59,26 @@ export default function Tourism_company_DashBoard() {
         draggable
         pauseOnHover
       />
-      <div className={`sidpare ${collapsed ? "collapsed" : ""}`}>
+
+      <div
+        className={`sidpare ${collapsed ? "collapsed" : ""} ${
+          isMobileMenuOpen ? "open" : ""
+        }`}
+      >
+        <div
+          className="mobile-menu-btn"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <i className="fa-solid fa-bars"></i>
+        </div>
+
         <img
           src={require("../Assets/logo-removebg-preview.png")}
           alt="Logo"
           className={collapsed ? "small" : ""}
         />
-        <div
-          className="longright"
-          onClick={handleToggleCollapse}
-          style={{ color: "var(--color1)" }}
-        >
-          <i
-            className={`fa-solid fa-arrow-right-long ${
-              collapsed ? "expanded" : ""
-            }`}
-          ></i>
-        </div>
-        <div style={{ width: "100%" }}>
+
+        <div className="menu-links">
           <Link
             to="/TourismCompany/dashboard/packages"
             className={
@@ -102,7 +104,7 @@ export default function Tourism_company_DashBoard() {
           </Link>
 
           <Link
-            to="/VehiclyOwner/dashboard/profile"
+            to="/TourismCompany/dashboard/profile"
             className={
               activeLink === "/TourismCompany/dashboard/profile"
                 ? "active-link"
@@ -113,18 +115,14 @@ export default function Tourism_company_DashBoard() {
             <p>Profile</p>
           </Link>
 
-          {/* ********* */}
-
           <div
             onClick={() => window.open("https://wa.me/0938246910", "_blank")}
             className="logout-link"
-            style={{ cursor: "pointer" }}
           >
             <i className="fa-solid fa-phone"></i>
             <p>Contact us</p>
           </div>
 
-          {/* ////////// */}
           <div
             onClick={() => setShowLogoutConfirm(true)}
             className="logout-link"

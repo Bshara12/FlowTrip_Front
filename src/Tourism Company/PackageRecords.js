@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import "./PackageRecords.css";
 import { BASETOURISM, baseURL, GET_RECORDS_FOR_PACKAGE } from "../Api/Api";
+import PackageRecordsSkeleton from "../Component/PackageRecordsSkeleton.js";
 
 export default function PackageRecordsTorismrecord() {
   const { id } = useParams();
@@ -37,13 +38,6 @@ export default function PackageRecordsTorismrecord() {
         const finalMessage =
           apiMessage || e?.message || "Unable to fetch logs for this package.";
         setError(finalMessage);
-        console.error("Fetch package records failed", {
-          statusCode: e?.response?.status,
-          statusText:
-            e?.response?.data?.status || e?.response?.statusText,
-          message: apiMessage || e?.message,
-          data: e?.response?.data,
-        });
       } finally {
         setLoading(false);
       }
@@ -59,7 +53,8 @@ export default function PackageRecordsTorismrecord() {
         <h2>Packaging records #{id}</h2>
       </div>
 
-      {loading && <p className="loading-torismrecord">Loading...</p>}
+      {loading && <PackageRecordsSkeleton count={10} />}
+
       {!loading && error && (
         <p className="error-text-torismrecord">{error}</p>
       )}

@@ -84,7 +84,7 @@ function App() {
           </Route>
           <Route path="/package/:id" element={<PackageDetails />} />
           <Route path="/request/:id" element={<RequestDetails />} />
-          <Route path="/element-details" element={<PackageElementDetails />} />
+          <Route path="/element-details/:id" element={<PackageElementDetails />} />
           <Route path="/owner_details/:id" element={<OwnerDetails />} />
         </Route>
         {/* Accommodation */}

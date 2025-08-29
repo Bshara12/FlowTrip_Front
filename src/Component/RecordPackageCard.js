@@ -8,7 +8,7 @@ function RecordPackageCard({
   description,
   totalPrice,
   paymentByPoints,
-  variant = "holo", // holo | aurora | classic
+  variant = "holo",
 }) {
   const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
   const [mousePos, setMousePos] = useState({ mx: "50%", my: "50%" });

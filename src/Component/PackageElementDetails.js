@@ -11,6 +11,7 @@ import { colors } from "../Component/Color";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ADD_PICTURE_ELEMENT, BASETOURISM, baseURL, DELETE_ELEMENT_PICTURE, DELETE_PACKAGE_ELEMENT, EDIT_PACKAGE_ELEMENT, GET_ELEMENT_PACKAGE_BYID, TOKEN } from "../Api/Api";
+import PackageElementDetailsSkeleton from "./PackageElementDetailsSkeleton";
 
 const PackageElementDetails = () => {
   const { state } = useLocation();
@@ -31,6 +32,7 @@ const PackageElementDetails = () => {
   const [editValues, setEditValues] = useState({ name: "", type: "", discription: "" });
   const [editLoading, setEditLoading] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const sliderSettings = {
     dots: true,
@@ -45,6 +47,7 @@ const PackageElementDetails = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     if (!id) return;
     const fetchElement = async () => {
       try {
@@ -55,11 +58,14 @@ const PackageElementDetails = () => {
         });
         if (response.ok) {
           const data = await response.json();
-          setElement(data.element);
+          console.log("element");
+          console.log(data.data);
+          setElement(data.data);
         }
       } catch (error) {
         console.error("Failed to fetch element:", error);
       }
+      setLoading(false);
     };
     fetchElement();
   }, [id, refresh]);
@@ -103,7 +109,7 @@ const PackageElementDetails = () => {
         toast.success("The image has been uploaded successfully");
         setShowUploadModal(false);
         setSelectedFile(null);
-        setRefresh(prev => !prev); 
+        setRefresh(prev => !prev);
       } else {
         toast.error("Failed to upload image");
       }
@@ -112,7 +118,7 @@ const PackageElementDetails = () => {
       alert("An error occurred while uploading the image.");
     }
   };
-
+  if (loading) return <PackageElementDetailsSkeleton />;
   if (!element) return <p>Element not found</p>;
 
   return (
@@ -236,7 +242,7 @@ const PackageElementDetails = () => {
 
       <div className="elementInfo">
         <h1 className="elementName">{element?.name}</h1>
-        <p className="elementType">النوع: {element?.type}</p>
+        <p className="elementType">type: {element?.type}</p>
         <p className="elementDescription">{element?.discription || element?.description}</p>
       </div>
 
@@ -306,13 +312,13 @@ const PackageElementDetails = () => {
             position: "relative"
           }} onClick={e => e.stopPropagation()}>
             <h2 style={{ color: colors.color1, marginBottom: 16 }}>Modify item data</h2>
-            <label style={{ color: colors.color2, fontWeight: "bold" }}>الاسم</label>
+            <label style={{ color: colors.color2, fontWeight: "bold" }}>name</label>
             <input
               style={{ width: "100%", padding: 8, borderRadius: 6, border: `1px solid ${colors.color4}`, marginBottom: 12 }}
               value={editValues.name}
               onChange={e => setEditValues(v => ({ ...v, name: e.target.value }))}
             />
-            <label style={{ color: colors.color2, fontWeight: "bold" }}>النوع</label>
+            <label style={{ color: colors.color2, fontWeight: "bold" }}>type</label>
             <input
               style={{ width: "100%", padding: 8, borderRadius: 6, border: `1px solid ${colors.color4}`, marginBottom: 12 }}
               value={editValues.type}
@@ -379,7 +385,7 @@ const PackageElementDetails = () => {
                 }}
                 onClick={() => setShowEditModal(false)}
               >
-                cancellation
+                cancel
               </button>
             </div>
           </div>

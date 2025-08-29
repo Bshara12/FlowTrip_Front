@@ -24,6 +24,8 @@ import {
   PAYBYPOINT,
   TOKEN,
 } from "../Api/Api";
+import PackageDetailsLoader from "../Component/PackageDetailsLoader"; // استدعاء المكوّن
+
 
 const PackageDetails = () => {
   const { id } = useParams();
@@ -57,7 +59,7 @@ const PackageDetails = () => {
           setEditPrice(res.data.data.total_price || "");
           setEditImagePreview(
             res.data.data.package_picture ||
-              "https://images.unsplash.com/photo-1504674900247-0877df9cc836"
+            "https://images.unsplash.com/photo-1504674900247-0877df9cc836"
           );
           console.log(res.data);
         }
@@ -152,7 +154,7 @@ const PackageDetails = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <PackageDetailsLoader/>;
   if (!packageData) return <p>Package not found</p>;
 
   const allPictures = packageData.package_element.flatMap((el) =>
@@ -215,7 +217,7 @@ const PackageDetails = () => {
               key={el.id}
               className="elementCard"
               onClick={() =>
-                navigate("/element-details", { state: { id: el.id } })
+                navigate(`/element-details/${el.id}`, { state: { id: el.id } })
               }
             >
               <img

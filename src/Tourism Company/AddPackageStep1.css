@@ -6,6 +6,7 @@
     padding: 32px;
     box-shadow: 0 0 24px 0 #29354133;
     color: var(--color1);
+    transition: .3s linear;
 }
 
 .add-package-step1-title {
@@ -79,10 +80,16 @@
 }
 
 .add-package-step1-button:disabled {
-    background: var(--color2) ;
-    color: var(--color7) ;
-    cursor: not-allowed ;
-    opacity: 0.7 ;
-    box-shadow: none ;
-    border: none ;
+    background: var(--color2);
+    color: var(--color7);
+    cursor: not-allowed;
+    opacity: 0.7;
+    box-shadow: none;
+    border: none;
+}
+
+@media only screen and (max-width: 600px) {
+    .add-package-step1-container {
+        width: 343px;
+    }
 }

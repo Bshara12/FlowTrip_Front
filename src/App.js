@@ -55,6 +55,7 @@ import AccommodationPreview from "./User/AccommodationPreview";
 
 import DashBoardVehiclyOwner from "./VehiclyOwner/DashBoardVehiclyOwner";
 import TripSummary from "./User/TripSummary";
+import ActivityFilter from "./User/AcitvityFilter";
 function App() {
   return (
     <Routes>
@@ -102,7 +103,6 @@ function App() {
         <Route path="catigory" element={<Category />} />
       </Route>
 
-{/* <<<<<<< HEAD */}
       {/* Vehicly Owner */}
       <Route path="VehiclyOwner/dashboard" element={<DashBoardVehiclyOwner />}>
         <Route path="vehiclys" element={<Vehiclys />} />
@@ -134,6 +134,7 @@ function App() {
       {/* User */}
       <Route path="User" element={<UserDashboard />}>
         <Route path="accommodation-filter" element={<AccommodationFilter />} />
+        <Route path="activity-filter" element={<ActivityFilter />} />
       </Route>
 
       <Route

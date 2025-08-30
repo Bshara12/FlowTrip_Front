@@ -87,6 +87,16 @@ export default function UserDashboard() {
             <p>Accommodations</p>
           </Link>
           
+          <Link
+            to="activity-filter"
+            className={
+              activeLink === "/User/activity-filter" ? "active-link" : ""
+            }
+          >
+            <i className="fas fa-clipboard-list"></i>
+            <p>Activities</p>
+          </Link>
+          
           <div
             onClick={() => setShowLogoutConfirm(true)}
             className="logout-link"

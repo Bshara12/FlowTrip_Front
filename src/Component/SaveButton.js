@@ -50,7 +50,7 @@ const StyledWrapper = styled.div`
     border: none;
     padding: 0px 15px;
     border-radius: 5px;
-    background-color: rgb(49, 49, 83);
+    background-color: var(--color2);
     gap: 10px;
     cursor: pointer;
     transition: all 0.3s;
@@ -95,7 +95,7 @@ const StyledWrapper = styled.div`
     transform: translateY(-5px);
   }
   .Documents-btn:hover {
-    background-color: rgb(58, 58, 94);
+    background-color: var(--color1);
   }
   .Documents-btn:active {
     transform: scale(0.95);

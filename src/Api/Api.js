@@ -89,6 +89,12 @@ export const DELETE_REQUEST="DeleteRequest";
 export const DELETE_VEHICLY="deleteVehicly";
 export const DELETE_PICTURE_CAR="deletePictureCar";
 
+// user
+export const FILTER_ACCOMMODATION="FilterAccommodation";
+
+
+
+
 export const EDIT_VEHICLE="editVehicle";
 
 
@@ -97,5 +103,5 @@ export const EDIT_VEHICLE="editVehicle";
 // woYFIF0Vopo8MKTqDcQXw6C2vI2XBPke23dmVZ3sf6e6812e
 // Admin
 // rNQFdc49Ke2LQdhqxSipfH4X6PAfcrL9a8aTII6eecd56c35
-export const TOKEN = "woYFIF0Vopo8MKTqDcQXw6C2vI2XBPke23dmVZ3sf6e6812e";
+export const TOKEN = "kRQlGy4RRXuNldJpn0UH8lHER9aYHeCvDenNZVxT195cf30a";
 // export const TOKEN = localStorage.getItem("token");

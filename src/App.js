@@ -51,6 +51,8 @@ import AddPlane from "./Airline/AddPlane";
 import GetEvaluation from "./Airline/GetEvaluation";
 import UserDashboard from "./User/UserDashboard";
 import AccommodationFilter from "./User/AccommodationFilter";
+import AccommodationPreview from "./User/AccommodationPreview";
+
 import DashBoardVehiclyOwner from "./VehiclyOwner/DashBoardVehiclyOwner";
 import TripSummary from "./User/TripSummary";
 import VerificationPassword from "./Auth/VerificationPassword";
@@ -133,8 +135,13 @@ function App() {
       <Route path="/summary" element={<TripSummary />} />
       {/* User */}
       <Route path="User" element={<UserDashboard />}>
-        <Route path="accommodation-filter" element={<AccommodationFilter/>}/>
+        <Route path="accommodation-filter" element={<AccommodationFilter />} />
       </Route>
+
+      <Route
+        path="accommodation-preview/:id"
+        element={<AccommodationPreview />}
+      />
 
       <Route path="/package/:id" element={<PackageDetails />} />
       <Route path="/request/:id" element={<RequestDetails />} />

@@ -186,7 +186,7 @@ const Verification = () => {
               <input
                 key={i}
                 type="text"
-                className="input"
+                className="inputverify"
                 maxLength={1}
                 value={verificationCode[i]}
                 ref={(el) => (inputsRef.current[i] = el)}

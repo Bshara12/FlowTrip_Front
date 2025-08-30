@@ -55,7 +55,7 @@
   flex-wrap: wrap;
 }
 
-.input {
+.inputverify {
   color: var(--color5);
   height: 3em;
   width: 3em;
@@ -68,11 +68,11 @@
   transition: all 0.6s ease;
 }
 
-.verification-wrapper .input:focus {
+.verification-wrapper .inputverify:focus {
   border: 1px solid var(--color5);
 }
 
-.verification-wrapper .input:not(:placeholder-shown) {
+.verification-wrapper .inputverify:not(:placeholder-shown) {
   opacity: 40%;
 }
 
@@ -104,5 +104,99 @@
 
   100% {
     transform: translateY(-70px);
+  }
+}
+
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(41, 53, 65, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: var(--color6);
+  border-radius: 16px;
+  box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
+  padding: 30px;
+  width: 400px;
+  max-width: 90%;
+  animation: scaleIn 0.3s ease;
+  text-align: center;
+}
+
+.modal h3 {
+  margin-bottom: 20px;
+  color: var(--color1);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.modal input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--color3);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.modal input:focus {
+  border-color: var(--color2);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-actions button:first-child {
+  background: var(--color2);
+  color: white;
+}
+
+.modal-actions button:first-child:hover {
+  background: var(--color1);
+}
+
+.modal-actions button:last-child {
+  background: var(--color5);
+  color: var(--color1);
+}
+
+.modal-actions button:last-child:hover {
+  background: var(--color4);
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }

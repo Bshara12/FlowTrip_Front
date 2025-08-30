@@ -7,6 +7,7 @@ import aircraftImage from "../Assets/undraw_aircraft_usu4.svg";
 import luggageImage from "../Assets/undraw_luggage_k1gn.svg";
 import ButtonAuth from "../Component/ButtonAuth";
 import { baseURL, CREATEUSER, LOGIN } from "../Api/Api";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -22,6 +23,8 @@ const Auth = () => {
   const [showPasswordLogin, setShowPasswordLogin] = useState(false);
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
 
   const handleToggle = () => {
     setIsSignUp(!isSignUp);
@@ -189,22 +192,19 @@ const Auth = () => {
         response.data.success ||
         response.data.message === "User Created Successfully"
       ) {
-        // Extract user data from response
+        console.log(response.data)
         const token = response.data.token;
-        const role = response.data.role;
-        const name = response.data.name;
+        const role = registerData.role;
+        const name = registerData.username;
+        const storage = rememberMe ? localStorage : sessionStorage;
 
-        // Store user data in localStorage
-        localStorage.setItem("token", token);
-        localStorage.setItem("role", role);
-        localStorage.setItem("name", name);
-        localStorage.setItem("email", registerData.email);
+        storage.setItem("token", token);
+        storage.setItem("role", role);
+        storage.setItem("name", name);
+        storage.setItem("email", registerData.email);
 
-        toast.success(
-          "Registration successful! Redirecting to verification..."
-        );
+        toast.success("Registration successful! Redirecting to verification...");
 
-        // Clear form data
         setRegisterData({
           username: "",
           email: "",
@@ -213,11 +213,11 @@ const Auth = () => {
           role: "user",
         });
 
-        // Redirect to verification page
         setTimeout(() => {
           window.location.href = "/verification";
         }, 1500);
-      } else {
+      }
+      else {
         toast.error(response.data.message || "Registration failed");
       }
     } catch (error) {
@@ -241,6 +241,34 @@ const Auth = () => {
       setIsLoading(false);
     }
   };
+
+
+
+
+  const Sociallogin = useGoogleLogin({
+    flow: 'auth-code',
+    onSuccess: async (tokenResponse) => {
+      try {
+        const res = await axios.post('http://127.0.0.1:8000/api/google-login', {
+          access_token: tokenResponse.access_token,
+        });
+
+        if (res.data && res.data.token) {
+          localStorage.setItem("token", res.data.token);
+          window.location.href = "/home";
+        } else {
+          console.warn("⚠️ فشل تسجيل الدخول:", res.data);
+        }
+      } catch (err) {
+        console.error("❌ خطأ أثناء الاتصال بالسيرفر:", err);
+      }
+    },
+    onError: (error) => console.log("❌ فشل تسجيل الدخول:", error),
+    ux_mode: 'redirect',
+  });
+
+
+
 
   return (
     <div className={`registercontainer ${isSignUp ? "sign-up-mode" : ""}`}>
@@ -312,7 +340,7 @@ const Auth = () => {
             </div>
 
             <div className="forgot-password" style={{ marginBottom: "1.5rem" }}>
-              <a href="#">Forgot Password?</a>
+              <a href="/verificationpassword">Forgot Password?</a>
             </div>
 
             <button
@@ -381,22 +409,16 @@ const Auth = () => {
 
             <div className="social_login">
               <p>Or</p>
-              <div className="social_icons">
-                <a href="#">
+              <div className="social_icons" onClick={Sociallogin} style={{ cursor: "pointer" }}>
+                <a >
                   <img
                     src={require("../Assets/Google_Logo.png")}
                     alt="Google Login"
                     className="social_icon"
                   />
                 </a>
-                <a href="#">
-                  <img
-                    src={require("../Assets/Facebook_Logo.png")}
-                    alt="Facebook Login"
-                    className="social_icon"
-                  />
-                </a>
               </div>
+
             </div>
           </form>
 
@@ -524,7 +546,7 @@ const Auth = () => {
               className="remember-checkbox"
               style={{ marginBottom: "1.5rem" }}
             >
-              <label className="containercheckbox">
+              {/* <label className="containercheckbox">
                 <input type="checkbox" />
                 <svg viewBox="0 0 64 64" height="1em" width="1em">
                   <path
@@ -543,7 +565,25 @@ const Auth = () => {
                 >
                   Remember me
                 </span>
+              </label> */}
+              <label className="containercheckbox">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
+                <svg viewBox="0 0 64 64" height="1em" width="1em">
+                  <path
+                    d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
+                    pathLength="575.0541381835938"
+                    className="pathcheckbox"
+                  ></path>
+                </svg>
+                <span style={{ marginLeft: "8px", fontSize: "0.9rem", color: "var(--color1)" }}>
+                  Remember me
+                </span>
               </label>
+
             </div>
 
             <button

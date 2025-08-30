@@ -53,11 +53,13 @@ import UserDashboard from "./User/UserDashboard";
 import AccommodationFilter from "./User/AccommodationFilter";
 import DashBoardVehiclyOwner from "./VehiclyOwner/DashBoardVehiclyOwner";
 import TripSummary from "./User/TripSummary";
+import VerificationPassword from "./Auth/VerificationPassword";
 function App() {
   return (
     <Routes>
       <Route path="register" element={<Auth />} />
       <Route path="verification" element={<Verification />} />
+      <Route path="verificationpassword" element={<VerificationPassword/>}/>
       <Route path="/create-owner/step-1" element={<OwnerCategoryList />} />
       <Route path="/create-owner/step-2" element={<SelectCountry />} />
       <Route path="/create-owner/step-3" element={<CreateOwnerStep3 />} />

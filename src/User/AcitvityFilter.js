@@ -39,16 +39,18 @@ export default function ActivityFilter() {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      setIsLoading(true);
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/filterActivities",
-        {
-          activity_name: selectedActivity,
-          country_name: countryName,
-          location: searchTerm,
-        }
-      );
-      setData(response.data.data);
+      if (countryName != '') {
+        setIsLoading(true);
+        const response = await axios.post(
+          "http://127.0.0.1:8000/api/filterActivities",
+          {
+            activity_name: selectedActivity,
+            country_name: countryName,
+            location: searchTerm,
+          }
+        );
+        setData(response.data.data);
+      }
     } catch (e) {
       console.log("Error: " + e);
     } finally {
@@ -59,11 +61,14 @@ export default function ActivityFilter() {
   const ActivityCard = ({ activity }) => (
     <div className="activity-card">
       <div className="activity-image">
-        <img 
-          src={activity.picture || 'https://via.placeholder.com/300x200?text=No+Image'} 
+        <img
+          src={
+            activity.picture ||
+            "https://via.placeholder.com/300x200?text=No+Image"
+          }
           alt={activity.activity_name}
           onError={(e) => {
-            e.target.src = 'https://via.placeholder.com/300x200?text=No+Image';
+            e.target.src = "https://via.placeholder.com/300x200?text=No+Image";
           }}
         />
       </div>
@@ -143,8 +148,12 @@ export default function ActivityFilter() {
                     All Activities
                   </a>
                 </div>
-                {activities && activities.map((activity) => (
-                  <div className="owner-submenu-item" key={`activity-${activity.id}`}>
+                {activities &&
+                  activities.map((activity) => (
+                    <div
+                      className="owner-submenu-item"
+                      key={`activity-${activity.id}`}
+                    >
                       <a
                         href="#"
                         className="owner-submenu-link"

@@ -119,3 +119,12 @@
     transform: translateY(0);
   }
 }
+
+@media (max-width: 768px) {
+.category-page{
+  margin-top: 60px;
+}
+.category-row{
+  justify-content: center;
+}
+}

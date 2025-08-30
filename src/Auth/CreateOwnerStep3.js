@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./CreateOwnerStep3.css";
-import { baseURL, GET_ALL_ACCOMMODATION_TYPES, GET_ALL_ACTIVITY } from "../Api/Api";
+import {
+  baseURL,
+  CREATEOWNER,
+  GET_ALL_ACCOMMODATION_TYPES,
+  GET_ALL_ACTIVITY,
+} from "../Api/Api";
 
 const CreateOwnerStep3 = () => {
   const location = useLocation();
@@ -23,8 +30,15 @@ const CreateOwnerStep3 = () => {
   const [activityList, setActivityList] = useState([]);
   const [categoryType, setCategoryType] = useState("");
   const [showCustomActivityField, setShowCustomActivityField] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    // Check if required data is available
+    if (!categoryId || !countryId) {
+      toast.error("Missing required data. Please go back and try again.");
+      return;
+    }
+
     if (categoryId === ACCOMMODATION_CATEGORY_ID) {
       setCategoryType("accommodation");
       axios
@@ -34,6 +48,7 @@ const CreateOwnerStep3 = () => {
         })
         .catch((err) => {
           console.error("Error fetching accommodation types:", err);
+          toast.error("Failed to load accommodation types");
         });
     } else if (categoryId === ACTIVITY_OWNER_CATEGORY_ID) {
       setCategoryType("activity");
@@ -44,11 +59,12 @@ const CreateOwnerStep3 = () => {
         })
         .catch((err) => {
           console.error("Error fetching activities:", err);
+          toast.error("Failed to load activities");
         });
     } else {
       setCategoryType("other");
     }
-  }, [categoryId]);
+  }, [categoryId, countryId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,22 +85,119 @@ const CreateOwnerStep3 = () => {
     setFormData((prev) => ({ ...prev, activity_name: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const submission = {
-      owner_category_id: categoryId,
-      country_id: countryId,
-      ...formData,
-    };
 
-    if (categoryType !== "accommodation") delete submission.accommodation_type;
-    if (categoryType !== "activity") delete submission.activity_name;
+    // Validate required fields
+    if (
+      !formData.business_name ||
+      !formData.location ||
+      !formData.description
+    ) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
 
-    console.log("Submitted Data:", submission);
+    // Validate category-specific fields
+    if (categoryType === "accommodation" && !formData.accommodation_type) {
+      toast.error("Please select an accommodation type");
+      return;
+    }
+
+    if (categoryType === "activity" && !formData.activity_name) {
+      toast.error("Please select or enter an activity name");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Get user email from localStorage
+      const userEmail = localStorage.getItem("email");
+      if (!userEmail) {
+        toast.error("User email not found. Please login again.");
+        return;
+      }
+
+      // Prepare submission data
+      const submission = {
+        owner_category_id: categoryId,
+        country_id: countryId,
+        location: formData.location,
+        description: formData.description,
+        business_name: formData.business_name,
+      };
+
+      // Add category-specific fields
+      if (categoryType === "accommodation") {
+        submission.accommodation_type = formData.accommodation_type;
+      }
+
+      if (categoryType === "activity") {
+        submission.activity_name = formData.activity_name;
+      }
+
+      console.log(
+        "Sending owner creation request to:",
+        `${baseURL}/${CREATEOWNER}/${userEmail}`
+      );
+      console.log("Submitted Data:", submission);
+
+      const response = await axios.post(
+        `${baseURL}/${CREATEOWNER}/${userEmail}`,
+        submission
+      );
+
+      console.log("Owner creation response:", response.data);
+
+      if (
+        response.data.success ||
+        response.data.message ===
+          "your request has been sent to the technical team.. pleas wait until the request processed."
+      ) {
+        toast.success(
+          "your request has been sent to the technical team.. pleas wait until the request processed."
+        );
+      } else {
+        toast.error(response.data.message || "Failed to create owner profile");
+      }
+    } catch (error) {
+      console.error("Owner creation error:", error);
+
+      if (error.response) {
+        // Server error
+        const errorMessage =
+          error.response.data.message || "Failed to create owner profile";
+        toast.error(errorMessage);
+      } else if (error.request) {
+        // Connection error
+        toast.error(
+          "Cannot connect to server. Please check your internet connection"
+        );
+      } else {
+        // Other error
+        toast.error("An unexpected error occurred");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="owner-form-wrapper">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+
       <h2 className="form-title">Create New Owner</h2>
       <form className="owner-form" onSubmit={handleSubmit}>
         <input
@@ -93,6 +206,7 @@ const CreateOwnerStep3 = () => {
           value={formData.business_name}
           onChange={handleChange}
           required
+          disabled={isLoading}
         />
         <input
           name="location"
@@ -100,6 +214,7 @@ const CreateOwnerStep3 = () => {
           value={formData.location}
           onChange={handleChange}
           required
+          disabled={isLoading}
         />
         <textarea
           name="description"
@@ -108,6 +223,7 @@ const CreateOwnerStep3 = () => {
           onChange={handleChange}
           required
           rows={4}
+          disabled={isLoading}
         />
 
         {(categoryType === "accommodation" || categoryType === "activity") && (
@@ -118,6 +234,7 @@ const CreateOwnerStep3 = () => {
                 value={formData.accommodation_type}
                 onChange={handleChange}
                 required
+                disabled={isLoading}
               >
                 <option value="">Select Accommodation Type</option>
                 {accommodationTypes.map((type) => (
@@ -133,8 +250,11 @@ const CreateOwnerStep3 = () => {
                 <select
                   name="activity_name"
                   onChange={handleChange}
-                  value={showCustomActivityField ? "other" : formData.activity_name}
+                  value={
+                    showCustomActivityField ? "other" : formData.activity_name
+                  }
                   required
+                  disabled={isLoading}
                 >
                   <option value="">Select Activity</option>
                   {activityList.map((activity) => (
@@ -153,6 +273,7 @@ const CreateOwnerStep3 = () => {
                     onChange={handleCustomActivityChange}
                     required
                     className="other-input"
+                    disabled={isLoading}
                   />
                 )}
               </>
@@ -160,7 +281,16 @@ const CreateOwnerStep3 = () => {
           </>
         )}
 
-        <button type="submit">إرسال</button>
+        <button
+          type="submit"
+          disabled={isLoading}
+          style={{
+            cursor: isLoading ? "not-allowed" : "pointer",
+            opacity: isLoading ? 0.6 : 1,
+          }}
+        >
+          {isLoading ? "Creating..." : "Send"}
+        </button>
       </form>
     </div>
   );

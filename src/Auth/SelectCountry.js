@@ -77,6 +77,8 @@ const SelectCountry = () => {
                   gap: "10px",
                   cursor: "pointer",
                   padding: "10px",
+                  borderRadius: "8px",
+                  backgroundColor: "var(--color4)",
                 }}
               >
                 {flagUrl && (

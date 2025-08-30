@@ -3,7 +3,7 @@
   --hover-bg: var(--color3); 
   --hover-text: var(--color1); 
   height: 200px;
-  max-width: 23ch;
+  /* max-width: 23ch; */
   text-align: center;
   background: var(--bg);
   padding: 1.5em;

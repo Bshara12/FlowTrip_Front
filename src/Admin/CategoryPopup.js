@@ -21,7 +21,7 @@ const CategoryPopup = ({ onClose, requestId, onSuccessUpdate }) => {
       })
       .catch((err) => {
         toast.error(`Error:${err}`);
-        toast.error("فشل في تحميل الكاتيغوري");
+        toast.error("Failed to load category");
         console.error("Error fetching categories:", err);
       });
   }, []);

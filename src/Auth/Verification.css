@@ -68,11 +68,11 @@
   transition: all 0.6s ease;
 }
 
-.input:focus {
+.verification-wrapper .input:focus {
   border: 1px solid var(--color5);
 }
 
-.input:not(:placeholder-shown) {
+.verification-wrapper .input:not(:placeholder-shown) {
   opacity: 40%;
 }
 

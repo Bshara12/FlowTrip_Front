@@ -1,0 +1,64 @@
+.skeleton {
+    background: linear-gradient(90deg, var(--color6) 25%, var(--color5) 50%, var(--color6) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  
+  /* الكارت */
+  .skeleton-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  /* العنوان */
+  .skeleton-title {
+    height: 28px;
+    width: 60%;
+    margin-bottom: 1rem;
+  }
+  
+  /* العناوين الفرعية */
+  .skeleton-subtitle {
+    height: 20px;
+    width: 40%;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* النصوص */
+  .skeleton-text {
+    height: 16px;
+    width: 80%;
+    margin: 6px 0;
+  }
+  
+  /* مجموعة الأقسام */
+  .skeleton-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  /* الأزرار */
+  .skeleton-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .skeleton-button {
+    height: 40px;
+    width: 120px;
+    border-radius: 10px;
+  }
+  

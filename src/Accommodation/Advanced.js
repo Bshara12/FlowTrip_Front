@@ -3,6 +3,7 @@ import axios from "axios";
 import ShowRecordsContainer from "../Component/ShowRecordsContainer";
 import Loader from "../Component/Loader";
 import "./Advanced.css";
+import { TOKEN } from "../Api/Api";
 
 export default function Advanced() {
   const [view, setView] = useState("popular");
@@ -26,8 +27,6 @@ export default function Advanced() {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const token = "MSKSIhZOzt34n45g8Xpln5TlN8P31nbxErAsvKy8025ec5af";
-
   useEffect(() => {
     setBaseUrl(urlMap[view] || urlMap.popular);
   }, [view]);
@@ -37,7 +36,7 @@ export default function Advanced() {
       try {
         setLoading(true);
         const { data } = await axios.get("http://127.0.0.1:8000/api/WhoAmI", {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${TOKEN}` },
         });
         const type = data.data.type;
         setUserType(type);
@@ -64,7 +63,7 @@ export default function Advanced() {
     try {
       setLoading(true);
       const response = await axios.get(baseUrl, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${TOKEN}` },
       });
       setRooms(response.data.rooms);
       setLoading(false);
@@ -79,7 +78,7 @@ export default function Advanced() {
     try {
       setLoading(true);
       const response = await axios.get(baseUrl, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${TOKEN}` },
       });
       setRecords(response.data.months);
       setOriginalRecords(response.data.months);
@@ -96,7 +95,7 @@ export default function Advanced() {
       setLoading(true);
       const { data } = await axios.get(
         `http://127.0.0.1:8000/api/ShowRoomRecords/${roomId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${TOKEN}` } }
       );
       setSelectedRoom(rooms.find((r) => r.id === roomId));
       setRoomRecords(data);
@@ -133,7 +132,7 @@ export default function Advanced() {
       const { data } = await axios.post(
         "http://127.0.0.1:8000/api/FilterNameAccommodation",
         { name: query },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${TOKEN}` } }
       );
 
       let filtered = [];

@@ -1,4 +1,3 @@
-// RequestDetails.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
@@ -11,6 +10,9 @@ import CategoryPopup from "../Admin/CategoryPopup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ACCEPT_REQUEST, baseURL, DELETE_REQUEST, SHOW_REQUEST, TOKEN } from "../Api/Api";
+import RequestDetailsSkeleton from "./RequestDetailsSkeleton";
+
+
 
 const RequestDetails = () => {
   const { id } = useParams();
@@ -20,10 +22,22 @@ const RequestDetails = () => {
   const [showCategoryPopup, setShowCategoryPopup] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
+// <<<<<<< HEAD
+//   const token = localStorage.getItem("token");
+// =======
   const token = TOKEN;
+// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
   useEffect(() => {
     const fetchDetails = async () => {
+      // Check if token exists
+      if (!token) {
+        console.error("No token found in localStorage");
+        toast.error("Authentication token not found. Please login again.");
+        setLoading(false);
+        return;
+      }
+
       try {
         const res = await axios.get(
          `${baseURL}/${SHOW_REQUEST}/${id}`,
@@ -37,17 +51,28 @@ const RequestDetails = () => {
           setRequest(res.data.data);
         }
       } catch (err) {
-        toast.error("Failed to load order details.");
         console.error("Error fetching request details:", err);
+        
+        if (err.response && err.response.status === 401) {
+          console.error("Token is invalid or expired");
+          toast.error("Authentication failed. Please login again.");
+        } else {
+          toast.error("Failed to load order details.");
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchDetails();
-  }, [id]);
+  }, [id, token]);
 
   const handleConfirm = async () => {
+    if (!token) {
+      toast.error("Authentication token not found. Please login again.");
+      return;
+    }
+
     try {
       await axios.get(`${baseURL}/${ACCEPT_REQUEST}/${id}`, {
         headers: {
@@ -58,7 +83,12 @@ const RequestDetails = () => {
       setTimeout(() => navigate("/Admin/dashbord/requist"), 1500);
     } catch (error) {
       console.error("Error confirming request:", error);
-      toast.error("Failed to confirm the order.");
+      
+      if (error.response && error.response.status === 401) {
+        toast.error("Authentication failed. Please login again.");
+      } else {
+        toast.error("Failed to confirm the order.");
+      }
     }
   };
 
@@ -74,6 +104,11 @@ const RequestDetails = () => {
   };
 
   const handleDelete = async () => {
+    if (!token) {
+      toast.error("Authentication token not found. Please login again.");
+      return;
+    }
+
     try {
       await axios.get(`${baseURL}/${DELETE_REQUEST}/${id}`, {
         headers: {
@@ -84,13 +119,37 @@ const RequestDetails = () => {
       setTimeout(() => navigate("/Admin/dashbord/requist"), 1500);
     } catch (err) {
       console.error("Error deleting request:", err);
-      toast.error("Failed to delete request.");
+      
+      if (err.response && err.response.status === 401) {
+        toast.error("Authentication failed. Please login again.");
+      } else {
+        toast.error("Failed to delete request.");
+      }
     }
   };
 
-  if (loading) return <p className="request-loading">Loading...</p>;
-  if (!request) return <p className="request-error">Failed to load data.</p>;
-  if (loading) return <p className="loading">Loading...</p>;
+  const handleContact = () => {
+    if (!email) {
+      toast.error("Email address not available for this request.");
+      return;
+    }
+
+    // Create email subject and body
+    const subject = encodeURIComponent(`Regarding your request: ${req.business_name}`);
+    const body = encodeURIComponent(`Hello,\n\nI am contacting you regarding your request for "${req.business_name}".\nPlease Send ....,\n\nAdmin Team`);
+
+    // Open default email client
+    const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
+    
+    try {
+      window.open(mailtoLink, '_blank');
+    } catch (error) {
+      console.error("Error opening email client:", error);
+      toast.error("Failed to open email client. Please copy the email address manually.");
+    }
+  };
+
+  if (loading) return <RequestDetailsSkeleton />;
   if (!request) return <p className="error">Failed to load data.</p>;
 
   const { request: req, user_name, email, phone_number } = request;
@@ -135,6 +194,37 @@ const RequestDetails = () => {
           <div onClick={() => setShowDeleteConfirm(true)}>
             <DeleteButton />
           </div>
+          <button 
+            onClick={handleContact}
+            style={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '12px 20px',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontWeight: '600',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'translateY(-2px)';
+              e.target.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'translateY(0)';
+              e.target.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            التواصل
+          </button>
         </div>
 
         <button className="back-button" onClick={() => window.history.back()}>

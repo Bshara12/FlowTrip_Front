@@ -84,3 +84,10 @@
   background-color: rgba(255, 255, 255, 0.15);
   color: var(--color4); 
 }
+
+@media (max-width: 768px) {
+  .packageComponentCard{
+    width: 313px;
+    height: 432px;
+  }
+}

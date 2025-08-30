@@ -2,7 +2,6 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../Admin/DashBourd.css";
-import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { baseURL, LOGOUT, TOKEN } from "../Api/Api";
@@ -13,7 +12,7 @@ export default function DashBoardVehiclyOwner() {
   const [activeLink, setActiveLink] = useState(location.pathname);
   const [collapsed, setCollapsed] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-
+  const [isMobileMenuOpen,setIsMobileMenuOpen] = useState(false);
   useEffect(() => {
     setActiveLink(location.pathname);
   }, [location.pathname]);
@@ -60,7 +59,7 @@ export default function DashBoardVehiclyOwner() {
         draggable
         pauseOnHover
       />
-      <div className={`sidpare ${collapsed ? "collapsed" : ""}`}>
+      {/* <div className={`sidpare ${collapsed ? "collapsed" : ""}`}>
         <img
           src={require("../Assets/logo-removebg-preview.png")}
           alt="Logo"
@@ -107,6 +106,51 @@ export default function DashBoardVehiclyOwner() {
             onClick={() => window.open("https://wa.me/0938246910", "_blank")}
             className="logout-link"
             style={{ cursor: "pointer" }}
+          >
+            <i className="fa-solid fa-phone"></i>
+            <p>Contact us</p>
+          </div>
+
+          <div
+            onClick={() => setShowLogoutConfirm(true)}
+            className="logout-link"
+          >
+            <i className="fa-solid fa-right-from-bracket"></i>
+            <p>Log Out</p>
+          </div>
+        </div>
+      </div> */}
+      <div className={`sidpare ${collapsed ? "collapsed" : ""} ${isMobileMenuOpen ? "open" : ""}`}>
+        <div className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <i className="fa-solid fa-bars"></i>
+        </div>
+
+        <img
+          src={require("../Assets/logo-removebg-preview.png")}
+          alt="Logo"
+          className={collapsed ? "small" : ""}
+        />
+
+        <div className="menu-links">
+          <Link
+            to="/VehiclyOwner/dashboard/vehiclys"
+            className={activeLink === "/VehiclyOwner/dashboard/vehiclys" ? "active-link" : ""}
+          >
+            <i className="fas fa-car"></i>
+            <p>Vehiclys</p>
+          </Link>
+
+          <Link
+            to="/VehiclyOwner/dashboard/profile"
+            className={activeLink === "/VehiclyOwner/dashboard/profile" ? "active-link" : ""}
+          >
+            <i className="fas fa-user"></i>
+            <p>Profile</p>
+          </Link>
+
+          <div
+            onClick={() => window.open("https://wa.me/0938246910", "_blank")}
+            className="logout-link"
           >
             <i className="fa-solid fa-phone"></i>
             <p>Contact us</p>

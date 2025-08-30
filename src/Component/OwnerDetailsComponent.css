@@ -483,10 +483,28 @@ html {
   }
 }
 
+.service-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
 .owner-details-container .service-modal-content {
-  width: 630px !important;
-  min-width: 320px;
-  max-width: 95vw;
+  width: 60%;
+  background: var(--color5);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: modalFadeIn 0.3s ease-out;
 }
 
 .delete-service-btn {

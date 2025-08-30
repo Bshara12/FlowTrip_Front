@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Auth from "./Auth/Auth";
 import DashBourd from "./Admin/DashBourd";
 
-import OwnerRigester from "./Auth/OwnerRigester";
+// import OwnerRigester from "./Auth/OwnerRigester";
 import Packages from "./Admin/Packages";
 import PackageDetails from "./Component/PackageDetails";
 import Requist from "./Admin/Requist";
@@ -16,6 +16,23 @@ import CreateOwnerStep3 from "./Auth/CreateOwnerStep3";
 import Verification from "./Auth/Verification";
 import OwnerCategoryList from "./Auth/OwnerCategoryList";
 import OwnerDetails from "./Admin/OwnerDetails";
+// import RoomDetails from "./Admin/RoomDetails";
+import Vehiclys from "./VehiclyOwner/Vehiclys";
+import VehicleDetails from "./Component/VehicleDetails";
+import CreateVehicle from "./VehiclyOwner/CreateVehicle";
+import AddVehicleImages from "./VehiclyOwner/AddVehicleImages";
+import Tourism_company_DashBoard from "./Tourism Company/Tourism_company_DashBoard";
+import PackagesTourism from "./Tourism Company/Packages";
+import AddPackageElement from "./Component/AddPackageElement";
+import AddPackageStep1 from "./Tourism Company/AddPackageStep1";
+import TourismRecords from "./Tourism Company/TourismRecords";
+import PackageRecords from "./Tourism Company/PackageRecords";
+import FlightSearch from "./User/FlightSearch";
+import FlightDetails from "./User/FlightDetails";
+import FlightsList from "./User/FlightsList";
+import ChatBot from "./User/ChatBot";
+import TripForm from "./User/TripForm";
+
 import RoomDetails from "./Accommodation/RoomDetails";
 import DashBoard2 from "./Accommodation/Dashboard";
 import Profile from "./Accommodation/Profile";
@@ -36,6 +53,8 @@ import UserDashboard from "./User/UserDashboard";
 import AccommodationFilter from "./User/AccommodationFilter";
 import AccommodationPreview from "./User/AccommodationPreview";
 
+import DashBoardVehiclyOwner from "./VehiclyOwner/DashBoardVehiclyOwner";
+import TripSummary from "./User/TripSummary";
 function App() {
   return (
     <Routes>
@@ -47,8 +66,7 @@ function App() {
 
       {/* Admin */}
       <Route>
-        =======
-        <Route path="ownerrigester" element={<OwnerRigester />} />
+        {/* <Route path="ownerrigester" element={<OwnerRigester />} /> */}
         <Route path="plans" element={<Plans />}>
           <Route path="showallplans" element={<ShowAllPlans />} />
           <Route path="showallplans/:planeId" element={<PlanDetails />} />
@@ -68,7 +86,7 @@ function App() {
           </Route>
           <Route path="/package/:id" element={<PackageDetails />} />
           <Route path="/request/:id" element={<RequestDetails />} />
-          <Route path="/element-details" element={<PackageElementDetails />} />
+          <Route path="/element-details/:id" element={<PackageElementDetails />} />
           <Route path="/owner_details/:id" element={<OwnerDetails />} />
         </Route>
         {/* Accommodation */}
@@ -84,6 +102,35 @@ function App() {
         <Route path="catigory" element={<Category />} />
       </Route>
 
+{/* <<<<<<< HEAD */}
+      {/* Vehicly Owner */}
+      <Route path="VehiclyOwner/dashboard" element={<DashBoardVehiclyOwner />}>
+        <Route path="vehiclys" element={<Vehiclys />} />
+      </Route>
+      <Route path="/vehicle/:id" element={<VehicleDetails />} />
+      <Route path="/create-vehicle" element={<CreateVehicle />} />
+      <Route path="/vehicle/add-images/:id" element={<AddVehicleImages />} />
+
+      {/* Tourism company */}
+      <Route
+        path="TourismCompany/dashboard"
+        element={<Tourism_company_DashBoard />}
+      >
+        <Route path="packages" element={<PackagesTourism />} />
+        <Route path="records" element={<TourismRecords />} />
+        <Route path="records/:id" element={<PackageRecords />} />
+      </Route>
+      <Route path="/add-package-element/:id" element={<AddPackageElement/>}/>
+      <Route path="/add-package/step1" element={<AddPackageStep1 />} />
+
+
+      {/* User */}
+      <Route path="/flight-search" element={<FlightSearch />} />
+      <Route path="/flight-details" element={<FlightDetails />} />
+      <Route path="/flights-list" element={<FlightsList />} />
+      <Route path="/chatBot" element={<ChatBot/>}/>
+      <Route path="/trip" element={<TripForm/>}/>
+      <Route path="/summary" element={<TripSummary />} />
       {/* User */}
       <Route path="User" element={<UserDashboard />}>
         <Route path="accommodation-filter" element={<AccommodationFilter />} />
@@ -96,7 +143,7 @@ function App() {
 
       <Route path="/package/:id" element={<PackageDetails />} />
       <Route path="/request/:id" element={<RequestDetails />} />
-      <Route path="/element-details" element={<PackageElementDetails />} />
+      {/* <Route path="/element-details" element={<PackageElementDetails />} /> */}
     </Routes>
   );
 }

@@ -58,3 +58,26 @@
 .addbuttoncomponent:active {
   border: 1px solid var(--color3); 
 }
+
+
+@media (max-width: 768px) {
+  .addbuttoncomponent {
+    min-width: 120px; 
+    height: 32px;
+    padding-left: 12px;
+    padding-right: 36px;
+  }
+
+  .addbuttoncomponent__text {
+    font-size: 14px; 
+  }
+
+  .addbuttoncomponent__icon {
+    width: 32px;
+  }
+
+  .addbuttoncomponent__svg {
+    width: 20px;
+    height: 20px;
+  }
+}

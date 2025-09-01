@@ -245,27 +245,48 @@ const Auth = () => {
 
 
 
-  const Sociallogin = useGoogleLogin({
-    flow: 'auth-code',
-    onSuccess: async (tokenResponse) => {
-      try {
-        const res = await axios.post('http://127.0.0.1:8000/api/google-login', {
-          access_token: tokenResponse.access_token,
-        });
+  // const Sociallogin = useGoogleLogin({
+  //   flow: 'auth-code',
+  //   onSuccess: async (tokenResponse) => {
+  //     try {
+  //       const res = await axios.get('http://127.0.0.1:8000/auth/google', {
+  //         access_token: tokenResponse.access_token,
+  //       });
 
-        if (res.data && res.data.token) {
+  //       if (res.data && res.data.token) {
+  //         localStorage.setItem("token", res.data.token);
+  //         window.location.href = "/home";
+  //       } else {
+  //         console.warn("⚠️ فشل تسجيل الدخول:", res.data);
+  //       }
+  //     } catch (err) {
+  //       console.error("❌ خطأ أثناء الاتصال بالسيرفر:", err);
+  //     }
+  //   },
+  //   onError: (error) => console.log("❌ فشل تسجيل الدخول:", error),
+  //   ux_mode: 'redirect',
+  // });
+  const Sociallogin = () => {
+    window.location.href = "http://127.0.0.1:8000/auth/google";
+    print();
+  };
+
+  const print = () => {
+    axios
+      .get("http://127.0.0.1:8000/api/get-token", { withCredentials: true })
+      .then((res) => {
+        console.log("s" + res.data);
+        if (res.data.token) {
           localStorage.setItem("token", res.data.token);
-          window.location.href = "/home";
+          console.log("✅ Token from cookie:", res.data.token);
         } else {
-          console.warn("⚠️ فشل تسجيل الدخول:", res.data);
+          console.warn("⚠️ No token found in cookie");
         }
-      } catch (err) {
-        console.error("❌ خطأ أثناء الاتصال بالسيرفر:", err);
-      }
-    },
-    onError: (error) => console.log("❌ فشل تسجيل الدخول:", error),
-    ux_mode: 'redirect',
-  });
+      })
+      .catch((err) => {
+        console.error("❌ Error fetching token:", err);
+      });
+  }
 
 
 
@@ -409,7 +430,7 @@ const Auth = () => {
 
             <div className="social_login">
               <p>Or</p>
-              <div className="social_icons" onClick={Sociallogin} style={{ cursor: "pointer" }}>
+              {/* <div className="social_icons" onClick={Sociallogin} style={{ cursor: "pointer" }}>
                 <a >
                   <img
                     src={require("../Assets/Google_Logo.png")}
@@ -417,7 +438,23 @@ const Auth = () => {
                     className="social_icon"
                   />
                 </a>
+              </div> */}
+              <div
+                className="social_icons"
+                onClick={Sociallogin}
+                style={{ cursor: "pointer" }}
+              >
+                <a>
+                  <img
+                    src={require("../Assets/Google_Logo.png")}
+                    alt="Google Login"
+                    className="social_icon"
+                  />
+                </a>
               </div>
+
+
+
 
             </div>
           </form>

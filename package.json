@@ -23,7 +23,11 @@
     "react-date-range": "^2.0.1",
     "react-datepicker": "^8.7.0",
     "react-dom": "^19.0.0",
+<<<<<<< HEAD
     "react-icons": "^5.5.0",
+=======
+    "react-ipgeolocation": "^1.4.0",
+>>>>>>> 82577d84c05c036e74bfd2e13f79da089c3e1b02
     "react-router-dom": "^7.4.1",
     "react-scripts": "5.0.1",
     "react-slick": "^0.30.3",

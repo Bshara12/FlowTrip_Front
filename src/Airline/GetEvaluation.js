@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { baseURL, TOKEN } from "../Api/Api";
-import "./GetEvaluation.css";
+import "./GetEvaluation.css"; 
 
 export default function GetEvaluation() {
   const [data, setData] = useState(null);
@@ -23,7 +23,6 @@ export default function GetEvaluation() {
         return res.json();
       })
       .then((result) => {
-        console.log(result)
         setData(result);
         setLoading(false);
       })
@@ -35,6 +34,7 @@ export default function GetEvaluation() {
 
   if (loading) return <p className="loading">Loading...</p>;
   if (error) return <p className="error">{error}</p>;
+
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
     const remainder = rating - fullStars;
@@ -43,9 +43,7 @@ export default function GetEvaluation() {
 
     for (let i = 0; i < fullStars; i++) {
       stars.push(
-        <span key={`full-${i}`} style={{ color: "#FFD700", fontSize: "22px" }}>
-          ★
-        </span>
+        <span key={`full-${i}`} style={{ color: "#FFD700", fontSize: "22px" }}>★</span>
       );
     }
 
@@ -65,20 +63,13 @@ export default function GetEvaluation() {
       );
     } else if (remainder >= 0.7) {
       stars.push(
-        <span key="extra-full" style={{ color: "#FFD700", fontSize: "22px" }}>
-          ★
-        </span>
+        <span key="extra-full" style={{ color: "#FFD700", fontSize: "22px" }}>★</span>
       );
     }
 
     while (stars.length < 5) {
       stars.push(
-        <span
-          key={`empty-${stars.length}`}
-          style={{ color: "#ccc", fontSize: "22px" }}
-        >
-          ★
-        </span>
+        <span key={`empty-${stars.length}`} style={{ color: "#ccc", fontSize: "22px" }}>★</span>
       );
     }
 
@@ -91,23 +82,27 @@ export default function GetEvaluation() {
 
       <div className="average-box">
         <div className="average-item">
-          <div className="average-item-value">{data.average_rating}</div>
+          <div className="average-item-value">{data?.average_rating ?? "-"}</div>
           <div className="average-item-label">Average Rating</div>
         </div>
         <div className="average-item">
-          <div className="average-item-value">{data.floor_average}</div>
+          <div className="average-item-value">{data?.floor_average ?? "-"}</div>
           <div className="average-item-label">Floor Average</div>
         </div>
       </div>
 
       <div className="cards-grid">
-        {data.ratings.map((item, index) => (
-          <div key={index} className="evaluation-card">
-            <p className="user-name">{item.user.name}</p>
-            <p className="user-phone">{item.user.phone_number}</p>
-            <p className="user-stars">{renderStars(item.rate)}</p>
-          </div>
-        ))}
+        {data?.ratings && data.ratings.length > 0 ? (
+          data.ratings.map((item, index) => (
+            <div key={index} className="evaluation-card">
+              <p className="user-name">{item.user.name}</p>
+              <p className="user-phone">{item.user.phone_number}</p>
+              <p className="user-stars">{renderStars(item.rate)}</p>
+            </div>
+          ))
+        ) : (
+          <p className="no-rating">No rating yet</p>
+        )}
       </div>
     </div>
   );

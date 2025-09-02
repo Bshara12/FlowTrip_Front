@@ -1,0 +1,395 @@
+body {
+  margin: 0;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1400;
+  animation: fadeIn 0.3s ease;
+}
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.homepage-container {
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(120deg, #f4f6f9, #e8f0f5);
+  min-height: 100vh;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #45576d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  color: white;
+  z-index: 1500;
+}
+
+.logo {
+  margin: 0;
+  font-size: 20px;
+}
+
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.menu-icon:hover {
+  transform: scale(1.2) rotate(10deg);
+  color: #2c3e50;
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -280px;
+  width: 260px;
+  height: 100%;
+  background: linear-gradient(180deg, #ffffff, #f7fcfb);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15), inset -1px 0 5px rgba(0,0,0,0.05);
+  padding: 20px;
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1600;
+  border-left: 4px solid #2c3e50;
+}
+
+.sidebar.open {
+  right: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.sidebar h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+}
+
+.close-btn {
+  background: #f4f4f4;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 4px 6px;
+  color: #777;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease,
+}
+.close-btn:hover {
+  transform: rotate(90deg);
+  background: #e74c3c;
+  color: white;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.sidebar ul li {
+  padding: 12px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.25s ease;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.sidebar ul li:hover {
+  background: rgba(26, 188, 156, 0.15);
+  color: #1abc9c;
+  transform: translateX(-5px);
+}
+
+.sidebar ul li .icon {
+  font-size: 14px;
+  color: #2c3e50; /* أيقونة بلون مميز */
+  background: rgba(26, 188, 156, 0.1);
+  padding: 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+
+.homepage-header {
+  text-align: center;
+  margin-top: 80px;
+  margin-bottom: 40px;
+}
+
+.homepage-header h1 {
+  font-size: 32px;
+  color: #2c3e50;
+}
+
+.homepage-header p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* الكروت */
+.homepage-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.homepage-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.homepage-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.homepage-card h3 {
+  margin-bottom: 10px;
+  color: #34495e;
+}
+
+.homepage-card p {
+  color: #666;
+  font-size: 14px;
+}
+/* أزرار تحت الناف بار */
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 70px; /* عشان يكون تحت الناف بار */
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.nav-buttons button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #aac7d7, #778b96);
+  border: none;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.3s;
+}
+
+.nav-buttons button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  background: linear-gradient(135deg, #778b96, #293541);
+}
+.activities-grid {
+  display: grid;
+  grid-template-areas: 
+    "large1 large2"
+    "small1 small2 small3";
+  grid-template-columns: repeat(6, 1fr); /* للصف الأول */
+  gap: 15px;
+  padding: 20px 40px 60px;
+}
+
+/* الصف الأول: صورتين كبيرتين */
+.activity-card.large-card {
+  grid-column: span 1; /* كل واحدة تأخذ عمود واحد */
+  height: 300px;
+}
+
+/* الصف الثاني: ثلاث صور أصغر */
+.activity-card.small-card {
+  grid-column: span 1;
+  height: 200px;
+}
+
+.activity-card {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.activity-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.activity-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.activity-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  color: white;
+    border-radius: 0 0 12px 12px;
+
+}
+
+.activity-overlay h3 {
+  font-size: 1.25rem;
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+
+.activity-overlay p {
+  font-size: 0.9rem;
+  margin: 2px 0;
+}
+  .activity-card.large-card:nth-child(1) {
+  grid-column: 1 / span 3;
+  height: 300px;
+}
+
+.activity-card.large-card:nth-child(2) {
+  grid-column: 4 / span 3;
+  height: 300px;
+}
+
+/* الصف الثاني: ثلاث صور صغيرة */
+.activity-card.small-card:nth-child(3) {
+  grid-column: 1 / span 2;
+  height: 200px;
+}
+
+.activity-card.small-card:nth-child(4) {
+  grid-column: 3 / span 2;
+  height: 200px;
+}
+
+.activity-card.small-card:nth-child(5) {
+  grid-column: 5 / span 2;
+  height: 200px;
+}
+.accommodation-card {
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.accommodation-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    transform: scale(1.02);
+
+}
+
+.accommodation-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+    transform: scale(1.05);
+  transition: transform 0.4s ease;
+}
+
+
+.accommodation-img::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.05));
+}
+
+.accommodation-info {
+  padding: 18px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.accommodation-info h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.accommodation-info p {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 13px;
+}
+
+.new-price {
+  color: #e74c3c;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.accommodations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+  padding: 0 20px 60px;
+}

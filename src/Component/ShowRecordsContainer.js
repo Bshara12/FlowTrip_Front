@@ -248,7 +248,6 @@ const ShowRecordsContainer = ({
     );
   }
 
-  // 2. الواجهة الأولى: قائمة الأشهر
   if (!selectedMonth) {
     return (
       <div className="show-records-container">

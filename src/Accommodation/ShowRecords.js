@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ShowRecordsContainer from "../Component/ShowRecordsContainer";
-import { baseURL,WHO_AMI,SHOW_ACCOMMODATION_RECORDS,SHOW_ROOM_RECORDS,FILTER_NAME_ACCOMMODATIOM, TOKEN } from "../Api/Api";
-
+import {
+  baseURL,
+  WHO_AMI,
+  SHOW_ACCOMMODATION_RECORDS,
+  SHOW_ROOM_RECORDS,
+  FILTER_NAME_ACCOMMODATIOM,
+  TOKEN,
+} from "../Api/Api";
 
 export default function ShowRecords() {
   const [records, setRecords] = useState([]);
@@ -64,13 +70,14 @@ export default function ShowRecords() {
   const fetchBookingRecords = async () => {
     try {
       const response = await axios.get(
-       `${baseURL}/${SHOW_ACCOMMODATION_RECORDS}`,
+        `${baseURL}/${SHOW_ACCOMMODATION_RECORDS}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
+      console.log(response.data)
       setRecords(response.data.details);
       setOriginalRecords(response.data.details);
     } catch (err) {

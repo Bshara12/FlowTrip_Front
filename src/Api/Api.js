@@ -127,5 +127,5 @@ export const MAKEITINERARY="ai/itinerary"
 
 
 
-// export const TOKEN = "1nSKpaTxtAQz8lAMGNI9fv2QRa3j3t8TQyK1n9kO68275a67";
-export const TOKEN = localStorage.getItem("token");
+export const TOKEN = "VNJPazs7f95olwbhJmCcsdBBntqhoHL3EZzBHcZUeb7c8f9c";
+// export const TOKEN = localStorage.getItem("token");

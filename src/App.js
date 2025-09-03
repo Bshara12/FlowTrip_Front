@@ -58,6 +58,8 @@ import TripSummary from "./User/TripSummary";
 import ActivityFilter from "./User/AcitvityFilter";
 import VerificationPassword from "./Auth/VerificationPassword";
 import Homepage from "./User/HomePage";
+import CarFilter from "./User/CarFilter";
+import AllAcyivit from "./User/AllActivity";
 function App() {
   return (
     <Routes>
@@ -135,6 +137,11 @@ function App() {
       <Route path="/trip" element={<TripForm/>}/>
       <Route path="/summary" element={<TripSummary />} />
       <Route path="/" element={<Homepage/>} />
+      <Route path="/packages" element={<Packages />} />
+      <Route path="/All-Activity" element={<AllAcyivit />} />
+      <Route path="accommodation-filter" element={<AccommodationFilter />} />
+      <Route path="car-filter" element={<CarFilter />} />
+
       {/* User */}
       <Route path="User" element={<UserDashboard />}>
         <Route path="accommodation-filter" element={<AccommodationFilter />} />

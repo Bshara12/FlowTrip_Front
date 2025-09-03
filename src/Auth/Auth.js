@@ -242,30 +242,7 @@ const Auth = () => {
     }
   };
 
-
-
-
-  // const Sociallogin = useGoogleLogin({
-  //   flow: 'auth-code',
-  //   onSuccess: async (tokenResponse) => {
-  //     try {
-  //       const res = await axios.get('http://127.0.0.1:8000/auth/google', {
-  //         access_token: tokenResponse.access_token,
-  //       });
-
-  //       if (res.data && res.data.token) {
-  //         localStorage.setItem("token", res.data.token);
-  //         window.location.href = "/home";
-  //       } else {
-  //         console.warn("⚠️ فشل تسجيل الدخول:", res.data);
-  //       }
-  //     } catch (err) {
-  //       console.error("❌ خطأ أثناء الاتصال بالسيرفر:", err);
-  //     }
-  //   },
-  //   onError: (error) => console.log("❌ فشل تسجيل الدخول:", error),
-  //   ux_mode: 'redirect',
-  // });
+  
   const Sociallogin = () => {
     window.location.href = "http://127.0.0.1:8000/auth/google";
     print();

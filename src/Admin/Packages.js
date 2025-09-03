@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Packages.css";
-import Button from "../Component/AddButton";
 import PackageCard from "../Component/PackageCard";
-import loadingImage from "../Assets/Loading_icon.gif";
-import Loader from "../Component/Loader";
+
 import { baseURL, GET_ALL_PACKAGE, TOKEN } from "../Api/Api";
 import PackageCardSkeleton from "../Component/PackageCardSkeleton";
 

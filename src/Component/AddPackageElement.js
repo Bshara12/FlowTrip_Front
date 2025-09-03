@@ -4,6 +4,7 @@ import { colors } from "./Color";
 import "./AddPackageElement.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { TOKEN } from "../Api/Api";
 
 const AddPackageElement = (props) => {
     const params = useParams();
@@ -86,8 +87,9 @@ const AddPackageElement = (props) => {
                 method: "POST",
                 body: formData,
                 headers: {
-                    Authorization: "Bearer 3|iahc2UzlgTL9Cse8VHDk34185SOvxA1kHuXV2jo4d0c43b6c"
+                    Authorization:  `${TOKEN}`
                 }
+                
             });
             if (response.ok) {
                 toast.success("Element added successfully!", { position: "top-right" });

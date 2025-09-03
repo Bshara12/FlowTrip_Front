@@ -13,6 +13,7 @@ import { colors } from "../Component/Color";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmDialog from "../Component/ConfirmDialog";
+import RateOwnerCard from "../Component/RateOwnerCard";
 // =======
 // import { useNavigate } from "react-router-dom";
 import {
@@ -39,6 +40,7 @@ const PackageDetails = () => {
   const [editLoading, setEditLoading] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [rating, setRating] = useState(null);
 
   const fallbackImage =
     "https://images.unsplash.com/photo-1504674900247-0877df9cc836";
@@ -154,6 +156,12 @@ const PackageDetails = () => {
     }
   };
 
+  const handleRatingChange = (e) => {
+    setRating(e.target.value);
+    console.log('Rating selected:', e.target.value);
+    // Here you can add API call to submit the rating
+  };
+
   if (loading) return <PackageDetailsLoader/>;
   if (!packageData) return <p>Package not found</p>;
 
@@ -206,6 +214,37 @@ const PackageDetails = () => {
         <p className="price">${packageData.total_price}</p>
         {packageData.payment_by_points === 1 && (
           <p className="price">Also available with points</p>
+        )}
+        
+        {/* Rating Section */}
+        {userType !== "tourism" && (
+          <div style={{ 
+            marginTop: "20px", 
+            padding: "15px", 
+            backgroundColor: "rgba(255, 255, 255, 0.05)", 
+            borderRadius: "12px",
+            textAlign: "center"
+          }}>
+            <h3 style={{ 
+              color: "#333", 
+              marginBottom: "10px", 
+              fontSize: "18px",
+              fontWeight: "600"
+            }}>
+              Rate this Package
+            </h3>
+            <RateOwnerCard onChange={handleRatingChange} />
+            {rating && (
+              <p style={{ 
+                marginTop: "10px", 
+                color: "#ff9e0b", 
+                fontWeight: "bold",
+                fontSize: "14px"
+              }}>
+                You rated: {rating} star{rating > 1 ? 's' : ''}
+              </p>
+            )}
+          </div>
         )}
       </div>
 

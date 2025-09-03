@@ -77,6 +77,7 @@ export default function AccommodationPreview() {
           },
         }
       );
+      console.log(response.data); 
       if (response.data.success) {
         toast.success("Booking done successfully!");
         setShowBookingForm(false);

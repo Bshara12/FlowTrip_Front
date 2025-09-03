@@ -8,6 +8,7 @@ import luggageImage from "../Assets/undraw_luggage_k1gn.svg";
 import ButtonAuth from "../Component/ButtonAuth";
 import { baseURL, CREATEUSER, LOGIN } from "../Api/Api";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -24,6 +25,7 @@ const Auth = () => {
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
 
   const handleToggle = () => {
@@ -84,28 +86,51 @@ const Auth = () => {
         toast.success(`Welcome ${name}!`);
 
         // Redirect user based on role
+        // setTimeout(() => {
+        //   switch (role) {
+        //     case "admin":
+        //       window.location.href = "/Admin/dashbord/requist";
+        //       break;
+        //     case "Vehicle Owner":
+        //       window.location.href = "/VehiclyOwner/dashboard/vehiclys";
+        //       break;
+        //     case "Tourism Company":
+        //       window.location.href = "/TourismCompany/dashboard/packages";
+        //       break;
+        //     case "User":
+        //       window.location.href = "/";
+        //       break;
+        //     case "Airlines Company":
+        //       window.location.href = "/Airlines Company/dashboard";
+        //       break;
+        //     default:
+        //       window.location.href = "/Accommodation/dashboard";
+        //       break;
+        //   }
+        // }, 1500);
         setTimeout(() => {
           switch (role) {
             case "admin":
-              window.location.href = "/Admin/dashbord/requist";
+              navigate("/Admin/dashboard/requist");
               break;
             case "Vehicle Owner":
-              window.location.href = "/VehiclyOwner/dashboard/vehiclys";
+              navigate("/VehiclyOwner/dashboard/vehiclys");
               break;
             case "Tourism Company":
-              window.location.href = "/TourismCompany/dashboard/packages";
+              navigate("/TourismCompany/dashboard/packages");
               break;
             case "User":
-              window.location.href = "/";
+              navigate("/");
               break;
             case "Airlines Company":
-              window.location.href = "/Airlines Company/dashboard";
+              navigate("/AirlinesCompany/dashboard");
               break;
             default:
-              window.location.href = "/Accommodation/dashboard";
+              navigate("/Accommodation/dashboard");
               break;
           }
         }, 1500);
+        
       } else {
         toast.error(response.data.message || "Login failed");
       }
@@ -674,13 +699,7 @@ const Auth = () => {
                     className="social_icon"
                   />
                 </a>
-                <a href="#">
-                  <img
-                    src={require("../Assets/Facebook_Logo.png")}
-                    alt="Facebook Login"
-                    className="social_icon"
-                  />
-                </a>
+               
               </div>
             </div>
           </form>

@@ -62,8 +62,8 @@ const Requist = () => {
       ) : (
         requests.map((item) => {
           const { id, description, business_name } = item.request;
-          const ownerCategory = item.user_name;
-
+          const ownerCategory = item.request.activity_name;
+          console.log(item);
           return (
             <RequestCard
               key={id}

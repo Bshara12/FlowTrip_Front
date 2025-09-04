@@ -1,12 +1,41 @@
 import { Outlet, useLocation, useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import "./DashBourd.css";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "../Admin/DashBourd.css";
 import { baseURL, LOGOUT } from "../Api/Api";
 
-export default function DashBourd() {
+// تعريف المينيوهات لكل نوع مستخدم
+const menus = {
+  admin: [
+    { path: "requist", label: "Requists", icon: "fas fa-clipboard-list" },
+    { path: "packages", label: "Packages", icon: "fas fa-cubes" },
+    { path: "owners", label: "Owners", icon: "fas fa-user-tie" },
+    { path: "subadmin", label: "SubAdmin", icon: "fas fa-chess-king" },
+    { path: "users", label: "Users", icon: "fas fa-users" },
+    { path: "activity", label: "Activitys", icon: "fas fa-running" },
+    { path: "catigory", label: "Catigory", icon: "fas fa-layer-group" },
+  ],
+  "Tourism Company": [
+    { path: "packages", label: "Packages", icon: "fas fa-box" },
+    { path: "records", label: "Records", icon: "fas fa-clipboard-list" },
+    { path: "profile", label: "Profile", icon: "fas fa-user" },
+  ],
+  "Vehicle Owner": [
+    { path: "vehiclys", label: "Vehiclys", icon: "fas fa-car" },
+    { path: "profile", label: "Profile", icon: "fas fa-user" },
+  ],
+  Accommodation: [
+    { path: "profile", label: "Profile", icon: "fas fa-user" },
+    { path: "records", label: "Records", icon: "fas fa-clipboard-list" },
+    { path: "rooms", label: "Rooms", icon: "fas fa-bed" },
+    { path: "offers", label: "Offers", icon: "fas fa-gift" },
+    { path: "advanced", label: "Advanced", icon: "fas fa-cogs" },
+  ],
+};
+
+export default function DashboardLayout({ role }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState(location.pathname);
@@ -18,7 +47,7 @@ export default function DashBourd() {
   }, [location.pathname]);
 
   const handleLogout = async () => {
-    const token = Cookies.get("authToken");
+    const token = Cookies.get("authToken") || localStorage.getItem("token");
     try {
       const response = await fetch(`${baseURL}/${LOGOUT}`, {
         method: "GET",
@@ -29,6 +58,7 @@ export default function DashBourd() {
 
       if (response.ok) {
         localStorage.removeItem("token");
+        Cookies.remove("authToken");
         toast.success("Logged out successfully!");
         setTimeout(() => {
           navigate("/login");
@@ -45,11 +75,8 @@ export default function DashBourd() {
   return (
     <div className="maincontainer">
       <ToastContainer position="top-right" autoClose={3000} />
-
-      <div
-        className={`sidpare ${isMobileMenuOpen ? "open" : ""}`}
-      >
-        {/* زر فتح/إغلاق الموبايل */}
+      <div className={`sidpare ${isMobileMenuOpen ? "open" : ""}`}>
+        {/* زر الموبايل */}
         <div
           className="mobile-menu-btn"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -62,78 +89,22 @@ export default function DashBourd() {
           alt="Logo"
         />
 
+        {/* روابط القائمة حسب الدور */}
         <div className="menu-links">
-          <Link
-            to="/Admin/dashboard/requist"
-            className={
-              activeLink === "/Admin/dashboard/requist" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-clipboard-list"></i>
-            <p>Requists</p>
-          </Link>
+          {menus[role]?.map((item, idx) => (
+            <Link
+              key={idx}
+              to={`/${role.replace(" ", "")}/dashboard/${item.path}`}
+              className={
+                activeLink.includes(item.path) ? "active-link" : ""
+              }
+            >
+              <i className={item.icon}></i>
+              <p>{item.label}</p>
+            </Link>
+          ))}
 
-          <Link
-            to="/Admin/dashboard/packages"
-            className={
-              activeLink === "/Admin/dashboard/packages" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-cubes"></i>
-            <p>Packages</p>
-          </Link>
-
-          <Link
-            to="/Admin/dashboard/owners"
-            className={
-              activeLink === "/Admin/dashboard/owners" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-user-tie"></i>
-            <p>Owners</p>
-          </Link>
-
-          <Link
-            to="/Admin/dashboard/subadmin"
-            className={
-              activeLink === "/Admin/dashboard/subadmin" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-chess-king"></i>
-            <p>SubAdmin</p>
-          </Link>
-
-          <Link
-            to="/Admin/dashboard/users"
-            className={
-              activeLink === "/Admin/dashboard/users" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-users"></i>
-            <p>Users</p>
-          </Link>
-
-          <Link
-            to="/Admin/dashboard/activity"
-            className={
-              activeLink === "/Admin/dashboard/activity" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-running"></i>
-            <p>Activitys</p>
-          </Link>
-
-          <Link
-            to="/Admin/dashboard/catigory"
-            className={
-              activeLink === "/Admin/dashboard/catigory" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-layer-group"></i>
-            <p>Catigory</p>
-          </Link>
-
-          {/* Contact */}
+          {/* Contact us */}
           <div
             onClick={() => window.open("https://wa.me/0938246910", "_blank")}
             className="logout-link"
@@ -156,6 +127,7 @@ export default function DashBourd() {
 
       <Outlet />
 
+      {/* Popup logout confirm */}
       {showLogoutConfirm && (
         <div className="popup-overlay">
           <div className="popup-box">

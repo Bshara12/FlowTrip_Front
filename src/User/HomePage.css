@@ -230,9 +230,10 @@ body {
   grid-template-areas: 
     "large1 large2"
     "small1 small2 small3";
-  grid-template-columns: repeat(6, 1fr); /* للصف الأول */
   gap: 15px;
-  padding: 20px 40px 60px;
+    grid-template-columns: 1fr; 
+    gap: 15px;
+    padding: 10px;
 }
 
 /* الصف الأول: صورتين كبيرتين */
@@ -328,7 +329,6 @@ body {
 }
 
 .accommodation-card:hover {
-  transform: scale(1.05);
   box-shadow: 0 15px 30px rgba(0,0,0,0.2);
     transform: scale(1.02);
 
@@ -391,5 +391,311 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 25px;
-  padding: 0 20px 60px;
+  padding: 0 20px 6px;
+}
+ 
+.show-more-row {
+  display: flex;
+  justify-content: flex-end; 
+  margin: 15px 25px 40px 0; 
+}
+
+.show-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #4e73df, #224abe);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.show-more-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  background: linear-gradient(135deg, #224abe, #1a237e);
+}
+
+.show-more-arrow {
+  font-weight: bold;
+  font-size: 15px;
+}
+/* 📱 موبايل صغير */
+@media (max-width: 768px) {
+  .nav-buttons {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 80px;
+  }
+
+  .nav-buttons button {
+    width: 100%;
+    justify-content: center;
+    font-size: 15px;
+    padding: 12px 16px;
+  }
+
+  .activities-grid {
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .activity-card.large-card,
+  .activity-card.small-card {
+    grid-column: span 1 !important;
+    height: 220px;
+  }
+
+  .accommodations-grid {
+    grid-template-columns: 1fr; /* كل إقامة سطر */
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .accommodation-img {
+    height: 150px;
+  }
+
+  .show-more-row {
+    justify-content: center; /* زر show more بالنص */
+    margin: 20px 0;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .activities-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .activity-card.large-card,
+  .activity-card.small-card {
+    grid-column: span 1 !important;
+    height: 250px;
+  }
+
+  .accommodations-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .nav-buttons {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-buttons button {
+    flex: 1 1 45%;
+  }
+}
+/* ===== Hero for All Activities page ===== */
+.page-hero {
+  position: relative;
+  width: 100%;
+  height: clamp(200px, 28vw, 340px);
+  border-radius: 18px;
+  overflow: hidden;
+  margin: 10px auto 30px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.page-hero .hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.45)),
+    url("https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1600&q=80")
+    center/cover no-repeat;
+  filter: saturate(1.05) contrast(1.02);
+}
+
+.page-hero .hero-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: #fff;
+  padding: 0 20px;
+}
+
+.page-hero .hero-inner h1 {
+  margin: 0 0 6px;
+  font-size: clamp(22px, 3.2vw, 40px);
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.page-hero .hero-inner p {
+  margin: 0;
+  font-size: clamp(13px, 1.6vw, 16px);
+  opacity: 0.95;
+}
+
+.activities-grid.all {
+  grid-template-areas: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  padding: 0 40px 40px;
+}
+
+.activities-grid.all .activity-card {
+  grid-column: auto !important;
+  height: 220px;
+}
+
+  @media (max-width: 900px) {
+  .activities-grid.all { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .activities-grid.all { grid-template-columns: 1fr; padding: 0 20px 30px; }
+}
+
+@media (min-width: 1025px) {
+  .activities-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 25px;
+  }
+
+  .accommodations-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px;
+  }
+}
+
+/* ===== Modal (Activities) ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  animation: modalFadeIn 0.15s ease-in;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0 } to { opacity: 1 }
+}
+
+.modal {
+  width: min(560px, 96%);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+  overflow: hidden;
+  animation: modalSlideUp 0.2s ease-out;
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(12px); opacity: 0 }
+  to   { transform: translateY(0); opacity: 1 }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #f3f6fb, #eaf2f8);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modal-close {
+  border: none;
+  background: #eef2f7;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #334155;
+}
+.modal-close:hover { background: #e2e8f0; }
+
+.modal-body {
+  padding: 16px 18px 4px;
+}
+.modal-title {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.modal-row {
+  margin: 6px 0;
+  color: #475569;
+  font-size: 14px;
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center; /* بالنص */
+  padding: 12px 18px 16px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.modal .btn.btn-danger {
+  background: #ef4444;        /* أحمر أساسي */
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+  border: none;
+}
+.modal .btn.btn-danger:hover {
+  background: #dc2626;        /* أغمق عند الهوفر */
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.45);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-outline {
+  background: #fff;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+.btn-outline:hover { background: #f8fafc; }
+
+.btn-whatsapp {
+  background: #25d366;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+}
+.btn-whatsapp:hover {
+  background: #1ebe5d;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.45);
+}
+
+.btn-disabled {
+  background: #cbd5e1;
+  color: #475467;
+  cursor: not-allowed;
 }

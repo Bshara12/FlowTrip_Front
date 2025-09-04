@@ -2,9 +2,9 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./HomePage.css";
-import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { TOKEN } from "../Api/Api";
 
 export default function DashBourd() {
   const location = useLocation();
@@ -12,6 +12,8 @@ export default function DashBourd() {
   const [activeLink, setActiveLink] = useState("/Admin/dashbord/restaurants");
   const [collapsed, setCollapsed] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  const role = localStorage.getItem('role');
 
   useEffect(() => {
     setActiveLink(location.pathname);
@@ -22,12 +24,11 @@ export default function DashBourd() {
   };
 
   const handleLogout = async () => {
-    const token = Cookies.get("authToken");
     try {
       const response = await fetch("http://127.0.0.1:8000/api/logout", {
         method: "GET",
         headers: {
-          Authorization: ` Bearer ${token}`,
+          Authorization: ` Bearer ${TOKEN}`,
         },
       });
 
@@ -80,7 +81,9 @@ export default function DashBourd() {
           <Link
             to="profile"
             className={
-              activeLink === "/Accommodation/dashboard/profile" ? "active-link" : ""
+              activeLink === "/Accommodation/dashboard/profile"
+                ? "active-link"
+                : ""
             }
           >
             <i className="fas fa-clipboard-list"></i>
@@ -89,40 +92,52 @@ export default function DashBourd() {
           <Link
             to="records"
             className={
-              activeLink === "/Accommodation/dashboard/records" ? "active-link" : ""
+              activeLink === "/Accommodation/dashboard/records"
+                ? "active-link"
+                : ""
             }
           >
             <i className="fas fa-clipboard-list"></i>
             <p>Records</p>
           </Link>
-          <Link
-            to="rooms"
-            className={
-              activeLink === "/Accommodation/dashboard/rooms" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-clipboard-list"></i>
-            <p>Rooms</p>
-          </Link>
-          <Link
-            to="offers"
-            className={
-              activeLink === "/Accommodation/dashboard/offers" ? "active-link" : ""
-            }
-          >
-            <i className="fas fa-clipboard-list"></i>
-            <p>Offers</p>
-          </Link>
+          {role === "Hotel" && (
+            <Link
+              to="rooms"
+              className={
+                activeLink === "/Accommodation/dashboard/rooms"
+                  ? "active-link"
+                  : ""
+              }
+            >
+              <i className="fas fa-clipboard-list"></i>
+              <p>Rooms</p>
+            </Link>
+          )}
+          {role === "Hotel" && (
+            <Link
+              to="offers"
+              className={
+                activeLink === "/Accommodation/dashboard/offers"
+                  ? "active-link"
+                  : ""
+              }
+            >
+              <i className="fas fa-clipboard-list"></i>
+              <p>Offers</p>
+            </Link>
+          )}
           <Link
             to="advanced"
             className={
-              activeLink === "/Accommodation/dashboard/advanced" ? "active-link" : ""
+              activeLink === "/Accommodation/dashboard/advanced"
+                ? "active-link"
+                : ""
             }
           >
             <i className="fas fa-clipboard-list"></i>
             <p>Advanced</p>
           </Link>
-          
+
           <div
             onClick={() => setShowLogoutConfirm(true)}
             className="logout-link"

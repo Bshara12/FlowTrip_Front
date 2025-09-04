@@ -139,7 +139,7 @@ export default function SubAdmin() {
 
   return (
     <div className="fs">
-      <div className="owner-flex">
+      <div className="owner-flex w-100">
         <div className="search-flex users">
           <div className="owner-input-container">
             <input

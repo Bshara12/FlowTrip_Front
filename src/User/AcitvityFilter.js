@@ -45,7 +45,7 @@ export default function ActivityFilter() {
           "http://127.0.0.1:8000/api/filterActivities",
           {
             activity_name: selectedActivity,
-            country_name: countryName,
+            country_name: 'Antigua ',
             location: searchTerm,
           }
         );

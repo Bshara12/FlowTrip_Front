@@ -119,14 +119,14 @@ export default function AddRoom() {
 
           {error && <div className="error-message">{error}</div>}
 
-          <form onSubmit={handleSubmit}>
+          <form className="m-0" onSubmit={handleSubmit}>
             <input
               placeholder="Room Number"
               type="number"
               name="room_number"
               value={formData.room_number}
               onChange={handleInputChange}
-              className="add-room-input"
+              className="add-room-input mb-3"
               required
               min={1}
             />
@@ -137,7 +137,7 @@ export default function AddRoom() {
               name="price"
               value={formData.price}
               onChange={handleInputChange}
-              className="add-room-input"
+              className="add-room-input mb-3"
               required
               min={1}
             />
@@ -148,7 +148,7 @@ export default function AddRoom() {
               name="people_count"
               value={formData.people_count}
               onChange={handleInputChange}
-              className="add-room-input"
+              className="add-room-input mb-3"
               required
               min={1}
             />
@@ -159,7 +159,7 @@ export default function AddRoom() {
               name="area"
               value={formData.area}
               onChange={handleInputChange}
-              className="add-room-input"
+              className="add-room-input mb-3"
               required
               min={1}
             />

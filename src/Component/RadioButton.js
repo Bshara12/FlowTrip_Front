@@ -8,6 +8,7 @@ const Radio = ({ view, setView }) => {
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
+        marginBottom: '20px'
       }}
     >
       <StyledWrapper>
@@ -75,8 +76,8 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: center;
     min-width: 80px;
-    font-size: 14px;
-    padding: 0.8rem 1.6rem;
+    font-size: calc(0.5rem + 0.7vw);
+    padding: calc(0.4rem + 0.6vw) calc(0.8rem + 1vw);
     cursor: pointer;
     font-weight: 600;
     letter-spacing: 0.3px;

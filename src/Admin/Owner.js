@@ -144,12 +144,12 @@ export default function Owner() {
   const filteredOwners = owners;
 
   return (
-    <div className="fs">
+    <div className="fs owner">
       <div className="search-flex">
         <div className="search-bar-modern">
           <div className="owner-input-container">
             <input
-              placeholder="Add Item"
+              placeholder="Enter name"
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}

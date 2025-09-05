@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
-import Loader from "../Component/Loader";
+import ActivityCardSkeleton from "../Component/ActivityCardSkeleton";
+
 import "./HomePage.css";
 import "./AllActivity.css";
 
@@ -67,7 +68,7 @@ export default function AllAcyivit() {
 
   useEffect(() => {
     fetchAll();
-  }, []);
+  }, []); 
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -123,6 +124,8 @@ export default function AllAcyivit() {
     return `https://wa.me/${digits}?text=${encodeURIComponent(msg)}`;
   };
 
+  const SKELETON_COUNT = 9; 
+
   return (
     <div className="homepage-container">
       <div className="page-hero activities-hero">
@@ -173,48 +176,49 @@ export default function AllAcyivit() {
         </div>
       </div>
 
-      {loading && (
-        <div style={{ textAlign: "center" }}>
-          <Loader />
-        </div>
-      )}
-
-      {!loading && err && (
+      {/* النتائج / السكيليتون */}
+      {err && !loading && (
         <div style={{ textAlign: "center", color: "#e74c3c" }}>{err}</div>
       )}
 
-      {!loading && !err && (
-        <div className="activities-grid all">
-          {activities.length === 0 ? (
-            <div style={{ gridColumn: "1 / -1", textAlign: "center", color: "#475569" }}>
-              No activities found.
-            </div>
-          ) : (
-            activities.map((act, idx) => (
-              <div
-                key={act.id ?? `${act.activity_name}-${idx}`}
-                className="activity-card"
-                onClick={() => openActivityModal(act)}
-              >
-                <img
-                  src={getImageUrl(act.picture)}
-                  alt={act.activity_name}
-                  className="activity-img"
-                />
-                <div className="activity-overlay">
-                  <h3>{act.activity_name}</h3>
-                  <p>{act.owner_name || act.email || ""}</p>
-                  <p>
-                    {act.location}
-                    {act.country_name ? `, ${act.country_name}` : ""}
-                  </p>
-                </div>
+      <div className="activities-grid all">
+        {loading ? (
+          Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+            <ActivityCardSkeleton key={`act-skel-${i}`} />
+          ))
+        ) : activities.length === 0 ? (
+          <div style={{ gridColumn: "1 / -1", textAlign: "center", color: "#475569" }}>
+            No activities found.
+          </div>
+        ) : (
+          activities.map((act, idx) => (
+            <div
+              key={act.id ?? `${act.activity_name}-${idx}`}
+              className="activity-card"
+              onClick={() => openActivityModal(act)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => (e.key === "Enter" ? openActivityModal(act) : null)}
+            >
+              <img
+                src={getImageUrl(act.picture)}
+                alt={act.activity_name}
+                className="activity-img"
+              />
+              <div className="activity-overlay">
+                <h3>{act.activity_name}</h3>
+                <p>{act.owner_name || act.email || ""}</p>
+                <p>
+                  {act.location}
+                  {act.country_name ? `, ${act.country_name}` : ""}
+                </p>
               </div>
-            ))
-          )}
-        </div>
-      )}
+            </div>
+          ))
+        )}
+      </div>
 
+      {/* Modal */}
       {isActivityModalOpen && selectedActivity && (
         <div className="modal-overlay" onClick={closeActivityModal}>
           <div

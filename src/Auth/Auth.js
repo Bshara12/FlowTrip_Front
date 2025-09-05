@@ -111,22 +111,22 @@ const Auth = () => {
         setTimeout(() => {
           switch (role) {
             case "admin":
-              navigate("/Admin/dashboard/requist");
+              navigate("/Admin/dashbord/requist");
               break;
             case "Vehicle Owner":
-              navigate("/VehiclyOwner/dashboard/vehiclys");
+              navigate("/VehiclyOwner/dashbord/vehiclys");
               break;
             case "Tourism Company":
-              navigate("/TourismCompany/dashboard/packages");
+              navigate("/TourismCompany/dashbord/packages");
               break;
             case "User":
               navigate("/");
               break;
             case "Airlines Company":
-              navigate("/AirlinesCompany/dashboard");
+              navigate("/AirlinesCompany/dashbord");
               break;
             default:
-              navigate("/Accommodation/dashboard");
+              navigate("/Accommodation/dashbord");
               break;
           }
         }, 1500);

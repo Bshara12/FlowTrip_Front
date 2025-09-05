@@ -3,7 +3,7 @@ import axios from "axios";
 import "./Packages.css";
 import Button from "../Component/AddButton";
 import PackageCard from "../Component/PackageCard";
-import PackageCardSkeleton from "../Component/PackageCardSkeleton"; // ✅ جديد
+import PackageCardSkeleton from "../Component/PackageCardSkeleton";
 import { useNavigate } from "react-router-dom";
 import { BASETOURISM, baseURL, GET_PACKAGES_FOR_TOURISM, TOKEN } from "../Api/Api";
 
@@ -11,7 +11,7 @@ const PackagesTourism = () => {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+console.log(TOKEN);
   useEffect(() => {
     const fetchPackages = async () => {
       try {

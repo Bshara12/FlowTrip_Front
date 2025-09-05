@@ -4,8 +4,8 @@ import "./RateOwnerCard.css";
 export default function RateOwnerCard({ onChange }) {
   return (
     <div className="rateowner-radio">
-      <input value="1" name="rateowner-rating" type="radio" id="rateowner-rating-1" onChange={onChange} />
-      <label title="1 star" htmlFor="rateowner-rating-1">
+      <input value="5" name="rateowner-rating" type="radio" id="rateowner-rating-1" onChange={onChange} />
+      <label title="5 star" htmlFor="rateowner-rating-1">
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512">
           <path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 
           150.3 51.4 171.5c-12 1.8-22 10.2-25.7 
@@ -20,8 +20,8 @@ export default function RateOwnerCard({ onChange }) {
         </svg>
       </label>
 
-      <input value="2" name="rateowner-rating" type="radio" id="rateowner-rating-2" onChange={onChange} />
-      <label title="2 stars" htmlFor="rateowner-rating-2">
+      <input value="4" name="rateowner-rating" type="radio" id="rateowner-rating-2" onChange={onChange} />
+      <label title="4 stars" htmlFor="rateowner-rating-2">
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512">
           <path d="M316.9 18C311.6 7 300.4 0 288.1 
           0s-23.4 7-28.8 18L195 150.3 51.4 
@@ -54,8 +54,8 @@ export default function RateOwnerCard({ onChange }) {
         </svg>
       </label>
 
-      <input value="4" name="rateowner-rating" type="radio" id="rateowner-rating-4" onChange={onChange} />
-      <label title="4 stars" htmlFor="rateowner-rating-4">
+      <input value="2" name="rateowner-rating" type="radio" id="rateowner-rating-4" onChange={onChange} />
+      <label title="2 stars" htmlFor="rateowner-rating-4">
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512">
           <path d="M316.9 18C311.6 7 300.4 0 288.1 
           0s-23.4 7-28.8 18L195 150.3 51.4 
@@ -71,8 +71,8 @@ export default function RateOwnerCard({ onChange }) {
         </svg>
       </label>
 
-      <input value="5" name="rateowner-rating" type="radio" id="rateowner-rating-5" onChange={onChange} />
-      <label title="5 stars" htmlFor="rateowner-rating-5">
+      <input value="1" name="rateowner-rating" type="radio" id="rateowner-rating-5" onChange={onChange} />
+      <label title="1 stars" htmlFor="rateowner-rating-5">
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512">
           <path d="M316.9 18C311.6 7 300.4 0 288.1 
           0s-23.4 7-28.8 18L195 150.3 51.4 

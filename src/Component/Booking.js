@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Calendar } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import PaymentCard from './PaymentCard';
 import SaveButton from './SaveButton';
 import PaymentButton from './PaymentButton';
 
 const Booking = ({ type, accommodation, onClose, onPayment }) => {
+  const location = useLocation();
+  const bookingData = location.state || {};
+  
+  // Check if it's a package booking from props or location state
+  const isPackageBooking = type === 'package' || bookingData.type === 'package';
+  const packageData = accommodation || bookingData.packageData;
+  const paymentMethod = accommodation?.paymentMethod || bookingData.paymentMethod;
+  const package_id = accommodation?.package_id || bookingData.package_id;
+
   const [formData, setFormData] = useState({
     nationalId: '',
     travelerName: '',
@@ -25,6 +37,7 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
   const [showDateModal, setShowDateModal] = useState(false);
   const [currentDateType, setCurrentDateType] = useState('');
   const [tempDate, setTempDate] = useState(new Date());
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,6 +45,76 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handlePackageBooking = async () => {
+    if (!formData.travelerName || !formData.nationalId) {
+      toast.error("Please fill in all required fields", { position: "top-right" });
+      return;
+    }
+
+    if (paymentMethod === 'card' && (!cardData.cardNumber || !cardData.holderName || !cardData.expiry || !cardData.cvv)) {
+      toast.error("Please fill in all card details", { position: "top-right" });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      const bookingData = {
+        package_id: package_id,
+        traveler_name: formData.travelerName,
+        national_number: formData.nationalId,
+        payment_method: paymentMethod
+      };
+
+      // Add card data if payment method is card
+      if (paymentMethod === 'card') {
+        bookingData.stripeToken = 'tok_visa';
+        bookingData.card_number = cardData.cardNumber;
+        bookingData.card_holder = cardData.holderName;
+        bookingData.expiry_date = cardData.expiry;
+        bookingData.cvv = cardData.cvv;
+      }
+
+      // Print the data being sent to backend for debugging
+      console.log('=== Data being sent to backend ===');
+      console.log('URL:', 'http://127.0.0.1:8000/api/book_package');
+      console.log('Method:', 'POST');
+      console.log('Headers:', {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      });
+      console.log('Payload:', JSON.stringify(bookingData, null, 2));
+      console.log('=====================================');
+
+      const response = await axios.post(
+        'http://127.0.0.1:8000/api/book_package',
+        bookingData,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      onPayment && onPayment(response.data);
+      
+    } catch (error) {
+      console.error("=== Booking Error Details ===");
+      console.error("Error:", error);
+      console.error("Response Status:", error.response?.status);
+      console.error("Response Data:", error.response?.data);
+      console.error("Response Headers:", error.response?.headers);
+      console.error("============================");
+      
+      const errorMessage = error.response?.data?.message || "Failed to book package";
+      toast.error(errorMessage, { position: "top-right" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderRoomFields = () => (
@@ -190,37 +273,95 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
     </>
   );
 
+  const renderPackageFields = () => (
+    <>
+      <div className="booking-section">
+        <h3>Package Booking Details</h3>
+        <div className="booking-form-row">
+          <div className="booking-form-group">
+            <label htmlFor="nationalId">National Number</label>
+            <input
+              type="number"
+              id="nationalId"
+              name="nationalId"
+              value={formData.nationalId}
+              onChange={handleInputChange}
+              placeholder="Enter National Number"
+              required
+            />
+          </div>
+          <div className="booking-form-group">
+            <label htmlFor="travelerName">Traveler Name</label>
+            <input
+              type="text"
+              id="travelerName"
+              name="travelerName"
+              value={formData.travelerName}
+              onChange={handleInputChange}
+              placeholder="Enter Full Name"
+              required
+            />
+          </div>
+        </div>
+        <div className="booking-payment-method">
+          <h4>Payment Method: {paymentMethod === 'card' ? 'Credit Card' : 'Points'}</h4>
+          {paymentMethod === 'points' && (
+            <p className="booking-points-info">
+              💰 Total Points Required: {(packageData?.total_price || packageData?.price) * 50} Points
+            </p>
+          )}
+        </div>
+      </div>
+    </>
+  );
+
   return (
     <StyledWrapper style={{width:'75%', display:'flex', justifyContent:'center'}}>
       <div className="booking-container" onClick={(e) => e.stopPropagation()}>
         <div className="booking-header">
-          <h2>Booking {type === 'room' ? 'Room' : 'Accommodation'}</h2>
+          <h2>Booking {isPackageBooking ? 'Package' : (type === 'room' ? 'Room' : 'Accommodation')}</h2>
           <button className="booking-close-btn" onClick={onClose}>×</button>
         </div>
         
         <form onSubmit={(e)=> {e.preventDefault()}} className="booking-form">
-          <div className="booking-accommodation-info">
-            <h3>{accommodation?.hotel_name || accommodation?.accommodation_name}</h3>
-            <p className="booking-location">📍 {accommodation?.location}</p>
-            <p className="booking-price">
-              💰 {accommodation?.offer_price && accommodation.offer_price !== "0" ? (
-                <>
-                  <span className="booking-original-price">{accommodation.price}$</span>
-                  <span className="booking-offer-price"> {accommodation.offer_price}$</span>
-                </>
-              ) : (
-                <span>{accommodation?.price}$</span>
-              )}
-              {type === 'room' ? ' / Night' : ' / Day'}
-            </p>
-          </div>
+          {isPackageBooking ? (
+            <div className="booking-accommodation-info">
+              <h3>{packageData?.tourism_company?.company_name || packageData?.hotel_name}</h3>
+              <p className="booking-location">📦 Package Booking</p>
+              <p className="booking-price">
+                💰 <span>${packageData?.total_price || packageData?.price}</span>
+                {paymentMethod === 'points' && (
+                  <span className="booking-points-price"> or {(packageData?.total_price || packageData?.price) * 50} Points</span>
+                )}
+              </p>
+              <p className="booking-description">{packageData?.discription}</p>
+            </div>
+          ) : (
+            <div className="booking-accommodation-info">
+              <h3>{accommodation?.hotel_name || accommodation?.accommodation_name}</h3>
+              <p className="booking-location">📍 {accommodation?.location}</p>
+              <p className="booking-price">
+                💰 {accommodation?.offer_price && accommodation.offer_price !== "0" ? (
+                  <>
+                    <span className="booking-original-price">{accommodation.price}$</span>
+                    <span className="booking-offer-price"> {accommodation.offer_price}$</span>
+                  </>
+                ) : (
+                  <span>{accommodation?.price}$</span>
+                )}
+                {type === 'room' ? ' / Night' : ' / Day'}
+              </p>
+            </div>
+          )}
 
-          {type === 'room' ? renderRoomFields() : renderAccommodationFields()}
+          {isPackageBooking ? renderPackageFields() : (type === 'room' ? renderRoomFields() : renderAccommodationFields())}
 
-          <div className="booking-section">
-            <h3>Payment Information</h3>
-            <PaymentCard cardData={cardData} setCardData={setCardData} />
-          </div>
+          {paymentMethod !== 'points' && (
+            <div className="booking-section">
+              <h3>Payment Information</h3>
+              <PaymentCard cardData={cardData} setCardData={setCardData} />
+            </div>
+          )}
           
           {showDateModal && (
             <div
@@ -264,14 +405,42 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
             </div>
           )}
 
-          <PaymentButton 
-            onPayment={onPayment} 
-            formData={formData}
-            cardData={cardData}
-            checkInDate={checkInDate}
-            checkOutDate={checkOutDate}
-            accommodation={accommodation}
-          />
+          {isPackageBooking ? (
+            <div className="booking-submit-section">
+              <div className="pay-btn-container" onClick={handlePackageBooking}>
+                <div className="pay-btn-left-side">
+                  <div className="pay-btn-card">
+                    <div className="pay-btn-card-line" />
+                    <div className="pay-btn-buttons" />
+                  </div>
+                  <div className="pay-btn-post">
+                    <div className="pay-btn-post-line" />
+                    <div className="pay-btn-screen">
+                      <div className="pay-btn-dollar">
+                        {paymentMethod === 'points' ? '★' : '$'}
+                      </div>
+                    </div>
+                    <div className="pay-btn-numbers" />
+                    <div className="pay-btn-numbers-line2" />
+                  </div>
+                </div>
+                <div className="pay-btn-right-side">
+                  <div className="pay-btn-new">
+                    {isSubmitting ? 'Processing...' : `Book ${paymentMethod === 'points' ? 'with Points' : 'Now'}`}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <PaymentButton 
+              onPayment={onPayment} 
+              formData={formData}
+              cardData={cardData}
+              checkInDate={checkInDate}
+              checkOutDate={checkOutDate}
+              accommodation={accommodation}
+            />
+          )}
         </form>
       </div>
     </StyledWrapper>
@@ -369,6 +538,260 @@ const StyledWrapper = styled.div`
     color: var(--color4, #dc3545);
     font-weight: 700;
     font-size: 1.1em;
+  }
+
+  .booking-points-price {
+    color: #f7971e;
+    font-weight: 700;
+    font-size: 1.1em;
+  }
+
+  .booking-description {
+    margin: 10px 0;
+    color: var(--color2, #666);
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .booking-payment-method {
+    margin-top: 15px;
+    padding: 15px;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+  }
+
+  .booking-payment-method h4 {
+    margin: 0 0 10px 0;
+    color: #856404;
+    font-size: 1.1rem;
+  }
+
+  .booking-points-info {
+    margin: 5px 0 0 0;
+    color: #f7971e;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  /* Animated Payment Button Styles */
+  .pay-btn-container {
+    background-color: #ffffff;
+    display: flex;
+    width: 260px;
+    height: 120px;
+    position: relative;
+    border-radius: 6px;
+    transition: 0.3s ease-in-out;
+    transform: scale(0.71, 0.6);
+    margin: 20px auto;
+    cursor: pointer;
+  }
+
+  .pay-btn-container:hover {
+    transform: scale(0.8,0.7);
+  }
+
+  .pay-btn-container:hover .pay-btn-left-side {
+    width: 100%;
+  }
+
+  .pay-btn-left-side {
+    background-color: #5de2a3;
+    width: 130px;
+    height: 120px;
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .pay-btn-right-side {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    cursor: pointer;
+    justify-content: space-between;
+    white-space: nowrap;
+    transition: 0.3s;
+  }
+
+  .pay-btn-right-side:hover {
+    background-color: #f9f7f9;
+  }
+
+  .pay-btn-new {
+    font-size: 23px;
+    font-family: "Lexend Deca", sans-serif;
+    margin-left: 20px;
+  }
+
+  .pay-btn-card {
+    width: 70px;
+    height: 46px;
+    background-color: #c7ffbc;
+    border-radius: 6px;
+    position: absolute;
+    display: flex;
+    z-index: 10;
+    flex-direction: column;
+    align-items: center;
+    -webkit-box-shadow: 9px 9px 9px -2px rgba(77, 200, 143, 0.72);
+    -moz-box-shadow: 9px 9px 9px -2px rgba(77, 200, 143, 0.72);
+    box-shadow: 9px 9px 9px -2px rgba(77, 200, 143, 0.72);
+  }
+
+  .pay-btn-card-line {
+    width: 65px;
+    height: 13px;
+    background-color: #80ea69;
+    border-radius: 2px;
+    margin-top: 7px;
+  }
+
+  .pay-btn-buttons {
+    width: 8px;
+    height: 8px;
+    background-color: #379e1f;
+    box-shadow: 0 -10px 0 0 #26850e, 0 10px 0 0 #56be3e;
+    border-radius: 50%;
+    margin-top: 5px;
+    transform: rotate(90deg);
+    margin: 10px 0 0 -30px;
+  }
+
+  .pay-btn-container:hover .pay-btn-card {
+    animation: slide-top 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) both;
+  }
+
+  .pay-btn-container:hover .pay-btn-post {
+    animation: slide-post 1s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+  }
+
+  @keyframes slide-top {
+    0% {
+      -webkit-transform: translateY(0);
+      transform: translateY(0);
+    }
+    50% {
+      -webkit-transform: translateY(-70px) rotate(90deg);
+      transform: translateY(-70px) rotate(90deg);
+    }
+    60% {
+      -webkit-transform: translateY(-70px) rotate(90deg);
+      transform: translateY(-70px) rotate(90deg);
+    }
+    100% {
+      -webkit-transform: translateY(-8px) rotate(90deg);
+      transform: translateY(-8px) rotate(90deg);
+    }
+  }
+
+  .pay-btn-post {
+    width: 63px;
+    height: 75px;
+    background-color: #dddde0;
+    position: absolute;
+    z-index: 11;
+    bottom: 10px;
+    top: 120px;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .pay-btn-post-line {
+    width: 47px;
+    height: 9px;
+    background-color: #545354;
+    position: absolute;
+    border-radius: 0px 0px 3px 3px;
+    right: 8px;
+    top: 8px;
+  }
+
+  .pay-btn-post-line:before {
+    content: "";
+    position: absolute;
+    width: 47px;
+    height: 9px;
+    background-color: #757375;
+    top: -8px;
+  }
+
+  .pay-btn-screen {
+    width: 47px;
+    height: 23px;
+    background-color: #ffffff;
+    position: absolute;
+    top: 22px;
+    right: 8px;
+    border-radius: 3px;
+  }
+
+  .pay-btn-numbers {
+    width: 12px;
+    height: 12px;
+    background-color: #838183;
+    box-shadow: 0 -18px 0 0 #838183, 0 18px 0 0 #838183;
+    border-radius: 2px;
+    position: absolute;
+    transform: rotate(90deg);
+    left: 25px;
+    top: 52px;
+  }
+
+  .pay-btn-numbers-line2 {
+    width: 12px;
+    height: 12px;
+    background-color: #aaa9ab;
+    box-shadow: 0 -18px 0 0 #aaa9ab, 0 18px 0 0 #aaa9ab;
+    border-radius: 2px;
+    position: absolute;
+    transform: rotate(90deg);
+    left: 25px;
+    top: 68px;
+  }
+
+  @keyframes slide-post {
+    50% {
+      -webkit-transform: translateY(0);
+      transform: translateY(0);
+    }
+    100% {
+      -webkit-transform: translateY(-70px);
+      transform: translateY(-70px);
+    }
+  }
+
+  .pay-btn-dollar {
+    position: absolute;
+    font-size: 16px;
+    font-family: "Lexend Deca", sans-serif;
+    width: 100%;
+    left: 0;
+    top: 0;
+    color: #4b953b;
+    text-align: center;
+  }
+
+  .pay-btn-container:hover .pay-btn-dollar {
+    animation: fade-in-fwd 0.3s 1s backwards;
+  }
+
+  @keyframes fade-in-fwd {
+    0% {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .booking-section {

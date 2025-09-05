@@ -52,11 +52,13 @@ import ActivityFilter from "./User/AcitvityFilter";
 import VerificationPassword from "./Auth/VerificationPassword";
 import Homepage from "./User/HomePage";
 import DashboardLayout from "./Component/DashboardLayout";
+import NotRegistered from "./Component/NotRegistered";
 
 function App() {
   return (
     <Routes>
       <Route path="register" element={<Auth />} />
+      <Route path="auth" element={<Auth />} />
       <Route path="verification" element={<Verification />} />
       <Route path="verificationpassword" element={<VerificationPassword />} />
       <Route path="/create-owner/step-1" element={<OwnerCategoryList />} />
@@ -130,6 +132,7 @@ function App() {
         <Route path="activity-filter" element={<ActivityFilter />} />
       </Route>
       <Route path="accommodation-preview/:id" element={<AccommodationPreview />} />
+      <Route path="not-registered" element={<NotRegistered />} />
     </Routes>
   );
 }

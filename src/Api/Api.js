@@ -96,6 +96,7 @@ export const DELETE_PICTURE_CAR = "deletePictureCar";
 
 // user
 export const FILTER_ACCOMMODATION = "FilterAccommodation";
+export const GET_ALL_ACCOMMODATION = "getAllAccommodation";
 
 
 

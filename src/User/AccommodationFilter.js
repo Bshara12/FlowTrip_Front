@@ -11,14 +11,13 @@ import SaveButton from "../Component/SaveButton";
 import fallbackImage from "../Assets/AccommodationImagejpg.jpg";
 import {
   baseURL,
-  TOKEN,
   FILTER_ACCOMMODATION,
   GET_ALL_COUNTRIES,
   GET_ALL_ACCOMMODATION_TYPES,
+  GET_ALL_ACCOMMODATION,
 } from "../Api/Api";
 import { useNavigate } from "react-router-dom";
-
-const token = TOKEN;
+import Loader from "../Component/Loader";
 
 export default function AccommodationFilter() {
   const [countries, setCountries] = useState([]);
@@ -117,7 +116,9 @@ export default function AccommodationFilter() {
             {item.accommodation_name || item.name}
           </h4>
           <Price price={item.price} offer={item.offer_price} />
-          <div className="acc-card-meta">Area: {item.area ?? "-"} m²</div>
+          <div className="acc-card-meta">
+            Area: {item.area ?? "-"} m² / Type: {item.type ?? "-"}
+          </div>
           <div className="acc-card-meta">Location: {item.location ?? "-"}</div>
         </div>
       </div>
@@ -135,22 +136,24 @@ export default function AccommodationFilter() {
 
   const shouldShowGuests =
     selectedTypeName === "Hotel" || selectedTypeName === "";
+
   useEffect(() => {
     const fetchInfo = async () => {
       try {
-        const [countriesRes, typesRes] = await Promise.all([
-          axios.get(`${baseURL}/${GET_ALL_COUNTRIES}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get(`${baseURL}/${GET_ALL_ACCOMMODATION_TYPES}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
+        setLoading(true);
+        const [countriesRes, typesRes, accommodatonRes] = await Promise.all([
+          axios.get(`${baseURL}/${GET_ALL_COUNTRIES}`),
+          axios.get(`${baseURL}/${GET_ALL_ACCOMMODATION_TYPES}`),
+          axios.get(`${baseURL}/${GET_ALL_ACCOMMODATION}`),
         ]);
         setCountries(countriesRes.data.countries || []);
         setTypes(typesRes.data.accommodation_types || []);
+        setResults(accommodatonRes.data);
       } catch (e) {
         setCountries([]);
         setTypes([]);
+      } finally {
+        setLoading(false);
       }
     };
     fetchInfo();
@@ -208,7 +211,9 @@ export default function AccommodationFilter() {
     </svg>
   );
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="fs" style={{ paddingTop: 0, margin: "0 20px" }}>
       <ToastContainer />
       <div
@@ -420,82 +425,66 @@ export default function AccommodationFilter() {
           {showDateModal && (
             <div
               onClick={() => setShowDateModal(false)}
-              style={{
-                position: "fixed",
-                inset: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                zIndex: 2000,
-                padding: 16,
-              }}
             >
               <div
                 className="col-lg-9 col-md-12 col-sm-11 col-12 date-container"
                 onClick={(e) => e.stopPropagation()}
+              >
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <button
+                  onClick={() => setShowDateModal(false)}
+                  style={{
+                    border: "none",
+                    background: "transparent",
+                    color: "var(--color2)",
+                    fontSize: 18,
+                    cursor: "pointer",
+                  }}
+                  aria-label="Close"
+                  title="Close"
+                >
+                  ×
+                </button>
+              </div>
+              <DateRange
+                className="w-100"
+                months={2}
+                direction="horizontal"
+                moveRangeOnFirstSelection={false}
+                ranges={[
+                  {
+                    startDate: tempDateRange[0]?.startDate || new Date(),
+                    endDate: tempDateRange[0]?.endDate || new Date(),
+                    key: "selection",
+                  },
+                ]}
+                rangeColors="transparent"
+                onChange={({ selection }) => {
+                  setTempDateRange([selection]);
+                  setTempDateSelected(
+                    Boolean(selection?.startDate && selection?.endDate)
+                  );
+                }}
+              />
+              <div
                 style={{
-                  background: "var(--color7)",
-                  borderRadius: 16,
-                  padding: 16,
-                  boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: 12,
                 }}
               >
-                <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                  <button
-                    onClick={() => setShowDateModal(false)}
-                    style={{
-                      border: "none",
-                      background: "transparent",
-                      color: "var(--color2)",
-                      fontSize: 18,
-                      cursor: "pointer",
-                    }}
-                    aria-label="Close"
-                    title="Close"
-                  >
-                    ×
-                  </button>
-                </div>
-                <DateRange
-                  className="w-100"
-                  months={2}
-                  direction="horizontal"
-                  moveRangeOnFirstSelection={false}
-                  ranges={[
-                    {
-                      startDate: tempDateRange[0]?.startDate || new Date(),
-                      endDate: tempDateRange[0]?.endDate || new Date(),
-                      key: "selection",
-                    },
-                  ]}
-                  rangeColors="transparent"
-                  onChange={({ selection }) => {
-                    setTempDateRange([selection]);
-                    setTempDateSelected(
-                      Boolean(selection?.startDate && selection?.endDate)
+                <SaveButton
+                  onClick={() => {
+                    setDateRange(tempDateRange);
+                    setDateSelected(
+                      Boolean(
+                        tempDateRange[0]?.startDate && tempDateRange[0]?.endDate
+                      ) || tempDateSelected
                     );
+                    setShowDateModal(false);
                   }}
                 />
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginTop: 12,
-                  }}
-                >
-                  <SaveButton
-                    onClick={() => {
-                      setDateRange(tempDateRange);
-                      setDateSelected(
-                        Boolean(
-                          tempDateRange[0]?.startDate &&
-                            tempDateRange[0]?.endDate
-                        ) || tempDateSelected
-                      );
-                      setShowDateModal(false);
-                    }}
-                  />
-                </div>
+              </div>
               </div>
             </div>
           )}
@@ -527,7 +516,8 @@ export default function AccommodationFilter() {
             )}
             {!loading && results && (
               <div className="accommodation-results">
-                {lastSearchTypeName === "" && !Array.isArray(results) ? (
+                {(lastSearchTypeName === "" || lastSearchTypeName === null) &&
+                !Array.isArray(results) ? (
                   <>
                     {Array.isArray(results.hotels) &&
                       results.hotels.length > 0 && (

@@ -153,6 +153,7 @@
   line-height: 1.6;
   color: var(--color1);
   width: fit-content;
+  max-width: 300px;
   display: flex;
   list-style: none;
 }
@@ -318,11 +319,24 @@
   .fs {
     margin-top: 60px;
   }
+  .owner-menu{
+    max-width: 200px;
+  }
 }
 @media (max-width: 690px) {
   .owner.search-flex {
     flex-direction: column;
     gap: 12px;
+  }
+}
+@media (max-width: 593px) {
+  .owner-menu {
+    max-width: 150px;
+  }
+  .trs{
+    width: 100% !important;
+    justify-content: space-around !important;
+    align-items: center !important;
   }
 }
 @media (max-width: 478px) {

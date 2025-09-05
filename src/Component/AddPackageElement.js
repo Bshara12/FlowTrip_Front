@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { colors } from "./Color";
 import "./AddPackageElement.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -79,19 +78,29 @@ const AddPackageElement = (props) => {
             formData.append(`pictures[${idx}]`, img);
         });
         // Debug: print FormData content
+        console.log("=== FormData Debug ===");
         for (let pair of formData.entries()) {
             console.log(pair[0], pair[1]);
         }
+        console.log("Package ID:", packageId);
+        console.log("TOKEN:", TOKEN);
+        console.log("======================");
+        
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/tourism/addPackageElement/${packageId}`, {
                 method: "POST",
                 body: formData,
                 headers: {
-                    Authorization:  `${TOKEN}`
+                    Authorization: `Bearer ${TOKEN}`
                 }
-                
             });
+            
+            console.log("Response status:", response.status);
+            console.log("Response headers:", response.headers);
+            
             if (response.ok) {
+                const responseData = await response.json();
+                console.log("Success response:", responseData);
                 toast.success("Element added successfully!", { position: "top-right" });
                 setTimeout(() => {
                     navigate(`/package/${packageId}`,{ replace: true });
@@ -102,18 +111,29 @@ const AddPackageElement = (props) => {
                 setImages([]);
                 if (onSubmit) onSubmit();
             } else {
-                const data = await response.json().catch(() => ({}));
-                toast.error(data?.message || "Failed to add element. Please try again.", { position: "top-right" });
+                const errorText = await response.text();
+                console.error("Error response text:", errorText);
+                
+                let errorData = {};
+                try {
+                    errorData = JSON.parse(errorText);
+                } catch (e) {
+                    console.error("Failed to parse error response as JSON");
+                }
+                
+                console.error("Error response data:", errorData);
+                toast.error(errorData?.message || `Server error: ${response.status}`, { position: "top-right" });
             }
         } catch (err) {
-            toast.error("Error occurred while adding element.", { position: "top-right" });
+            console.error("Network/fetch error:", err);
+            toast.error("Network error occurred while adding element.", { position: "top-right" });
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <>
+        <div className="add-package-element-container">
             <ToastContainer position="top-right" autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <form
                 className="add-package-element-form"
@@ -219,7 +239,7 @@ const AddPackageElement = (props) => {
                     {loading ? "Adding..." : "Add Element"}
                 </button>
             </form>
-        </>
+        </div>
     );
 };
 

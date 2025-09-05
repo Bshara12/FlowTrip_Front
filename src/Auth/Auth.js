@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./AuthStyle.css";
 import aircraftImage from "../Assets/undraw_aircraft_usu4.svg";
 import luggageImage from "../Assets/undraw_luggage_k1gn.svg";
 import ButtonAuth from "../Component/ButtonAuth";
 import { baseURL, CREATEUSER, LOGIN } from "../Api/Api";
-import { useGoogleLogin } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -26,6 +26,56 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+
+  // Handle OAuth success
+  const handleAuthSuccess = (userData) => {
+    console.log("=== Google OAuth Success ===");
+    console.log("User Data:", userData);
+    console.log("Token:", userData.token);
+    console.log("Name:", userData.name);
+    console.log("Email:", userData.email);
+    console.log("============================");
+
+    // Store user data in localStorage
+    localStorage.setItem("token", userData.token);
+    localStorage.setItem("user_name", userData.name);
+    localStorage.setItem("user_email", userData.email);
+    localStorage.setItem("user_id", userData.id);
+    localStorage.setItem("role", userData.role_id);
+    localStorage.setItem("user_type", "user");
+
+    // Show success message
+    toast.success("تم تسجيل الدخول بنجاح!", { position: "top-right" });
+
+    // Redirect to home page
+    setTimeout(() => {
+      navigate("/");
+    }, 1500);
+  };
+
+  // Check for OAuth callback on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const authSuccess = urlParams.get('auth_success');
+    const token = urlParams.get('token');
+    const userName = urlParams.get('name');
+    const userEmail = urlParams.get('email');
+    const userId = urlParams.get('id');
+    const userRole = urlParams.get('role_id');
+
+    if (authSuccess === 'true' && token) {
+      // Clear URL parameters after processing
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      handleAuthSuccess({
+        token: token,
+        name: decodeURIComponent(userName || ''),
+        email: decodeURIComponent(userEmail || ''),
+        id: userId,
+        role_id: userRole
+      });
+    }
+  }, []);
 
 
   const handleToggle = () => {
@@ -77,11 +127,21 @@ const Auth = () => {
         console.log("Name:", name);
         console.log("Role:", role);
 
-        // Save user data to localStorage
-        localStorage.setItem("token", token);
-        localStorage.setItem("name", name);
-        localStorage.setItem("role", role);
-
+        // // Save user data to localStorage
+        // localStorage.setItem("token", token);
+        // localStorage.setItem("name", name);
+        // localStorage.setItem("role", role);
+        if (rememberMe) {
+          // إذا كبس تذكرني → نخزن بالـ localStorage
+          localStorage.setItem("token", token);
+          localStorage.setItem("role", role);
+          localStorage.setItem("name", name);
+        } else {
+          // افتراضي → نخزن بالكوكيز
+          Cookies.set("token", token, { expires: 1 }); // يوم واحد
+          Cookies.set("role", role, { expires: 1 });
+          Cookies.set("name", name, { expires: 1 });
+        }
         // Show welcome notification
         toast.success(`Welcome ${name}!`);
 
@@ -130,7 +190,7 @@ const Auth = () => {
               break;
           }
         }, 1500);
-        
+
       } else {
         toast.error(response.data.message || "Login failed");
       }
@@ -213,6 +273,35 @@ const Auth = () => {
 
       console.log("Registration response:", response.data);
 
+      // if (
+      //   response.data.success ||
+      //   response.data.message === "User Created Successfully"
+      // ) {
+      //   console.log(response.data)
+      //   const token = response.data.token;
+      //   const role = registerData.role;
+      //   const name = registerData.username;
+      //   const storage = rememberMe ? localStorage : sessionStorage;
+
+      //   storage.setItem("token", token);
+      //   storage.setItem("role", role);
+      //   storage.setItem("name", name);
+      //   storage.setItem("email", registerData.email);
+
+      //   toast.success("Registration successful! Redirecting to verification...");
+
+      //   setRegisterData({
+      //     username: "",
+      //     email: "",
+      //     password: "",
+      //     phone: "",
+      //     role: "user",
+      //   });
+
+      //   setTimeout(() => {
+      //     window.location.href = "/verification";
+      //   }, 1500);
+      // }
       if (
         response.data.success ||
         response.data.message === "User Created Successfully"
@@ -221,12 +310,18 @@ const Auth = () => {
         const token = response.data.token;
         const role = registerData.role;
         const name = registerData.username;
-        const storage = rememberMe ? localStorage : sessionStorage;
 
-        storage.setItem("token", token);
-        storage.setItem("role", role);
-        storage.setItem("name", name);
-        storage.setItem("email", registerData.email);
+        if (rememberMe) {
+          localStorage.setItem("token", token);
+          localStorage.setItem("role", role);
+          localStorage.setItem("name", name);
+          localStorage.setItem("email", registerData.email);
+        } else {
+          Cookies.set("token", token, { expires: 1 });
+          Cookies.set("role", role, { expires: 1 });
+          Cookies.set("name", name, { expires: 1 });
+          Cookies.set("email", registerData.email, { expires: 1 });
+        }
 
         toast.success("Registration successful! Redirecting to verification...");
 
@@ -242,6 +337,7 @@ const Auth = () => {
           window.location.href = "/verification";
         }, 1500);
       }
+
       else {
         toast.error(response.data.message || "Registration failed");
       }
@@ -269,26 +365,12 @@ const Auth = () => {
 
   
   const Sociallogin = () => {
+    // Store current URL to return to after OAuth
+    localStorage.setItem('oauth_redirect', window.location.pathname);
+    
+    // Redirect to Google OAuth
     window.location.href = "http://127.0.0.1:8000/auth/google";
-    print();
   };
-
-  const print = () => {
-    axios
-      .get("http://127.0.0.1:8000/api/get-token", { withCredentials: true })
-      .then((res) => {
-        console.log("s" + res.data);
-        if (res.data.token) {
-          localStorage.setItem("token", res.data.token);
-          console.log("✅ Token from cookie:", res.data.token);
-        } else {
-          console.warn("⚠️ No token found in cookie");
-        }
-      })
-      .catch((err) => {
-        console.error("❌ Error fetching token:", err);
-      });
-  }
 
 
 
@@ -699,7 +781,7 @@ const Auth = () => {
                     className="social_icon"
                   />
                 </a>
-               
+
               </div>
             </div>
           </form>

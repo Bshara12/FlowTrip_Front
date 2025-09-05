@@ -15,27 +15,19 @@ export default function ShowRecords() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userType, setUserType] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [roomRecords, setRoomRecords] = useState([]);
   const [showRoomDetails, setShowRoomDetails] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [originalRecords, setOriginalRecords] = useState([]);
   const [originalRoomRecords, setOriginalRoomRecords] = useState([]);
-
-  var token = TOKEN;
+  const role = localStorage.getItem('role');
 
   useEffect(() => {
     const checkUserType = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${baseURL}/${WHO_AMI}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUserType(response.data.data.type);
-        if (response.data.data.type === "Hotel") {
+        if (role === "Hotel") {
           await fetchRoomsData();
         } else {
           await fetchBookingRecords();
@@ -56,7 +48,7 @@ export default function ShowRecords() {
         `${baseURL}/${SHOW_ACCOMMODATION_RECORDS}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${TOKEN}`,
           },
         }
       );
@@ -73,11 +65,10 @@ export default function ShowRecords() {
         `${baseURL}/${SHOW_ACCOMMODATION_RECORDS}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${TOKEN}`,
           },
         }
       );
-      console.log(response.data)
       setRecords(response.data.details);
       setOriginalRecords(response.data.details);
     } catch (err) {
@@ -93,7 +84,7 @@ export default function ShowRecords() {
         `${baseURL}/${SHOW_ROOM_RECORDS}/${roomId}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${TOKEN}`,
           },
         }
       );
@@ -119,9 +110,9 @@ export default function ShowRecords() {
 
   const handleSearch = async (query) => {
     if (!query.trim()) {
-      if (userType === "Hotel" && showRoomDetails) {
+      if (role === "Hotel" && showRoomDetails) {
         setRoomRecords(originalRoomRecords);
-      } else if (userType !== "Hotel") {
+      } else if (role !== "Hotel") {
         setRecords(originalRecords);
       }
       return;
@@ -134,7 +125,7 @@ export default function ShowRecords() {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${TOKEN}`,
           },
         }
       );
@@ -160,12 +151,12 @@ export default function ShowRecords() {
       ) {
         filteredData = response.data.data;
       }
-      if (userType === "Hotel" && showRoomDetails) {
+      if (role === "Hotel" && showRoomDetails) {
         const filteredRoomRecords = originalRoomRecords.filter((record) =>
           filteredData.some((user) => user.id === record.user.id)
         );
         setRoomRecords(filteredRoomRecords);
-      } else if (userType !== "Hotel") {
+      } else if (role !== "Hotel") {
         const filteredBookingRecords = originalRecords.filter((record) =>
           filteredData.some((user) => user.id === record.user.id)
         );
@@ -184,7 +175,7 @@ export default function ShowRecords() {
     <ShowRecordsContainer
       loading={loading}
       error={error}
-      userType={userType}
+      userType={role}
       showRoomDetails={showRoomDetails}
       selectedRoom={selectedRoom}
       rooms={rooms}
@@ -195,6 +186,7 @@ export default function ShowRecords() {
       searchQuery={searchQuery}
       handleInputChange={handleInputChange}
       handleSearch={handleSearch}
+      advanced={false}
       customTitle="Booking Archieve"
     />
   );

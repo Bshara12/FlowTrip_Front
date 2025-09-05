@@ -5,6 +5,7 @@ import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./PackageDetails.css";
+import Booking from "./Booking";
 // <<<<<<< HEAD
 
 import EditButton from "../Component/EditButton";
@@ -25,7 +26,8 @@ import {
   PAYBYPOINT,
   TOKEN,
 } from "../Api/Api";
-import PackageDetailsLoader from "../Component/PackageDetailsLoader"; // استدعاء المكوّن
+import PackageDetailsLoader from "../Component/PackageDetailsLoader";
+import Cookies from "js-cookie";
 
 
 const PackageDetails = () => {
@@ -41,6 +43,8 @@ const PackageDetails = () => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [rating, setRating] = useState(null);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
   const fallbackImage =
     "https://images.unsplash.com/photo-1504674900247-0877df9cc836";
@@ -156,13 +160,66 @@ const PackageDetails = () => {
     }
   };
 
-  const handleRatingChange = (e) => {
-    setRating(e.target.value);
-    console.log('Rating selected:', e.target.value);
-    // Here you can add API call to submit the rating
+  const handleRatingChange = async (e) => {
+    const selectedRating = e.target.value;
+    setRating(selectedRating);
+
+    const token = Cookies.get("token") || localStorage.getItem("token");
+    if (!token) {
+      navigate("/not-registered");
+      return;
+    }
+
+    try {
+      await axios.post(
+        "http://127.0.0.1:8000/api/rate-owner",
+        {
+          owner_id: packageData.tourism_company.owner_id,
+          rating: selectedRating,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      toast.success("Thanks for rating!", { position: "top-right" });
+    } catch (err) {
+      console.error("Error submitting rating:", err);
+      toast.error("Failed to submit rating.", { position: "top-right" });
+    }
   };
 
-  if (loading) return <PackageDetailsLoader/>;
+  const handleBookingNavigation = (paymentMethod) => {
+    const token = Cookies.get("token") || localStorage.getItem("token");
+    if (!token) {
+      navigate("/not-registered");
+      return;
+    }
+
+    // Show booking modal instead of navigation
+    setSelectedPaymentMethod(paymentMethod);
+    setShowBookingModal(true);
+  };
+
+  const handleCloseBookingModal = () => {
+    setShowBookingModal(false);
+    setSelectedPaymentMethod(null);
+  };
+
+  const handlePaymentComplete = (paymentData) => {
+    // Handle payment completion
+    console.log("Payment completed:", paymentData);
+    setShowBookingModal(false);
+    setSelectedPaymentMethod(null);
+    toast.success("Booking completed successfully!", { position: "top-right" });
+  };
+
+
+
+  if (loading) return <PackageDetailsLoader />;
   if (!packageData) return <p>Package not found</p>;
 
   const allPictures = packageData.package_element.flatMap((el) =>
@@ -215,19 +272,19 @@ const PackageDetails = () => {
         {packageData.payment_by_points === 1 && (
           <p className="price">Also available with points</p>
         )}
-        
+
         {/* Rating Section */}
         {userType !== "tourism" && (
-          <div style={{ 
-            marginTop: "20px", 
-            padding: "15px", 
-            backgroundColor: "rgba(255, 255, 255, 0.05)", 
+          <div style={{
+            marginTop: "20px",
+            padding: "15px",
+            backgroundColor: "rgba(255, 255, 255, 0.05)",
             borderRadius: "12px",
             textAlign: "center"
           }}>
-            <h3 style={{ 
-              color: "#333", 
-              marginBottom: "10px", 
+            <h3 style={{
+              color: "#333",
+              marginBottom: "10px",
               fontSize: "18px",
               fontWeight: "600"
             }}>
@@ -235,13 +292,12 @@ const PackageDetails = () => {
             </h3>
             <RateOwnerCard onChange={handleRatingChange} />
             {rating && (
-              <p style={{ 
-                marginTop: "10px", 
-                color: "#ff9e0b", 
+              <p style={{
+                marginTop: "10px",
+                color: "#ff9e0b",
                 fontWeight: "bold",
                 fontSize: "14px"
               }}>
-                You rated: {rating} star{rating > 1 ? 's' : ''}
               </p>
             )}
           </div>
@@ -452,26 +508,80 @@ const PackageDetails = () => {
             </div>
           </div>
         ) : (
-          <div
-            data-tooltip={`Price: $${packageData.total_price}`}
-            className="buttonpriceanimation"
-          >
-            <div className="button-wrapperpriceanimation">
-              <div className="textpriceanimation">Buy Now</div>
-              <span className="iconpriceanimation">
-                <svg
-                  viewBox="0 0 16 16"
-                  className="bi bi-cart2"
-                  fill="currentColor"
-                  height="16"
-                  width="16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
-                </svg>
-              </span>
+          // <div
+          //   data-tooltip={`Price: $${packageData.total_price}`}
+          //   className="buttonpriceanimation"
+          // >
+          //   <div className="button-wrapperpriceanimation">
+          //     <div className="textpriceanimation">Buy Now</div>
+          //     <span className="iconpriceanimation">
+          //       <svg
+          //         viewBox="0 0 16 16"
+          //         className="bi bi-cart2"
+          //         fill="currentColor"
+          //         height="16"
+          //         width="16"
+          //         xmlns="http://www.w3.org/2000/svg"
+          //       >
+          //         <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
+          //       </svg>
+          //     </span>
+          //   </div>
+          // </div>
+          <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+            {/* زر الدفع العادي */}
+            <div
+              data-tooltip={`Price: $${packageData.total_price}`}
+              className="buttonpriceanimation"
+              onClick={() => handleBookingNavigation('card')}
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="button-wrapperpriceanimation">
+                <div className="textpriceanimation">Buy Now</div>
+                <span className="iconpriceanimation">
+                  <svg
+                    viewBox="0 0 16 16"
+                    className="bi bi-cart2"
+                    fill="currentColor"
+                    height="16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
+                  </svg>
+                </span>
+              </div>
             </div>
+
+            {/* زر الدفع بالنقاط إذا كان مفعّل */}
+            {packageData.payment_by_points === 1 && (
+              <div
+                data-tooltip={`Pay with points`}
+                className="buttonpriceanimation"
+                style={{ background: "linear-gradient(90deg, #f7971e 0%, #ffd200 100%)", cursor: 'pointer' }}
+                onClick={() => handleBookingNavigation('points')}
+              >
+                <div className="button-wrapperpriceanimation">
+                  <div className="textpriceanimation">
+                    {packageData.total_price * 50} Points
+                  </div>
+                  <span className="iconpriceanimation">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="20"
+                      width="20"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 
+              9.27L8.91 8.26L12 2Z" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
+
         )}
       </div>
       {/* Edit Modal */}
@@ -626,6 +736,42 @@ const PackageDetails = () => {
           onCancel={() => !deleteLoading && setShowDeleteDialog(false)}
           onConfirm={!deleteLoading ? handleDeletePackage : undefined}
         />
+      )}
+
+      {/* Booking Modal */}
+      {showBookingModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 10000,
+            padding: "20px",
+          }}
+          onClick={handleCloseBookingModal}
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <Booking
+              type="package"
+              accommodation={{
+                ...packageData,
+                hotel_name: packageData.tourism_company?.company_name,
+                location: "Package Booking",
+                price: packageData.total_price,
+                paymentMethod: selectedPaymentMethod,
+                package_id: id
+              }}
+              onClose={handleCloseBookingModal}
+              onPayment={handlePaymentComplete}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

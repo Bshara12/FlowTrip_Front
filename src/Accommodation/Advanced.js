@@ -22,33 +22,15 @@ export default function Advanced() {
   const [roomRecords, setRoomRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userType, setUserType] = useState(null);
   const [showRoomDetails, setShowRoomDetails] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const userType = localStorage.getItem('role');
+
   useEffect(() => {
     setBaseUrl(urlMap[view] || urlMap.popular);
   }, [view]);
-
-  useEffect(() => {
-    const checkUserType = async () => {
-      try {
-        setLoading(true);
-        const { data } = await axios.get("http://127.0.0.1:8000/api/WhoAmI", {
-          headers: { Authorization: `Bearer ${TOKEN}` },
-        });
-        const type = data.data.type;
-        setUserType(type);
-        setLoading(false);
-      } catch (err) {
-        setError(err);
-        setLoading(false);
-        console.error(err);
-      }
-    };
-    checkUserType();
-  }, []);
 
   useEffect(() => {
     if (!userType) return;
@@ -177,6 +159,7 @@ export default function Advanced() {
       btnn={true}
       view={view}
       setView={setView}
+      advanced={true}
     />
   );
 }

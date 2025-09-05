@@ -1,23 +1,17 @@
+// ================== Base URL ==================
 export const baseURL = `http://127.0.0.1:8000/api`;
 
-//accommodationn api
-
+// ================== Accommodation ==================
 export const ADD_ROOM = "AddRoom";
-
-export const BLOCK_OWNER = "BlockOwner";
-
 export const SHOW_OWNER = "ShowOwner";
 export const SHOW_OFFERS = "ShowOffers";
 export const SHOW_PROFILE = "ShowProfile";
 export const SHOW_ALL_ROOMS = "ShowAllRooms";
 export const SHOW_ROOM_RECORDS = "ShowRoomRecords";
 export const SHOW_ACCOMMODATION_RECORDS = "ShowAccommodationRecords";
-
 export const FILTER_NAME_ACCOMMODATIOM = "FilterNameAccommodation";
 
-
-//auth api
-
+// ================== Auth ==================
 export const WHO_AMI = "WhoAmI";
 export const LOGOUT = "logout";
 export const LOGIN = "Login";
@@ -26,14 +20,10 @@ export const CREATEOWNER = "CreateOwner";
 export const VERIFICATION = "Verification";
 export const RESENDEMAIL = "ReSendEmail";
 
-
-//admin api
-
+// ================== Admin ==================
 export const ADD_CATIGORY = "addcatigory";
 export const ADD_ACTIVITY = "addActivity";
 export const CREATE_SUBADMIN = "createSubAdmin";
-
-
 export const SHOW_ROOM = "ShowRoom";
 export const GET_ALL_UESER = "getalluser";
 export const GET_ALL_OWNERS = "GetAllOwners";
@@ -43,69 +33,47 @@ export const GET_ALL_ACTIVITY = "getAllActivity";
 export const GET_ALL_SUBADMIN = "getAllSubAdmin";
 export const GET_ALL_COUNTRIES = "GetAllCountries";
 export const GET_ALL_OWNER_CATEGORIES = "GetAllOwnerCategories";
-
 export const EDIT_ROOM = "EditRoom";
 export const EDIT_REQUEST = "EditRequest";
-
-
 export const DELETE_ROOM = "DeleteRoom";
 export const REMOVE_SUBADMIN = "removeSubAdmin";
 export const DELETE_ACTIVITY = "deleteactivity";
-
-
 export const FILTER_USERS = "filterusers";
 export const FILTER_SUBADMINS = "filterSubAdmins";
 export const ADMIN_SEARCH = "AdminSearch";
 export const PAYBYPOINT = "paybypoint";
-//airplane api
 
+// ================== Airplane ==================
 export const ADD_PLANE = "AddPlane";
-
-
 export const GET_ALL_PLANES = "GetAllPlanes";
 export const GET_SINGLE_PLANE = "GetSinglePlane";
-
 export const EDIT_PLANE = "EditPlane";
-
 export const DELETE_PLANE = "DeletePlane";
 
-//vehiclyowner api
-
+// ================== Vehicle Owner / Others ==================
 export const GET_ALL_PICTURE = "getAllPicture";
 export const GET_ALL_CAR_TYPES = "GetAllCarTypes";
 export const GET_ALL_VICLYFORUSER = "getAllViclyForuser";
 export const GET_ALL_ACCOMMODATION_TYPES = "GetAllAccommodationTypes";
-
 export const VEHICLE_OWNER = "vehicleowner";
-
-
 export const CREATE_VEHICLE = "createVehicle";
 export const CREATE_PICTURE_CAR = "createPictureCar";
 
-//component api
-
+// ================== Components / Items ==================
 export const GET_PACKAGE = "getPackage";
 export const GET_VEHICLE_BYID = "getVehicleById";
-
 export const SHOW_REQUEST = "ShowRequest";
 export const ACCEPT_REQUEST = "AcceptRequest";
-
 export const DELETE_REQUEST = "DeleteRequest";
 export const DELETE_VEHICLY = "deleteVehicly";
 export const DELETE_PICTURE_CAR = "deletePictureCar";
-
-// user
-export const FILTER_ACCOMMODATION = "FilterAccommodation";
-
-
-
-
 export const EDIT_VEHICLE = "editVehicle";
 
+// ================== User ==================
+export const FILTER_ACCOMMODATION = "FilterAccommodation";
+export const GET_ALL_ACCOMMODATION = "getAllAccommodation";
 
-
-
-// Tourism company api
+// ================== Tourism company ==================
 export const BASETOURISM = "tourism";
 export const DELETE_PACKAGE = "deletePackage";
 export const EDIT_PACKADE = "editPackage";
@@ -119,14 +87,24 @@ export const GET_RECORDS_FOR_PACKAGE = "getrecordsforpackage";
 export const GET_PACKAGES_FOR_TOURISM = "getPackagesfortourism";
 export const GET_MOST_POPULAR_PACKAGES_FOR_COMPANY = "getMostPopularPackagesForCompany";
 
-
-//AI
+// ================== AI ==================
 export const CHATBOT = "ai/chat";
 export const FILTER_FLIGHTS = "filterFlights";
-export const MAKEITINERARY = "ai/itinerary"
+export const MAKEITINERARY = "ai/itinerary";
 
+// ================== Auth Token Helpers ==================
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+};
 
+export const TOKEN = getCookie("token") || localStorage.getItem("token") || "";
 
-export const TOKEN = "23|70IbCCOttInIUW470MZGlTuRMAYZRb3uvSjSbZva143900d8";
-// export const TOKEN = localStorage.getItem("token");
-//8|v0NmD1eCUNCu2k4uOoeoPAlw48c24ILfuoxFmOkK89d8883f
+// هيدر جاهز للاستعمال مع fetch/axios
+export const authHeaders = (extra = {}) => ({
+  Accept: "application/json",
+  ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}),
+  ...extra,
+});

@@ -39,9 +39,22 @@
   }
 }
 
+.date-container {
+  border-radius: 16px;
+  padding: 16px;
+  color: var(--color7);
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color5);
+  z-index: 999;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
 /* Title */
 .accommodation-filter-details-title {
-  font-size: 1.5rem;
+  font-size: calc(1rem + 1vw);
   font-weight: bold;
   color: var(--color2);
   margin-bottom: 22px;
@@ -76,7 +89,7 @@
   box-shadow: none;
   border: none;
   color: var(--color2);
-  font-size: 1em;
+  font-size: calc(0.6rem + 0.6vw);
   letter-spacing: 0.05em;
   transition: 0.5s;
   z-index: 10;
@@ -124,8 +137,10 @@
 }
 
 /* Number input - remove default spinners */
-.accommodation-filter-details-inputbox input[type="number"]::-webkit-outer-spin-button,
-.accommodation-filter-details-inputbox input[type="number"]::-webkit-inner-spin-button {
+.accommodation-filter-details-inputbox
+  input[type="number"]::-webkit-outer-spin-button,
+.accommodation-filter-details-inputbox
+  input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -163,15 +178,16 @@
 /* Card styles */
 .acc-card {
   background: var(--color7);
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .acc-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 .acc-card-img {
   width: 100%;
@@ -204,4 +220,25 @@
 .acc-price-new {
   color: var(--color1);
   font-weight: 800;
+}
+
+@media (max-width: 768.9px) {
+  .accommodation-filter-details-container {
+    padding: 60px 0 0 0 !important;
+  }
+  .date-container {
+    margin: auto 0;
+  }
+  .activity-filter-container {
+    padding: 75px 0 0 0 !important;
+  }
+}
+
+@media (max-width: 649.9px) {
+  .rdrMonthsHorizontal {
+    flex-direction: column;
+  }
+  .rdrMonth {
+    width: 100%;
+  }
 }

@@ -22,11 +22,11 @@ const RequestDetails = () => {
   const [showCategoryPopup, setShowCategoryPopup] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-// <<<<<<< HEAD
-//   const token = localStorage.getItem("token");
-// =======
+  // <<<<<<< HEAD
+  //   const token = localStorage.getItem("token");
+  // =======
   const token = TOKEN;
-// >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
+  // >>>>>>> 8d3da609a625411d2016f43b589b4bae035e3447
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -40,7 +40,7 @@ const RequestDetails = () => {
 
       try {
         const res = await axios.get(
-         `${baseURL}/${SHOW_REQUEST}/${id}`,
+          `${baseURL}/${SHOW_REQUEST}/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ const RequestDetails = () => {
         }
       } catch (err) {
         console.error("Error fetching request details:", err);
-        
+
         if (err.response && err.response.status === 401) {
           console.error("Token is invalid or expired");
           toast.error("Authentication failed. Please login again.");
@@ -83,7 +83,7 @@ const RequestDetails = () => {
       setTimeout(() => navigate("/Admin/dashbord/requist"), 1500);
     } catch (error) {
       console.error("Error confirming request:", error);
-      
+
       if (error.response && error.response.status === 401) {
         toast.error("Authentication failed. Please login again.");
       } else {
@@ -116,10 +116,10 @@ const RequestDetails = () => {
         },
       });
       toast.success("The request has been successfully deleted");
-      setTimeout(() => navigate("/Admin/dashbord/requist"), 1500);
+      setTimeout(() => navigate("/admin/dashboard/requist"), 1500);
     } catch (err) {
       console.error("Error deleting request:", err);
-      
+
       if (err.response && err.response.status === 401) {
         toast.error("Authentication failed. Please login again.");
       } else {
@@ -140,7 +140,7 @@ const RequestDetails = () => {
 
     // Open default email client
     const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
-    
+
     try {
       window.open(mailtoLink, '_blank');
     } catch (error) {
@@ -166,10 +166,10 @@ const RequestDetails = () => {
           <p className="request-info-text">Phone: {phone_number}</p>
         </section>
 
-        <section className="request-info-section">
-                </section>
+        {/* <section className="request-info-section">
+        </section> */}
 
-          <h3 className="request-info-title">Request Details</h3>
+        <h3 className="request-info-title">Request Details</h3>
         <section className="request-section">
           <h3 className="section-title">Owner Information</h3>
           <p className="section-text">Name: {user_name}</p>
@@ -194,7 +194,7 @@ const RequestDetails = () => {
           <div onClick={() => setShowDeleteConfirm(true)}>
             <DeleteButton />
           </div>
-          <button 
+          <button
             onClick={handleContact}
             style={{
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -221,7 +221,7 @@ const RequestDetails = () => {
             }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
             </svg>
             التواصل
           </button>

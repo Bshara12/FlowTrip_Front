@@ -40,7 +40,7 @@ const Vehiclys = () => {
   }, []);
 
   return (
-    <div className="vehicle-container col-12">
+    <div className="vehicle-container">
       <div className="vehicle-header col-12">
         <h2 className="vehicle-title">Your Vehiclys</h2>
         <Button onClick={() => navigate("/create-vehicle")}>+ Add vehicle</Button>

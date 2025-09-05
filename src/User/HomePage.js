@@ -4,8 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {
-  FaBars, FaTimes, FaUser, FaMoon, FaGlobe, FaPhone, FaHome, FaPlane, FaBox, FaCar
-} from "react-icons/fa";
+  FaBars,FaTimes,FaUser,FaMoon,FaGlobe,FaPhone,FaHome,FaSuitcase,FaCar,FaHiking,} from "react-icons/fa";
 import PackageCard from "../Component/PackageCard";
 import Loader from "../Component/Loader";
 import loadingImage from "../Assets/Loading_icon.gif";
@@ -17,11 +16,14 @@ export default function Homepage() {
   const [activities, setActivities] = useState([]);
   const [loadingPackages, setLoadingPackages] = useState(true);
   const [loadingActivities, setLoadingActivities] = useState(true);
-  const navigate = useNavigate();
-
-  const closeSidebar = () => setIsSidebarOpen(false);
   const [accommodations, setAccommodations] = useState([]);
   const [loadingAccommodations, setLoadingAccommodations] = useState(true);
+
+  const [selectedActivity, setSelectedActivity] = useState(null);
+  const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const closeSidebar = () => setIsSidebarOpen(false);
 
   useEffect(() => {
     const fetchAccommodations = async () => {
@@ -35,11 +37,8 @@ export default function Homepage() {
         setLoadingAccommodations(false);
       }
     };
-
     fetchAccommodations();
   }, []);
-
-
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -72,57 +71,112 @@ export default function Homepage() {
 
   const handlePackageClick = (id) => navigate(`/package-details/${id}`);
 
-  // إعدادات السلايدر
+  // زر Show more قابل لإعادة الاستخدام
+  function ShowMore({ to = "/", label = "Show more" }) {
+    const navigate = useNavigate();
+    return (
+      <button
+        className="show-more-btn"
+        onClick={() => navigate(to)}
+        aria-label={label}
+        title={label}
+      >
+        {label}
+        <span className="show-more-arrow">›</span>
+      </button>
+    );
+  }
+
+  // إعدادات السلايدر (محسّنة للموبايل)
+  const slidesDesktop = Math.min(Math.max(packages.length, 1), 4);
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: packages.length > 4,
     speed: 500,
-    slidesToShow: packages.length,
+    slidesToShow: slidesDesktop,
     slidesToScroll: 1,
     arrows: false,
-    autoplay: true,
-    autoplaySpeed: 2000,
+    autoplay: packages.length > 1,
+    autoplaySpeed: 2500,
+    swipeToSlide: true,
+    lazyLoad: "anticipated",
+    responsive: [
+      { breakpoint: 1200, settings: { slidesToShow: Math.min(Math.max(packages.length, 1), 3) } },
+      { breakpoint: 992, settings: { slidesToShow: Math.min(Math.max(packages.length, 1), 2) } },
+      { breakpoint: 600, settings: { slidesToShow: 1, centerMode: true, centerPadding: "12px" } },
+    ],
   };
+
   const getImageUrl = (picture) => {
     if (!picture) return null;
-
     if (picture.includes("storage\\")) {
       const fileName = picture.split("\\").pop();
       return `http://127.0.0.1:8000/storage/images/${fileName}`;
     }
-
     if (picture.includes("storage/")) {
       const fileName = picture.split("/").pop();
       return `http://127.0.0.1:8000/storage/images/${fileName}`;
     }
-    console.log(picture);
     return picture;
   };
 
+  // فتح/إغلاق مودال النشاط
+  const openActivityModal = (act) => {
+    setSelectedActivity(act);
+    setIsActivityModalOpen(true);
+  };
+  const closeActivityModal = () => {
+    setIsActivityModalOpen(false);
+    setSelectedActivity(null);
+  };
+
+  // رابط واتساب
+  const buildWhatsAppLink = (phone, activityName, loc) => {
+    if (!phone) return null;
+    const digits = String(phone).replace(/\D/g, "");
+    if (!digits) return null;
+    const msg = `Hello, I'm interested in "${activityName}"${loc ? ` in ${loc}` : ""}. Is it available?`;
+    return `https://wa.me/${digits}?text=${encodeURIComponent(msg)}`;
+  };
+
+  // ⇢ نقل للإقامة (نفس أسلوب AccommodationFilter)
+  const handleAccommodationCardClick = (acc) => {
+    const id = acc?.room_id ?? acc?.id ?? null;
+    const type = acc?.type ?? (acc?.room_id ? "room" : "other");
+    if (!id) {
+      console.warn("Accommodation item missing id:", acc);
+      return;
+    }
+    navigate(`/accommodation-preview/${id}`, { state: { type } });
+  };
 
   return (
     <div className="homepage-container">
       {/* Navbar */}
       <nav className="navbar">
         <h2 className="logo">Flow Trip</h2>
-        <div
-          className="menu-icon"
-          onClick={() => setIsSidebarOpen(true)}
-          title="Settings"
-        >
+        <div className="menu-icon" onClick={() => setIsSidebarOpen(true)} title="Settings">
           <FaBars />
         </div>
       </nav>
 
-      {/* Buttons تحت الناف بار */}
+      {/* Buttons */}
       <div className="nav-buttons">
-        <button><FaHome /> Home</button>
-        <button><FaPlane /> Flights</button>
-        <button><FaCar /> Cars</button>
-        <button><FaBox /> Packages</button>
+        <button onClick={() => navigate("/packages")}>
+          <FaSuitcase /> Packages
+        </button>
+        <button onClick={() => navigate("/All-Activity")}>
+          <FaHiking /> Activities
+        </button>
+        <button onClick={() => navigate("/accommodation-filter")}>
+          <FaHome /> accommodations 
+        </button>
+        <button onClick={() => navigate("/car-filter")}>
+          <FaCar /> Cars
+        </button>
       </div>
 
-      {/* Overlay */}
+      {/* Overlay sidebar */}
       {isSidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
 
       {/* Sidebar */}
@@ -134,37 +188,39 @@ export default function Homepage() {
           </button>
         </div>
         <ul>
-          <li><FaUser className="icon" /> الحساب</li>
-          <li><FaMoon className="icon" /> الوضع الليلي</li>
-          <li><FaGlobe className="icon" /> اللغة</li>
-          <li><FaPhone className="icon" /> الدعم الفني</li>
+          <li>
+            <FaUser className="icon" /> الحساب
+          </li>
+          <li>
+            <FaMoon className="icon" /> الوضع الليلي
+          </li>
+          <li>
+            <FaGlobe className="icon" /> اللغة
+          </li>
+          <li>
+            <FaPhone className="icon" /> الدعم الفني
+          </li>
         </ul>
       </div>
 
       <h2 style={{ textAlign: "center", margin: "40px 0", color: "#2c3e50" }}>
-        ✨ اكتشف باقاتنا المميزة ✨
+        ✨ Discover our special packages ✨
       </h2>
 
-
-      {/* Slider للباقات */}
+      {/* Packages slider */}
       {loadingPackages ? (
         <div style={{ textAlign: "center" }}>
           <Loader />
-          <img
-            src={loadingImage}
-            alt="Loading..."
-            style={{ width: "100px", margin: "50px auto" }}
-          />
+          <img src={loadingImage} alt="Loading..." style={{ width: "100px", margin: "50px auto" }} />
         </div>
       ) : (
         <Slider {...sliderSettings} className="package-slider">
           {packages.map((pkg) => (
-            console.log(pkg),
             <div key={pkg.id}>
               <PackageCard
                 id={pkg.id}
                 image={getImageUrl(pkg.picture)}
-                // title={pkg.tourism_company?.company_name || "Unknown Company"}
+                title={pkg.tourism_company?.company_name || "Unknown Company"}
                 description={pkg.description}
                 price={pkg.total_price}
                 isPointPayment={pkg.payment_by_points === 1}
@@ -175,9 +231,13 @@ export default function Homepage() {
         </Slider>
       )}
 
-      {/* قسم الأنشطة */}
+      <div className="show-more-row">
+        <ShowMore to="/packages" label="Show more" />
+      </div>
+
+      {/* Activities */}
       <h2 style={{ textAlign: "center", margin: "60px 0 20px", color: "#2c3e50" }}>
-        🌟 اكتشف أنشطتنا المميزة 🌟
+        🌟 Discover our special activities 🌟
       </h2>
 
       {loadingActivities ? (
@@ -190,6 +250,10 @@ export default function Homepage() {
             <div
               key={act.id}
               className={`activity-card ${index < 2 ? "large-card" : "small-card"}`}
+              onClick={() => openActivityModal(act)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => (e.key === "Enter" ? openActivityModal(act) : null)}
             >
               <img
                 src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
@@ -199,21 +263,22 @@ export default function Homepage() {
               <div className="activity-overlay">
                 <h3>{act.activity_name}</h3>
                 <p>{act.owner_name}</p>
-                <p>{act.location}, {act.country_name}</p>
+                <p>
+                  {act.location}, {act.country_name}
+                </p>
               </div>
             </div>
           ))}
         </div>
-
       )}
-      <h2
-        style={{
-          textAlign: "center",
-          margin: "60px 0 20px",
-          color: "#2c3e50",
-        }}
-      >
-        🏡 اكتشف إقاماتنا المميزة 🏡
+
+      <div className="show-more-row">
+        <ShowMore to="/All-Activity" label="Show more" />
+      </div>
+
+      {/* Accommodations */}
+      <h2 style={{ textAlign: "center", margin: "60px 0 20px", color: "#2c3e50" }}>
+        🏡 Discover our special stays 🏡
       </h2>
       <div className="section-divider"></div>
 
@@ -223,35 +288,108 @@ export default function Homepage() {
         </div>
       ) : (
         <div className="accommodations-grid">
-          {accommodations.map((acc) => (
-            <div key={acc.id} className="accommodation-card">
-              <img
-                src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=800&q=80"
-                alt={acc.type_name}
-                className="accommodation-img"
-              />
-              <div className="accommodation-info">
-                <h3>{acc.type_name}</h3>
-                <p>{acc.owner_location}</p>
-                <p>
-                  {acc.offer_price ? (
-                    <>
-                      <span className="old-price">${acc.price}</span>{" "}
-                      <span className="new-price">${acc.offer_price}</span>
-                    </>
-                  ) : acc.pice ? (
-                    <span>${acc.price}</span>
-                  ) : (
-                    <span>Price not available</span>
-                  )}
-                </p>
+          {accommodations.map((acc) => {
+            const hasOffer = acc?.offer_price && Number(acc.offer_price) !== 0;
+            return (
+              <div
+                key={acc.room_id ?? acc.id}
+                className="accommodation-card"
+                onClick={() => handleAccommodationCardClick(acc)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => (e.key === "Enter" ? handleAccommodationCardClick(acc) : null)}
+                title="View details"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=800&q=80"
+                  alt={acc.type_name || acc.accommodation_name || "Accommodation"}
+                  className="accommodation-img"
+                />
+                <div className="accommodation-info">
+                  <h3>{acc.type_name || acc.accommodation_name || "Accommodation"}</h3>
+                  <p>{acc.owner_location || acc.location}</p>
+                  <p>
+                    {hasOffer ? (
+                      <>
+                        <span className="old-price">${acc.price}</span>{" "}
+                        <span className="new-price">${acc.offer_price}</span>
+                      </>
+                    ) : acc?.price ? (
+                      <span>${acc.price}</span>
+                    ) : (
+                      <span>Price not available</span>
+                    )}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-
       )}
 
+      <div className="show-more-row">
+        <ShowMore to="/accommodation-filter" label="Show more" />
+      </div>
+
+      {/* ========== Activity Modal ========== */}
+      {isActivityModalOpen && selectedActivity && (
+        <div className="modal-overlay" onClick={closeActivityModal}>
+          <div
+            className="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="actModalTitle"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-header">
+              <h3 id="actModalTitle">Do you want to book this activity?</h3>
+              <button className="modal-close" onClick={closeActivityModal} aria-label="Close">
+                ×
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <p className="modal-title">{selectedActivity.activity_name}</p>
+              <p className="modal-row">
+                <strong>Owner:</strong> {selectedActivity.owner_name || "—"}
+              </p>
+              <p className="modal-row">
+                <strong>Phone:</strong>{" "}
+                {selectedActivity.phone_number ? (
+                  <a href={`tel:${selectedActivity.phone_number}`}>{selectedActivity.phone_number}</a>
+                ) : (
+                  "—"
+                )}
+              </p>
+            </div>
+
+            <div className="modal-actions">
+              {selectedActivity.phone_number ? (
+                <a
+                  className="btn btn-whatsapp"
+                  href={buildWhatsAppLink(
+                    selectedActivity.phone_number,
+                    selectedActivity.activity_name,
+                    selectedActivity.location
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Contact on WhatsApp
+                </a>
+              ) : (
+                <button className="btn btn-disabled" disabled>
+                  WhatsApp unavailable
+                </button>
+              )}
+              <button className="btn btn-danger" onClick={closeActivityModal}>
+                <FaTimes style={{ marginRight: 6 }} />
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

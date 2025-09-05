@@ -64,9 +64,9 @@ export default function DashBourd() {
 
         <div className="menu-links">
           <Link
-            to="/Admin/dashbord/requist"
+            to="/Admin/dashboard/requist"
             className={
-              activeLink === "/Admin/dashbord/requist" ? "active-link" : ""
+              activeLink === "/Admin/dashboard/requist" ? "active-link" : ""
             }
           >
             <i className="fas fa-clipboard-list"></i>
@@ -74,9 +74,9 @@ export default function DashBourd() {
           </Link>
 
           <Link
-            to="/Admin/dashbord/packages"
+            to="/Admin/dashboard/packages"
             className={
-              activeLink === "/Admin/dashbord/packages" ? "active-link" : ""
+              activeLink === "/Admin/dashboard/packages" ? "active-link" : ""
             }
           >
             <i className="fas fa-cubes"></i>
@@ -84,9 +84,9 @@ export default function DashBourd() {
           </Link>
 
           <Link
-            to="/Admin/dashbord/owners"
+            to="/Admin/dashboard/owners"
             className={
-              activeLink === "/Admin/dashbord/owners" ? "active-link" : ""
+              activeLink === "/Admin/dashboard/owners" ? "active-link" : ""
             }
           >
             <i className="fas fa-user-tie"></i>
@@ -94,9 +94,9 @@ export default function DashBourd() {
           </Link>
 
           <Link
-            to="/Admin/dashbord/subadmin"
+            to="/Admin/dashboard/subadmin"
             className={
-              activeLink === "/Admin/dashbord/subadmin" ? "active-link" : ""
+              activeLink === "/Admin/dashboard/subadmin" ? "active-link" : ""
             }
           >
             <i className="fas fa-chess-king"></i>
@@ -104,9 +104,9 @@ export default function DashBourd() {
           </Link>
 
           <Link
-            to="/Admin/dashbord/users"
+            to="/Admin/dashboard/users"
             className={
-              activeLink === "/Admin/dashbord/users" ? "active-link" : ""
+              activeLink === "/Admin/dashboard/users" ? "active-link" : ""
             }
           >
             <i className="fas fa-users"></i>
@@ -114,9 +114,9 @@ export default function DashBourd() {
           </Link>
 
           <Link
-            to="/Admin/dashbord/activity"
+            to="/Admin/dashboard/activity"
             className={
-              activeLink === "/Admin/dashbord/activity" ? "active-link" : ""
+              activeLink === "/Admin/dashboard/activity" ? "active-link" : ""
             }
           >
             <i className="fas fa-running"></i>
@@ -124,9 +124,9 @@ export default function DashBourd() {
           </Link>
 
           <Link
-            to="/Admin/dashbord/catigory"
+            to="/Admin/dashboard/catigory"
             className={
-              activeLink === "/Admin/dashbord/catigory" ? "active-link" : ""
+              activeLink === "/Admin/dashboard/catigory" ? "active-link" : ""
             }
           >
             <i className="fas fa-layer-group"></i>

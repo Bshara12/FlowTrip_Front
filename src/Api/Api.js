@@ -128,6 +128,7 @@ export const MAKEITINERARY = "ai/itinerary"
 
 
 // export const TOKEN = "VNJPazs7f95olwbhJmCcsdBBntqhoHL3EZzBHcZUeb7c8f9c";
+// <<<<<<< HEAD
 // export const TOKEN = localStorage.getItem("token");
 function getCookie(name) {
   const value = `; ${document.cookie}`;
@@ -149,3 +150,6 @@ if (!TOKEN) {
 }
 
 export { TOKEN };
+// =======
+// export const TOKEN = localStorage.getItem("token");
+// >>>>>>> 8f6c837c3ba972d6555ab9b4fc3df5ae422b7eca

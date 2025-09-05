@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ConfirmDialog from "../Component/ConfirmDialog";
 import Loader from "../Component/Loader";
 import "./RoomDetails.css";
 import { baseURL, DELETE_ROOM, EDIT_ROOM, SHOW_ROOM, TOKEN } from "../Api/Api";
+import fallbackImage from "../Assets/AccommodationImagejpg.jpg";
 
 export default function RoomDetails() {
   const location = useLocation();
@@ -13,8 +14,6 @@ export default function RoomDetails() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const sliderRef = useRef(null);
-  const [isPaused, setIsPaused] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState(null);
   const [editLoading, setEditLoading] = useState(false);
@@ -53,53 +52,6 @@ export default function RoomDetails() {
     };
     fetchRoom();
   }, [id]);
-
-  useEffect(() => {
-    if (!sliderRef.current) return;
-    if (isPaused) return;
-    if (!data || !data.pictures) return;
-    if (data.pictures.length < 2) return;
-    const slider = sliderRef.current;
-    const scrollAmount = 1;
-
-    const card = slider.querySelector(".room-picture-card");
-    if (!card) return;
-    const cardWidth = card.offsetWidth;
-    const gap = 20;
-    const originalPicturesLength = data.pictures.length;
-    const totalWidth = originalPicturesLength * (cardWidth + gap);
-
-    let isResetting = false;
-    const interval = setInterval(() => {
-      if (isResetting) return;
-      if (slider.scrollLeft >= totalWidth) {
-        isResetting = true;
-        slider.style.scrollBehavior = "auto";
-        slider.scrollLeft = 0;
-        setTimeout(() => {
-          slider.style.scrollBehavior = "smooth";
-          isResetting = false;
-        }, 20);
-      } else {
-        slider.scrollLeft += scrollAmount;
-      }
-    }, 16);
-    slider._interval = interval;
-
-    return () => {
-      if (slider._interval) clearInterval(slider._interval);
-    };
-  }, [isPaused, data]);
-
-  const scrollSlider = (dir) => {
-    if (!sliderRef.current) return;
-    const slider = sliderRef.current;
-    const card = slider.querySelector(".room-picture-card");
-    const cardWidth = card ? card.offsetWidth : 220;
-    const gap = 20;
-    const amount = cardWidth + gap;
-    slider.scrollLeft += dir === "left" ? -amount : amount;
-  };
 
   const handleInputChange = (field, value) => {
     setEditData((prev) => ({
@@ -313,6 +265,7 @@ export default function RoomDetails() {
               <input
                 required="required"
                 type="number"
+                placeholder=""
                 value={editData.room_number}
                 onChange={(e) =>
                   handleInputChange("room_number", parseInt(e.target.value))
@@ -325,6 +278,7 @@ export default function RoomDetails() {
               <input
                 required="required"
                 type="number"
+                placeholder=""
                 value={editData.price}
                 onChange={(e) =>
                   handleInputChange("price", parseFloat(e.target.value))
@@ -337,6 +291,7 @@ export default function RoomDetails() {
               <input
                 type="number"
                 required="required"
+                placeholder=""
                 value={editData.offer_price === "" ? "" : editData.offer_price}
                 onChange={(e) =>
                   handleInputChange(
@@ -352,6 +307,7 @@ export default function RoomDetails() {
               <input
                 required="required"
                 type="number"
+                placeholder=""
                 value={editData.area}
                 onChange={(e) =>
                   handleInputChange("area", parseFloat(e.target.value))
@@ -364,6 +320,7 @@ export default function RoomDetails() {
               <input
                 required="required"
                 type="number"
+                placeholder=""
                 value={editData.people_count}
                 onChange={(e) =>
                   handleInputChange("people_count", parseInt(e.target.value))
@@ -419,7 +376,10 @@ export default function RoomDetails() {
                 id="picture-upload"
                 style={{ display: "none" }}
               />
-              <label htmlFor="picture-upload" className="room-details-add-picture-btn">
+              <label
+                htmlFor="picture-upload"
+                className="room-details-add-picture-btn"
+              >
                 Add Photo
               </label>
             </div>
@@ -459,50 +419,31 @@ export default function RoomDetails() {
         />
       )}
 
-      <div className="room-details-pictures-section" style={{ width: "85%" }}>
+      <div
+        className={`room-details-pictures-section ${
+          !pictures || pictures.length === 0 ? "room-details-no-pictures" : ""
+        }`}
+        style={{ width: "85%" }}
+      >
         <h2 className="room-details-pictures-title">Pictures</h2>
         <div
-          className="room-details-pictures-slider-wrapper"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
+          className={`room-details-css-slider-container ${
+            pictures && pictures.length <= 3 ? "room-details-no-animation" : ""
+          } ${
+            !pictures || pictures.length === 0
+              ? "room-details-empty-container"
+              : ""
+          }`}
         >
-          <div
-            className="room-details-pictures-slider"
-            ref={sliderRef}
-            style={{
-              overflowX: "auto",
-              scrollBehavior: "smooth",
-              display: "flex",
-              gap: "20px",
-              justifyContent: pictures.length < 4 ? "center" : undefined,
-            }}
-          >
-            {pictures.length > 0 ? (
-              pictures.length > 4 ? (
-                [...pictures, ...pictures, ...pictures].map((pic, idx) => (
+          <div className="room-details-css-slider-track">
+            {pictures && pictures.length > 0 ? (
+              <>
+                {pictures.map((pic, idx) => (
                   <div
-                    className="room-details-picture-card"
-                    key={`pic-${pic.id}-${idx}`}
+                    className="room-details-css-slide"
+                    key={`original-${idx}`}
                   >
                     <img
-                      className="room-details-picture-img"
-                      src={
-                        pic.room_picture.startsWith("http")
-                          ? pic.room_picture
-                          : `http://localhost:8000/${pic.room_picture}`
-                      }
-                      alt={`Room pic ${(idx % pictures.length) + 1}`}
-                    />
-                  </div>
-                ))
-              ) : (
-                pictures.map((pic, idx) => (
-                  <div
-                    className="room-details-picture-card"
-                    key={`pic-${pic.id}-${idx}`}
-                  >
-                    <img
-                      className="room-details-picture-img"
                       src={
                         pic.room_picture.startsWith("http")
                           ? pic.room_picture
@@ -511,28 +452,31 @@ export default function RoomDetails() {
                       alt={`Room pic ${idx + 1}`}
                     />
                   </div>
-                ))
-              )
+                ))}
+                {/* Duplicate images for seamless loop - only if more than 3 images */}
+                {pictures.length > 3 &&
+                  pictures.map((pic, idx) => (
+                    <div
+                      className="room-details-css-slide"
+                      key={`duplicate-${idx}`}
+                    >
+                      <img
+                        src={
+                          pic.room_picture.startsWith("http")
+                            ? pic.room_picture
+                            : `http://localhost:8000/${pic.room_picture}`
+                        }
+                        alt={`Room pic ${idx + 1}`}
+                      />
+                    </div>
+                  ))}
+              </>
             ) : (
-              <div className="room-details-picture-empty">No pictures available</div>
+              <div className="room-details-no-images">
+                <span>No Images Available</span>
+              </div>
             )}
           </div>
-          {pictures.length >= 4 && (
-            <>
-              <button
-                className="room-details-slider-arrow room-details-left"
-                onClick={() => scrollSlider("left")}
-              >
-                <i className="fa-solid fa-arrow-left"></i>
-              </button>
-              <button
-                className="room-details-slider-arrow room-details-right"
-                onClick={() => scrollSlider("right")}
-              >
-                <i className="fa-solid fa-arrow-right"></i>
-              </button>
-            </>
-          )}
         </div>
       </div>
       <div

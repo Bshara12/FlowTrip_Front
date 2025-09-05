@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./OwnerDetailsComponent.css";
@@ -22,8 +22,6 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isBlocked, setIsBlocked] = useState(false);
-  const sliderRef = useRef(null);
-  const [isPaused, setIsPaused] = useState(false);
   const navigate = useNavigate();
   const [showServicesModal, setShowServicesModal] = useState(false);
   const [allServices, setAllServices] = useState([]);
@@ -106,52 +104,6 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
     fetchData();
     fetchCountries();
   }, [id, authToken, isAdmin]);
-
-  useEffect(() => {
-    if (!sliderRef.current) return;
-    if (isPaused) return;
-    if (!data || !data.pictures) return;
-    const slider = sliderRef.current;
-    const scrollAmount = 1;
-
-    const card = slider.querySelector(".owner-picture-card");
-    if (!card) return;
-    const cardWidth = card.offsetWidth;
-    const gap = 20;
-    const originalPicturesLength = data.pictures.length;
-    const totalWidth = originalPicturesLength * (cardWidth + gap);
-
-    let isResetting = false;
-    const interval = setInterval(() => {
-      if (isResetting) return;
-      if (slider.scrollLeft >= totalWidth) {
-        isResetting = true;
-        slider.style.scrollBehavior = "auto";
-        slider.scrollLeft = 0;
-        setTimeout(() => {
-          slider.style.scrollBehavior = "smooth";
-          isResetting = false;
-        }, 20);
-      } else {
-        slider.scrollLeft += scrollAmount;
-      }
-    }, 16);
-    slider._interval = interval;
-
-    return () => {
-      if (slider._interval) clearInterval(slider._interval);
-    };
-  }, [isPaused, data]);
-
-  const scrollSlider = (dir) => {
-    if (!sliderRef.current) return;
-    const slider = sliderRef.current;
-    const card = slider.querySelector(".owner-picture-card");
-    const cardWidth = card ? card.offsetWidth : 220;
-    const gap = 20;
-    const amount = cardWidth + gap;
-    slider.scrollLeft += dir === "left" ? -amount : amount;
-  };
 
   const handleToggleBlock = async (checked) => {
     if (!isAdmin) return;
@@ -378,7 +330,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
         return (
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">🏨</span>
+              {/* <span className="owner-details-icon">🏨</span> */}
               Accommodation Type:
             </span>
             <span className="owner-details-value">
@@ -390,7 +342,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
         return (
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">✈️</span>
+              {/* <span className="owner-details-icon">✈️</span> */}
               Air Line Name:
             </span>
             <span className="owner-details-value">
@@ -402,7 +354,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
         return (
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">🏢</span>
+              {/* <span className="owner-details-icon">🏢</span> */}
               Company Name:
             </span>
             <span className="owner-details-value">
@@ -414,7 +366,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
         return (
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">🧑‍💼</span>
+              {/* <span className="owner-details-icon">🧑‍💼</span> */}
               Owner Name:
             </span>
             <span className="owner-details-value">
@@ -427,7 +379,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
           <>
             <div className="owner-details-section">
               <span className="owner-details-label">
-                <span className="owner-details-icon">🧑‍💼</span>
+                {/* <span className="owner-details-icon">🧑‍💼</span> */}
                 Owner Name:
               </span>
               <span className="owner-details-value">
@@ -436,7 +388,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
             </div>
             <div className="owner-details-section">
               <span className="owner-details-label">
-                <span className="owner-details-icon">🎯</span>
+                {/* <span className="owner-details-icon">🎯</span> */}
                 Activity:
               </span>
               <span className="owner-details-value">
@@ -507,6 +459,16 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
               <span>Phone Number</span>
               <i></i>
             </div>
+            <div className="owner-inputbox">
+              <input
+                type="text"
+                required
+                value={editData.location}
+                onChange={(e) => handleInputChange("location", e.target.value)}
+              />
+              <span>Location</span>
+              <i></i>
+            </div>
             <div className="form-group">
               <label>Description:</label>
               <textarea
@@ -517,16 +479,6 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
                   handleInputChange("description", e.target.value)
                 }
               />
-            </div>
-            <div className="owner-inputbox">
-              <input
-                type="text"
-                required
-                value={editData.location}
-                onChange={(e) => handleInputChange("location", e.target.value)}
-              />
-              <span>Location</span>
-              <i></i>
             </div>
           </div>
 
@@ -639,7 +591,9 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
 
   return (
     <div
-      className={`owner-details-container ${isAdmin ? "fullWidth" : ""}`}
+      className={`owner-details-container ps-3 pe-3 ${
+        isAdmin ? "fullWidth" : ""
+      }`}
       style={{ position: "relative" }}
     >
       {!isAdmin && (
@@ -661,31 +615,35 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
           <h2 className="owner-details-title">Business Information</h2>
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">🏷️</span>Category:
+              {/* <span className="owner-details-icon">🏷️</span> */}
+              Category:
             </span>
             <span className="owner-details-value">{owner.category || "-"}</span>
           </div>
           {renderCategoryDetails(owner.owner_category_id)}{" "}
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">📍</span>Location:
+              {/* <span className="owner-details-icon">📍</span> */}
+              Location:
             </span>
             <span className="owner-details-value">{owner.location || "-"}</span>
           </div>
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">📝</span>Description:
+              {/* <span className="owner-details-icon">📅</span> */}
+              Creation date:
             </span>
             <span className="owner-details-value">
-              {owner.description || "-"}
+              {owner.created_at?.slice(0, 10) || "-"}
             </span>
           </div>
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">📅</span>Creation date:
+              {/* <span className="owner-details-icon">📝</span> */}
+              Description:
             </span>
             <span className="owner-details-value">
-              {owner.created_at?.slice(0, 10) || "-"}
+              {owner.description || "-"}
             </span>
           </div>
         </div>
@@ -694,19 +652,22 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
           <h2 className="owner-details-title">User Information</h2>
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">👤</span>User Name:
+              {/* <span className="owner-details-icon">👤</span> */}
+              User Name:
             </span>
             <span className="owner-details-value">{user.name || "-"}</span>
           </div>
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">✉️</span>Email:
+              {/* <span className="owner-details-icon">✉️</span> */}
+              Email:
             </span>
             <span className="owner-details-value">{user.email || "-"}</span>
           </div>
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">📞</span>Phone Number:
+              {/* <span className="owner-details-icon">📞</span> */}
+              Phone Number:
             </span>
             <span className="owner-details-value">
               {user.phone_number || "-"}
@@ -714,7 +675,8 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
           </div>
           <div className="owner-details-section">
             <span className="owner-details-label">
-              <span className="owner-details-icon">🌍</span>Country:
+              {/* <span className="owner-details-icon">🌍</span> */}
+              Country:
             </span>
             <span className="owner-details-value">{country || "-"}</span>
           </div>
@@ -744,7 +706,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
                   onMouseEnter={() => setServiceToDelete(svc.id)}
                   onMouseLeave={() => setServiceToDelete(null)}
                 >
-                  <span className="owner-service-icon">🛎️</span>
+                  {/* <span className="owner-service-icon">🛎️</span> */}
                   <span className="owner-service-name">{svc.name}</span>
                   {!isAdmin && serviceToDelete === svc.id && (
                     <button
@@ -801,7 +763,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
                       </div>
                     ))
                   ) : (
-                    <div className="no-services">لا توجد خدمات متاحة</div>
+                    <div className="no-services">No service available</div>
                   )}
                 </div>
                 <div className="service-input">
@@ -838,65 +800,75 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
         )}
 
         {/* Owner Pictures Slider (display only) */}
-        <div className="owner-pictures-section">
-          <h2 className="owner-pictures-title">Pictures</h2>
+        <div
+          className={`owner-details-pictures-section ${
+            !pictures || pictures.length === 0
+              ? "owner-details-no-pictures"
+              : ""
+          }`}
+        >
+          <h2 className="owner-details-pictures-title">Pictures</h2>
           <div
-            className="owner-pictures-slider-wrapper"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            style={{ position: "relative" }}
+            className={`owner-details-css-slider-container ${
+              pictures && pictures.length <= 3
+                ? "owner-details-no-animation"
+                : ""
+            } ${
+              !pictures || pictures.length === 0
+                ? "owner-details-empty-container"
+                : ""
+            }`}
           >
-            {pictures.length > 0 && (
-              <button
-                className="slider-arrow left"
-                onClick={() => scrollSlider("left")}
-              >
-                <i className="fa-solid fa-arrow-left" />
-              </button>
-            )}
-            <div
-              className="owner-pictures-slider"
-              ref={sliderRef}
-              style={{
-                overflowX: "auto",
-                scrollBehavior: "smooth",
-                display: "flex",
-                gap: "20px",
-              }}
-            >
-              {pictures.length > 0 ? (
-                [...pictures, ...pictures, ...pictures].map((pic, idx) => (
-                  <div
-                    className="owner-picture-card"
-                    key={`pic-${pic.id}-${idx}`}
-                  >
-                    <img
-                      className="owner-picture-img"
-                      src={
-                        pic.reference.startsWith("http")
-                          ? pic.reference
-                          : `http://127.0.0.1:8000/${pic.reference}`
-                      }
-                      alt={`Owner pic ${(idx % pictures.length) + 1}`}
-                      onError={(e) => {
-                        e.target.src =
-                          "https://via.placeholder.com/180x120?text=No+Image";
-                      }}
-                    />
-                  </div>
-                ))
+            <div className="owner-details-css-slider-track">
+              {pictures && pictures.length > 0 ? (
+                <>
+                  {pictures.map((pic, idx) => (
+                    <div
+                      className="owner-details-css-slide"
+                      key={`original-${idx}`}
+                    >
+                      <img
+                        src={
+                          pic.reference.startsWith("http")
+                            ? pic.reference
+                            : `http://127.0.0.1:8000/${pic.reference}`
+                        }
+                        alt={`Owner pic ${idx + 1}`}
+                        onError={(e) => {
+                          e.target.src =
+                            "https://via.placeholder.com/180x120?text=No+Image";
+                        }}
+                      />
+                    </div>
+                  ))}
+                  {/* Duplicate images for seamless loop - only if more than 3 images */}
+                  {pictures.length > 3 &&
+                    pictures.map((pic, idx) => (
+                      <div
+                        className="owner-details-css-slide"
+                        key={`duplicate-${idx}`}
+                      >
+                        <img
+                          src={
+                            pic.reference.startsWith("http")
+                              ? pic.reference
+                              : `http://127.0.0.1:8000/${pic.reference}`
+                          }
+                          alt={`Owner pic ${idx + 1}`}
+                          onError={(e) => {
+                            e.target.src =
+                              "https://via.placeholder.com/180x120?text=No+Image";
+                          }}
+                        />
+                      </div>
+                    ))}
+                </>
               ) : (
-                <div className="owner-picture-empty">No pictures available</div>
+                <div className="owner-details-no-images">
+                  <span>No Images Available</span>
+                </div>
               )}
             </div>
-            {pictures.length > 0 && (
-              <button
-                className="slider-arrow right"
-                onClick={() => scrollSlider("right")}
-              >
-                <i className="fa-solid fa-arrow-right" />
-              </button>
-            )}
           </div>
         </div>
 
@@ -911,7 +883,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
                     style={{ display: "flex", flexDirection: "column", gap: 4 }}
                   >
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <span className="owner-service-icon">🧳</span>
+                      {/* <span className="owner-service-icon">🧳</span> */}
                       <span style={{ color: "var(--color1)" }}>
                         <b>Price:</b>{" "}
                         <span
@@ -957,7 +929,7 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
                     style={{ display: "flex", flexDirection: "column", gap: 4 }}
                   >
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <span className="owner-service-icon">🚙</span>
+                      {/* <span className="owner-service-icon">🚙</span> */}
                       <span style={{ color: "var(--color1)" }}>
                         <b>Type:</b>{" "}
                         <span

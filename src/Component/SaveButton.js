@@ -34,7 +34,7 @@ const Button = ({ onClick, text = 'Book', children, ...rest }) => {
             </defs>
           </svg>
         </span>
-        {children ? children : <p className="text">{text}</p>}
+        {children ? children : <p className="text mb-0">{text}</p>}
       </button>
     </StyledWrapper>
   );

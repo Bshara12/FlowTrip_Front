@@ -9,11 +9,21 @@ import { toast } from 'react-toastify';
 import PaymentCard from './PaymentCard';
 import SaveButton from './SaveButton';
 import PaymentButton from './PaymentButton';
+// =======
+// import React, { useState } from "react";
+// import styled from "styled-components";
+// import { Calendar } from "react-date-range";
+// import "react-date-range/dist/styles.css";
+// import "react-date-range/dist/theme/default.css";
+// import PaymentCard from "./PaymentCard";
+// import SaveButton from "./SaveButton";
+// import PaymentButton from "./PaymentButton";
+// >>>>>>> 8f6c837c3ba972d6555ab9b4fc3df5ae422b7eca
 
 const Booking = ({ type, accommodation, onClose, onPayment }) => {
   const location = useLocation();
   const bookingData = location.state || {};
-  
+
   // Check if it's a package booking from props or location state
   const isPackageBooking = type === 'package' || bookingData.type === 'package';
   const packageData = accommodation || bookingData.packageData;
@@ -21,29 +31,29 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
   const package_id = accommodation?.package_id || bookingData.package_id;
 
   const [formData, setFormData] = useState({
-    nationalId: '',
-    travelerName: '',
+    nationalId: "",
+    travelerName: "",
   });
-  
+
   const [cardData, setCardData] = useState({
-    cardNumber: '',
-    holderName: '',
-    expiry: '',
-    cvv: ''
+    cardNumber: "",
+    holderName: "",
+    expiry: "",
+    cvv: "",
   });
-  
+
   const [checkInDate, setCheckInDate] = useState(null);
   const [checkOutDate, setCheckOutDate] = useState(null);
   const [showDateModal, setShowDateModal] = useState(false);
-  const [currentDateType, setCurrentDateType] = useState('');
+  const [currentDateType, setCurrentDateType] = useState("");
   const [tempDate, setTempDate] = useState(new Date());
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -101,7 +111,7 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
       );
 
       onPayment && onPayment(response.data);
-      
+
     } catch (error) {
       console.error("=== Booking Error Details ===");
       console.error("Error:", error);
@@ -109,7 +119,7 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
       console.error("Response Data:", error.response?.data);
       console.error("Response Headers:", error.response?.headers);
       console.error("============================");
-      
+
       const errorMessage = error.response?.data?.message || "Failed to book package";
       toast.error(errorMessage, { position: "top-right" });
     } finally {
@@ -124,10 +134,10 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
         <div className="booking-form-row">
           <div className="booking-form-group">
             <label>📅 Check-in Date</label>
-            <div 
+            <div
               className="booking-date-selector"
               onClick={() => {
-                setCurrentDateType('checkIn');
+                setCurrentDateType("checkIn");
                 setTempDate(checkInDate || new Date());
                 setShowDateModal(true);
               }}
@@ -135,20 +145,22 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
               <span>
                 {checkInDate
                   ? checkInDate.toLocaleDateString()
-                  : 'Select Check-in Date'
-                }
+                  : "Select Check-in Date"}
               </span>
               <svg viewBox="0 0 24 24" className="booking-calendar-icon">
-                <path fill="currentColor" d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                <path
+                  fill="currentColor"
+                  d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"
+                />
               </svg>
             </div>
           </div>
           <div className="booking-form-group">
             <label>📅 Check-out Date</label>
-            <div 
+            <div
               className="booking-date-selector"
               onClick={() => {
-                setCurrentDateType('checkOut');
+                setCurrentDateType("checkOut");
                 setTempDate(checkOutDate || new Date());
                 setShowDateModal(true);
               }}
@@ -156,11 +168,13 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
               <span>
                 {checkOutDate
                   ? checkOutDate.toLocaleDateString()
-                  : 'Select Check-out Date'
-                }
+                  : "Select Check-out Date"}
               </span>
               <svg viewBox="0 0 24 24" className="booking-calendar-icon">
-                <path fill="currentColor" d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                <path
+                  fill="currentColor"
+                  d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"
+                />
               </svg>
             </div>
           </div>
@@ -202,10 +216,10 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
         <div className="booking-form-row">
           <div className="booking-form-group">
             <label>📅 Check-in Date</label>
-            <div 
+            <div
               className="booking-date-selector"
               onClick={() => {
-                setCurrentDateType('checkIn');
+                setCurrentDateType("checkIn");
                 setTempDate(checkInDate || new Date());
                 setShowDateModal(true);
               }}
@@ -213,20 +227,22 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
               <span>
                 {checkInDate
                   ? checkInDate.toLocaleDateString()
-                  : 'Select Check-in Date'
-                }
+                  : "Select Check-in Date"}
               </span>
               <svg viewBox="0 0 24 24" className="booking-calendar-icon">
-                <path fill="currentColor" d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                <path
+                  fill="currentColor"
+                  d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"
+                />
               </svg>
             </div>
           </div>
           <div className="booking-form-group">
             <label>📅 Check-out Date</label>
-            <div 
+            <div
               className="booking-date-selector"
               onClick={() => {
-                setCurrentDateType('checkOut');
+                setCurrentDateType("checkOut");
                 setTempDate(checkOutDate || new Date());
                 setShowDateModal(true);
               }}
@@ -234,11 +250,13 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
               <span>
                 {checkOutDate
                   ? checkOutDate.toLocaleDateString()
-                  : 'Select Check-out Date'
-                }
+                  : "Select Check-out Date"}
               </span>
               <svg viewBox="0 0 24 24" className="booking-calendar-icon">
-                <path fill="currentColor" d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                <path
+                  fill="currentColor"
+                  d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"
+                />
               </svg>
             </div>
           </div>
@@ -316,14 +334,16 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
   );
 
   return (
-    <StyledWrapper style={{width:'75%', display:'flex', justifyContent:'center'}}>
+    <StyledWrapper
+      style={{ width: "75%", display: "flex", justifyContent: "center" }}
+    >
       <div className="booking-container" onClick={(e) => e.stopPropagation()}>
         <div className="booking-header">
           <h2>Booking {isPackageBooking ? 'Package' : (type === 'room' ? 'Room' : 'Accommodation')}</h2>
           <button className="booking-close-btn" onClick={onClose}>×</button>
         </div>
-        
-        <form onSubmit={(e)=> {e.preventDefault()}} className="booking-form">
+
+        <form onSubmit={(e) => { e.preventDefault() }} className="booking-form">
           {isPackageBooking ? (
             <div className="booking-accommodation-info">
               <h3>{packageData?.tourism_company?.company_name || packageData?.hotel_name}</h3>
@@ -362,48 +382,8 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
               <PaymentCard cardData={cardData} setCardData={setCardData} />
             </div>
           )}
-          
-          {showDateModal && (
-            <div
-              className="booking-date-modal-overlay"
-              onClick={() => setShowDateModal(false)}
-            >
-              <div
-                className="booking-date-modal-content"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="booking-date-modal-header">
-                  <h3>
-                    {currentDateType === 'checkIn' ? 'Select Check-in Date' : 'Select Check-out Date'}
-                  </h3>
-                  <button
-                    className="booking-close-button"
-                    onClick={() => setShowDateModal(false)}
-                    aria-label="Close"
-                  >
-                    ×
-                  </button>
-                </div>
-                <Calendar
-                  date={tempDate}
-                  onChange={(date) => setTempDate(date)}
-                  minDate={currentDateType === 'checkOut' && checkInDate ? checkInDate : new Date()}
-                />
-                <div className="booking-date-modal-footer">
-                  <SaveButton
-                    onClick={() => {
-                      if (currentDateType === 'checkIn') {
-                        setCheckInDate(tempDate);
-                      } else {
-                        setCheckOutDate(tempDate);
-                      }
-                      setShowDateModal(false);
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
+
+
 
           {isPackageBooking ? (
             <div className="booking-submit-section">
@@ -432,8 +412,8 @@ const Booking = ({ type, accommodation, onClose, onPayment }) => {
               </div>
             </div>
           ) : (
-            <PaymentButton 
-              onPayment={onPayment} 
+            <PaymentButton
+              onPayment={onPayment}
               formData={formData}
               cardData={cardData}
               checkInDate={checkInDate}
@@ -456,18 +436,22 @@ const StyledWrapper = styled.div`
     border-radius: 0 0 12px 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
-  
+
   .booking-form::-webkit-scrollbar {
     display: none;
   }
-  
+
   .booking-form {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
 
   .booking-header {
-    background: linear-gradient(135deg, var(--color1, #007bff), var(--color3, #28a745));
+    background: linear-gradient(
+      135deg,
+      var(--color1, #007bff),
+      var(--color3, #28a745)
+    );
     color: white;
     padding: 20px;
     display: flex;
@@ -522,7 +506,8 @@ const StyledWrapper = styled.div`
     font-size: 1.3rem;
   }
 
-  .booking-location, .booking-price {
+  .booking-location,
+  .booking-price {
     margin: 5px 0;
     color: var(--color2, #666);
     font-size: 1rem;
@@ -900,7 +885,11 @@ const StyledWrapper = styled.div`
   }
 
   .booking-submit-btn {
-    background: linear-gradient(135deg, var(--color1, #007bff), var(--color3, #28a745));
+    background: linear-gradient(
+      135deg,
+      var(--color1, #007bff),
+      var(--color3, #28a745)
+    );
     color: white;
     border: none;
     padding: 15px 40px;
@@ -938,17 +927,17 @@ const StyledWrapper = styled.div`
     justify-content: space-between;
     min-height: 44px;
   }
-  
+
   .booking-date-selector:hover {
     border-color: #4a90e2;
     box-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
   }
-  
+
   .booking-date-selector span {
     color: #333;
     flex: 1;
   }
-  
+
   .booking-date-selector .booking-calendar-icon {
     width: 20px;
     height: 20px;
@@ -956,7 +945,7 @@ const StyledWrapper = styled.div`
     opacity: 0.7;
     transition: opacity 0.2s ease;
   }
-  
+
   .booking-date-selector:hover .booking-calendar-icon {
     opacity: 1;
   }
@@ -975,7 +964,7 @@ const StyledWrapper = styled.div`
     z-index: 2000;
     padding: 16px;
   }
-  
+
   .booking-date-modal-content {
     background: white;
     border-radius: 16px;
@@ -985,7 +974,7 @@ const StyledWrapper = styled.div`
     max-height: 90vh;
     overflow: hidden;
   }
-  
+
   .booking-date-modal-header {
     display: flex;
     justify-content: space-between;
@@ -993,14 +982,14 @@ const StyledWrapper = styled.div`
     padding: 20px 24px;
     border-bottom: 1px solid #e1e5e9;
   }
-  
+
   .booking-date-modal-header h3 {
     margin: 0;
     color: #333;
     font-size: 18px;
     font-weight: 600;
   }
-  
+
   .booking-date-modal-header .booking-close-button {
     background: none;
     border: none;
@@ -1016,12 +1005,12 @@ const StyledWrapper = styled.div`
     border-radius: 50%;
     transition: all 0.2s ease;
   }
-  
+
   .booking-date-modal-header .booking-close-button:hover {
     background: #f5f5f5;
     color: #333;
   }
-  
+
   .booking-date-modal-footer {
     padding: 16px 24px;
     border-top: 1px solid #e1e5e9;
@@ -1083,7 +1072,7 @@ const StyledWrapper = styled.div`
       max-width: none;
       max-height: none;
     }
-    
+
     .booking-date-modal-overlay {
       padding: 0;
     }
@@ -1107,6 +1096,13 @@ const StyledWrapper = styled.div`
     .booking-date-selector {
       padding: 8px 12px;
       font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 375px) {
+    .visa-card {
+      width: 240px;
+      height: 145px;
     }
   }
 `;

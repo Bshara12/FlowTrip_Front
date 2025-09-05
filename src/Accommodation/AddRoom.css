@@ -35,13 +35,12 @@
   align-items: center;
   min-height: 100vh;
   background:var(--color5);
-  padding: 20px;
+  padding: 20px 5px;
 }
 
 .add-room-container .add-room-form-container {
   max-width: 700px;
   width: 100%;
-  margin: 30px;
   background-color: #001925;
   padding: 30px;
   clip-path: polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px);
@@ -50,19 +49,19 @@
 .add-room-container .add-room-heading {
   display: block;
   color:var(--color6);
-  font-size: 1.5rem;
+  font-size: calc(1rem + 1vw);
   font-weight: 800;
   margin-bottom: 20px;
 }
 
 .add-room-container .add-room-form-container .add-room-form .add-room-input {
+  font-size: calc(.65rem + .6vw);
   color: var(--color4);
   width: 100%;
   background-color: #002733;
   border: none;
   outline: none;
   padding: 10px;
-  margin-bottom: 20px;
   font-weight: bold;
   transition: all 0.2s ease-in-out;
   border-left: 1px solid transparent;
@@ -229,7 +228,6 @@
 
 @media (max-width: 768px) {
   .add-room-container .add-room-form-container {
-    margin: 15px;
     padding: 20px;
   }
   

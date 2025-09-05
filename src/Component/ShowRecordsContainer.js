@@ -27,6 +27,7 @@ const ShowRecordsContainer = ({
   btnn,
   view,
   setView,
+  advanced
 }) => {
   const navigate = useNavigate();
   const [selectedMonth, setSelectedMonth] = useState(null);
@@ -34,12 +35,62 @@ const ShowRecordsContainer = ({
   if (loading) {
     return <Loader />;
   }
-
+console.log(userType)
   if (error) {
     return (
       <div className="error-container">
         <div className="error-icon">⚠️</div>
         <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (userType !== "Hotel" && !advanced) {
+    return (
+      <div className="show-records-container">
+        <div className="show-records-header-section">
+          <h1 className="show-records-main-title">Booking Archive</h1>
+        </div>
+
+        {btnn && <Radio view={view} setView={setView} />}
+
+        {records.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-icon">📋</div>
+            <h3>There is no Booking yet</h3>
+          </div>
+        ) : (
+          <div className="records-grid">
+            {records.map((record) => (
+              <div key={record.id} className="record-card">
+                <div className="show-records-card-content">
+                  <div className="info-row">
+                    <div className="info-item">
+                      <span className="info-label">Customer name:</span>
+                      <span className="info-value">{record.traveler_name}</span>
+                    </div>
+                    <div className="info-item">
+                      <span className="info-label">National number:</span>
+                      <span className="info-value">
+                        {record.national_number}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="info-row">
+                    <div className="info-item">
+                      <span className="info-label">Start Booking:</span>
+                      <span className="info-value">{record.start_date}</span>
+                    </div>
+                    <div className="info-item">
+                      <span className="info-label">End Booking:</span>
+                      <span className="info-value">{record.end_date}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
@@ -50,7 +101,9 @@ const ShowRecordsContainer = ({
         <div className="show-records-header-section">
           <div className="show-records-header-left">
             <BackButton onClick={handleBackToRooms} />
-            <h1 className="show-records-main-title">Room {selectedRoom.id} Archieve</h1>
+            <h1 className="show-records-main-title">
+              Room {selectedRoom.id} Archieve
+            </h1>
           </div>
           <div className="stats-card">
             <div className="stat-item">
@@ -81,7 +134,7 @@ const ShowRecordsContainer = ({
                     {record.user.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="user-info">
-                    <h3 className="user-name">{record.user.name}</h3>
+                    <h3 className="record-user-name">{record.user.name}</h3>
                     <p className="user-email">{record.user.email}</p>
                   </div>
                 </div>
@@ -138,18 +191,22 @@ const ShowRecordsContainer = ({
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "space-between",
+                justifyContent: "space-around",
                 height: "115px",
               }}
             >
-              <h1 className="show-records-main-title">{customTitle || "Room Management"}</h1>
+              <h1 className="show-records-main-title">
+                {customTitle || "Room Management"}
+              </h1>
               <AddButton
                 text="Add Room"
                 onClick={() => navigate("/add-room")}
               />
             </div>
           ) : (
-            <h1 className="show-records-main-title">{customTitle || "Room Management"}</h1>
+            <h1 className="show-records-main-title">
+              {customTitle || "Room Management"}
+            </h1>
           )}
           <div className="stats-card">
             <div className="stat-item">
@@ -171,7 +228,7 @@ const ShowRecordsContainer = ({
                 <div className="show-records-card-header">
                   <div className="show-records-user-avatar">🏨</div>
                   <div className="user-info">
-                    <h3 className="user-name">Room number: {room.id}</h3>
+                    <h3 className="record-user-name">Room number: {room.id}</h3>
                   </div>
                 </div>
                 <div className="show-records-card-content">

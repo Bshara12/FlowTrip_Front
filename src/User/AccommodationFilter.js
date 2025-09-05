@@ -209,7 +209,7 @@ export default function AccommodationFilter() {
   );
 
   return (
-    <div className="fs" style={{ paddingTop: 0 }}>
+    <div className="fs" style={{ paddingTop: 0, margin: "0 20px" }}>
       <ToastContainer />
       <div
         className="accommodation-filter-details-container"
@@ -231,6 +231,7 @@ export default function AccommodationFilter() {
               color: "var(--color3)",
               marginBottom: 24,
               direction: "ltr",
+              fontSize: "calc(.3rem + .8vw)",
             }}
           >
             Find the perfect accommodation by selecting your destination, dates,
@@ -257,7 +258,7 @@ export default function AccommodationFilter() {
             </div>
             <div
               className="accommodation-filter-details-inputbox"
-              style={{ maxWidth: 220 }}
+              style={{ maxWidth: 260 }}
             >
               <input
                 required="required"
@@ -401,7 +402,7 @@ export default function AccommodationFilter() {
             {shouldShowGuests && (
               <div
                 className="accommodation-filter-details-inputbox"
-                style={{ maxWidth: 220 }}
+                style={{ maxWidth: 260 }}
               >
                 <input
                   placeholder=" "
@@ -430,6 +431,7 @@ export default function AccommodationFilter() {
               }}
             >
               <div
+                className="col-lg-9 col-md-12 col-sm-11 col-12 date-container"
                 onClick={(e) => e.stopPropagation()}
                 style={{
                   background: "var(--color7)",
@@ -455,6 +457,7 @@ export default function AccommodationFilter() {
                   </button>
                 </div>
                 <DateRange
+                  className="w-100"
                   months={2}
                   direction="horizontal"
                   moveRangeOnFirstSelection={false}

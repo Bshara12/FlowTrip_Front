@@ -9,12 +9,10 @@ const SubAdminCard = ({ name, email, phoneNumber, style, onClick, buttonText}) =
         <p className="text-title">{name}</p>
         <p className="text-body">
           <span className="info-row">
-            <span className="info-icon">📧</span>
             <span className="info-label">Email:</span>
             <span className="info-value">{email}</span>
           </span>
           <span className="info-row">
-            <span className="info-icon">☎️</span>
             <span className="info-label">Number:</span>
             <span className="info-value">{phoneNumber}</span>
           </span>

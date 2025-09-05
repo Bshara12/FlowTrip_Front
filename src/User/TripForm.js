@@ -17,6 +17,7 @@ export default function TripForm() {
   };
 
   return (
+    <div className="tripformcontainer">
     <div className="trip-form-container">
       <div className="form-header">
         <i className="fa-solid fa-calendar-days"></i> Plan Your Trip
@@ -81,6 +82,7 @@ export default function TripForm() {
           <i className="fa-solid fa-floppy-disk"></i> Save
         </button>
       </form>
+    </div>
     </div>
   );
 }

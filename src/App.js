@@ -230,6 +230,7 @@ import DashboardLayout from "./Component/DashboardLayout";
 import AllAcyivit from "./User/AllActivity";
 import CarFilter from "./User/CarFilter";
 import NotRegistered from "./Component/NotRegistered";
+import AboutUs from "./User/AboutUs";
 
 function App() {
   return (
@@ -312,6 +313,7 @@ function App() {
       <Route path="/All-Activity" element={<AllAcyivit/>} />
       <Route path="car-filter" element={<CarFilter/>} />
       <Route path="not-registered" element={<NotRegistered/>} />
+      <Route path="about-us" element={<AboutUs/>}/>
     </Routes>
   );
 }

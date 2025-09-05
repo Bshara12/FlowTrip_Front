@@ -4,14 +4,17 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {
-  FaBars,FaTimes,FaUser,FaMoon,FaGlobe,FaPhone,FaHome,FaSuitcase,FaCar,FaHiking,} from "react-icons/fa";
+  FaBars,FaTimes,FaUser,FaMoon,FaGlobe,FaPhone,FaHome,FaSuitcase,FaCar,FaHiking,FaRobot,FaBrain,FaInfoCircle,FaEnvelope,} from "react-icons/fa";
 import PackageCard from "../Component/PackageCard";
 import Loader from "../Component/Loader";
 import loadingImage from "../Assets/Loading_icon.gif";
+import chatbotGif from "../Assets/chatbot1.gif";
+import ChatBot from "./ChatBot";
 import "./HomePage.css";
 
 export default function Homepage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isChatBotOpen, setIsChatBotOpen] = useState(false);
   const [packages, setPackages] = useState([]);
   const [activities, setActivities] = useState([]);
   const [loadingPackages, setLoadingPackages] = useState(true);
@@ -24,6 +27,7 @@ export default function Homepage() {
 
   const navigate = useNavigate();
   const closeSidebar = () => setIsSidebarOpen(false);
+  const closeChatBot = () => setIsChatBotOpen(false);
 
   useEffect(() => {
     const fetchAccommodations = async () => {
@@ -155,8 +159,13 @@ export default function Homepage() {
       {/* Navbar */}
       <nav className="navbar">
         <h2 className="logo">Flow Trip</h2>
-        <div className="menu-icon" onClick={() => setIsSidebarOpen(true)} title="Settings">
-          <FaBars />
+        <div className="navbar-icons">
+          <div className="chatbot-icon" onClick={() => setIsChatBotOpen(true)} title="Chat Bot">
+            <img src={chatbotGif} alt="Chat Bot" className="chatbot-gif" />
+          </div>
+          <div className="menu-icon" onClick={() => setIsSidebarOpen(true)} title="Settings">
+            <FaBars />
+          </div>
         </div>
       </nav>
 
@@ -178,29 +187,44 @@ export default function Homepage() {
 
       {/* Overlay sidebar */}
       {isSidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
+      {/* Overlay chatbot */}
+      {isChatBotOpen && <div className="overlay" onClick={closeChatBot}></div>}
 
       {/* Sidebar */}
       <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
         <div className="sidebar-header">
-          <h3>الإعدادات</h3>
+          <h3>extra service</h3>
           <button className="close-btn" onClick={closeSidebar}>
             <FaTimes />
           </button>
         </div>
         <ul>
-          <li>
-            <FaUser className="icon" /> الحساب
+          <li onClick={() => navigate('/trip')}>
+            <i className="fas fa-brain"></i>
+            <p>Make a plan</p>
           </li>
-          <li>
-            <FaMoon className="icon" /> الوضع الليلي
+          <li onClick={() => navigate('/about-us')}>
+            <i className="fas fa-info-circle"></i>
+            <p>About Us</p>
           </li>
-          <li>
-            <FaGlobe className="icon" /> اللغة
-          </li>
-          <li>
-            <FaPhone className="icon" /> الدعم الفني
+          <li onClick={() => window.open('https://wa.me/0938246910', '_blank')}>
+            <i className="fas fa-envelope"></i>
+            <p>Connect Us</p>
           </li>
         </ul>
+      </div>
+
+      {/* ChatBot Sidebar */}
+      <div className={`chatbot-sidebar ${isChatBotOpen ? "open" : ""}`}>
+        <div className="chatbot-sidebar-header">
+          <h3>💬 Chat Assistant</h3>
+          <button className="close-btn" onClick={closeChatBot}>
+            <FaTimes />
+          </button>
+        </div>
+        <div className="chatbot-content">
+          <ChatBot />
+        </div>
       </div>
 
       <h2 style={{ textAlign: "center", margin: "40px 0", color: "#2c3e50" }}>

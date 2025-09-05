@@ -42,7 +42,7 @@ const Auth = () => {
     localStorage.setItem("user_email", userData.email);
     localStorage.setItem("user_id", userData.id);
     localStorage.setItem("role", userData.role_id);
-    localStorage.setItem("user_type", "user");
+    // localStorage.setItem("user_type", "user");
 
     // Show success message
     toast.success("تم تسجيل الدخول بنجاح!", { position: "top-right" });

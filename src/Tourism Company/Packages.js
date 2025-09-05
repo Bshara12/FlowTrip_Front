@@ -42,7 +42,7 @@ const PackagesTourism = () => {
     navigate("/add-package/step1");
   };
 
-  localStorage.setItem("user_type", "tourism");
+  // localStorage.setItem("user_type", "tourism");
 
   return (
     <div className="packagesPageContainer">

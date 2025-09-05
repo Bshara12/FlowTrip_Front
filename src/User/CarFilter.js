@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./CarFilter.css";
 import { FaWhatsapp } from "react-icons/fa";
+import CarCardSkeleton from "../Component/CarCardSkeleton"; // ⬅️ استيراد السكيليتون
 
 const API_SEARCH = "http://127.0.0.1:8000/api/searchVehicles";
 const API_ALL = "http://127.0.0.1:8000/api/getAllVehicles";
@@ -13,16 +14,14 @@ export default function CarFilter() {
   const [results, setResults] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // استخرج المدينة من نصّ location
   const extractCity = (loc) => {
     if (!loc) return null;
     const parts = String(loc).split(",").map((s) => s.trim()).filter(Boolean);
-    if (parts.length >= 3) return parts[parts.length - 2]; // [حي, مدينة, دولة]
-    if (parts.length === 2) return parts[0];               // [مدينة, دولة]
+    if (parts.length >= 3) return parts[parts.length - 2];
+    if (parts.length === 2) return parts[0];
     return parts[0] || null;
   };
 
-  // تحميل كل السيارات عند فتح الصفحة
   useEffect(() => {
     const fetchAll = async () => {
       setLoading(true);
@@ -53,7 +52,6 @@ export default function CarFilter() {
     setResults([]);
     setErrorMsg("");
 
-    // إذا ما في أي فلاتر، اعرض الكل
     const payload = {};
     if (location.trim()) payload.location = location.trim();
     if (vehicleName.trim()) payload.vehicle_name = vehicleName.trim();
@@ -63,7 +61,6 @@ export default function CarFilter() {
 
     try {
       if (isEmpty) {
-        // نفس سلوك أول دخول
         const res = await fetch(API_ALL);
         if (!res.ok) {
           const txt = await res.text();
@@ -75,7 +72,6 @@ export default function CarFilter() {
         return;
       }
 
-      // غير ذلك: نفّذ بحث
       const res = await fetch(API_SEARCH, {
         method: "POST",
         headers: {
@@ -98,11 +94,7 @@ export default function CarFilter() {
         data = await res.json();
       } else {
         const text = await res.text();
-        try {
-          data = JSON.parse(text);
-        } catch {
-          throw new Error("Unexpected non-JSON response from API.");
-        }
+        data = JSON.parse(text);
       }
 
       const list = Array.isArray(data) ? data : data?.data ?? [];
@@ -115,7 +107,6 @@ export default function CarFilter() {
     }
   };
 
-  // رابط واتساب مع رسالة جاهزة
   const buildWhatsAppLink = (phone, title, loc) => {
     if (!phone) return null;
     const digits = String(phone).replace(/\D/g, "");
@@ -124,12 +115,13 @@ export default function CarFilter() {
     return `https://wa.me/${digits}?text=${encodeURIComponent(msg)}`;
   };
 
+  const SKELETON_COUNT = 8; // عدد السكيليتون أثناء التحميل
+
   return (
     <>
       {/* HERO + FORM */}
       <div className="cf-hero">
         <div className="cf-bg" />
-
         <div className="cf-inner">
           <div className="cf-heading">
             <h1>Find and book rental cars</h1>
@@ -191,116 +183,112 @@ export default function CarFilter() {
               </div>
             )}
 
-            {loading && <div className="cf-loading">Searching…</div>}
-
-            {!loading && !errorMsg && results.length === 0 && (
-              <div className="cf-empty">No vehicles to show.</div>
-            )}
-
+            {/* شبكة النتائج: سكيليتون أثناء التحميل */}
             <div className="cf-grid">
-              {results.map((item) => {
-                const title =
-                  item.name || item.vehicle_name || "Vehicle";
-
-                const ppl =
-                  item.people_count ?? item.capacity ?? "—";
-
-                const owner =
-                  item.owner_name ||
-                  item.vehicle_owner?.owner_name ||
-                  "—";
-
-                const phone =
-                  item.phone_number ||
-                  item.vehicle_owner?.user?.phone_number ||
-                  item.vehicle_owner?.phone_number ||
-                  "—";
-
-                const loc =
-                  item.location ||
-                  item.vehicle_owner?.location ||
-                  "—";
-
-                const city = extractCity(loc) || "—";
-
-                const type =
-                  item.car_type ||                
-                  item.car_type_name ||          
-                  item.car_type?.name ||          
-                  item.type_name ||               
-                  "—";
-
-                const waLink =
-                  phone && phone !== "—" ? buildWhatsAppLink(phone, title, loc) : null;
-
-                return (
-                  <div key={item.id ?? `${title}-${owner}-${phone}`} className="cf-card no-img">
-                    <div className="cf-card-body">
-                      {/* عنوان + زر واتساب */}
-                      <div className="cf-card-head">
-                        <h3 className="cf-card-title">{title}</h3>
-
-                        {waLink ? (
-                          <a
-                            href={waLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="cf-book-btn small"
-                            aria-label="Book on WhatsApp"
-                            title="Book on WhatsApp"
-                          >
-                            <FaWhatsapp className="cf-wa-ico" />
-                            Book on WhatsApp
-                          </a>
-                        ) : (
-                          <button className="cf-book-btn small disabled" disabled>
-                            WhatsApp unavailable
-                          </button>
-                        )}
-                      </div>
-
-                      <div className="cf-tags">
-                        <span className="cf-chip">👥 {ppl} people</span>
-                      </div>
-
-                      <div className="cf-list">
-                        <p className="cf-meta">
-                          <span className="cf-ico">🏷️</span>
-                          <strong>Type:</strong>&nbsp;{type}
-                        </p>
-
-                        <p className="cf-meta">
-                          <span className="cf-ico">🗺️</span>
-                          <strong>City:</strong>&nbsp;{city}
-                        </p>
-
-                        <p className="cf-meta">
-                          <span className="cf-ico">👤</span>
-                          <strong>Owner:</strong>&nbsp;{owner}
-                        </p>
-
-                        <p className="cf-meta">
-                          <span className="cf-ico">📞</span>
-                          <strong>Phone:</strong>&nbsp;
-                          {phone !== "—" ? <a href={`tel:${phone}`}>{phone}</a> : "—"}
-                        </p>
-
-                        <p className="cf-meta">
-                          <span className="cf-ico">📍</span>
-                          <strong>Location:</strong>&nbsp;{loc}
-                        </p>
-                      </div>
-
-                      {item.description && (
-                        <p className="cf-desc">{item.description}</p>
-                      )}
-                      {item.car_discription && !item.description && (
-                        <p className="cf-desc">{item.car_discription}</p>
-                      )}
-                    </div>
+              {loading
+                ? Array.from({ length: SKELETON_COUNT }).map((_, idx) => (
+                    <CarCardSkeleton key={`car-skel-${idx}`} />
+                  ))
+                : results.length === 0 && !errorMsg
+                ? (
+                  <div className="cf-empty" style={{ gridColumn: "1 / -1" }}>
+                    No vehicles to show.
                   </div>
-                );
-              })}
+                )
+                : results.map((item) => {
+                    const title = item.name || item.vehicle_name || "Vehicle";
+                    const ppl = item.people_count ?? item.capacity ?? "—";
+                    const owner =
+                      item.owner_name ||
+                      item.vehicle_owner?.owner_name ||
+                      "—";
+                    const phone =
+                      item.phone_number ||
+                      item.vehicle_owner?.user?.phone_number ||
+                      item.vehicle_owner?.phone_number ||
+                      "—";
+                    const loc =
+                      item.location ||
+                      item.vehicle_owner?.location ||
+                      "—";
+                    const city = extractCity(loc) || "—";
+                    const type =
+                      item.car_type ||
+                      item.car_type_name ||
+                      item.car_type?.name ||
+                      item.type_name ||
+                      "—";
+                    const waLink =
+                      phone && phone !== "—"
+                        ? buildWhatsAppLink(phone, title, loc)
+                        : null;
+
+                    return (
+                      <div key={item.id ?? `${title}-${owner}-${phone}`} className="cf-card no-img">
+                        <div className="cf-card-body">
+                          <div className="cf-card-head">
+                            <h3 className="cf-card-title">{title}</h3>
+                            {waLink ? (
+                              <a
+                                href={waLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="cf-book-btn small"
+                                aria-label="Book on WhatsApp"
+                                title="Book on WhatsApp"
+                              >
+                                <FaWhatsapp className="cf-wa-ico" />
+                                Book on WhatsApp
+                              </a>
+                            ) : (
+                              <button className="cf-book-btn small disabled" disabled>
+                                WhatsApp unavailable
+                              </button>
+                            )}
+                          </div>
+
+                          <div className="cf-tags">
+                            <span className="cf-chip">👥 {ppl} people</span>
+                          </div>
+
+                          <div className="cf-list">
+                            <p className="cf-meta">
+                              <span className="cf-ico">🏷️</span>
+                              <strong>Type:</strong>&nbsp;{type}
+                            </p>
+
+                            <p className="cf-meta">
+                              <span className="cf-ico">🗺️</span>
+                              <strong>City:</strong>&nbsp;{city}
+                            </p>
+
+                            <p className="cf-meta">
+                              <span className="cf-ico">👤</span>
+                              <strong>Owner:</strong>&nbsp;{owner}
+                            </p>
+
+                            <p className="cf-meta">
+                              <span className="cf-ico">📞</span>
+                              <strong>Phone:</strong>&nbsp;
+                              {phone !== "—" ? <a href={`tel:${phone}`}>{phone}</a> : "—"}
+                            </p>
+
+                            <p className="cf-meta">
+                              <span className="cf-ico">📍</span>
+                              <strong>Location:</strong>&nbsp;{loc}
+                            </p>
+                          </div>
+
+                          {item.description && (
+                            <p className="cf-desc">{item.description}</p>
+                          )}
+                          {item.car_discription && !item.description && (
+                            <p className="cf-desc">{item.car_discription}</p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
             </div>
           </div>
         </div>

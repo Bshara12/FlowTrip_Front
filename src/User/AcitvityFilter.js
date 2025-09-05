@@ -22,35 +22,101 @@ export default function ActivityFilter() {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get(
           "http://127.0.0.1:8000/api/GetAllActivities"
         );
         setActivities(response.data);
-        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching activities:", error);
         setIsLoading(false);
       }
     };
-
     fetchActivities();
   }, []);
+
+  useEffect(() => {
+    if (activities.length > 0 && countryName !== "") {
+      setIsLoading(false);
+    }
+  }, [activities, countryName]);
+
+  // دالة لإرجاع الجملة الوصفية لكل نشاط
+  const getActivityDescription = (activityName) => {
+    const descriptions = {
+      Swimming: "I feel hot and need to refresh in the water",
+      Diving: "I want to explore the underwater world and coral reefs",
+      Surfing: "I love the challenge and riding high waves",
+      Fishing: "I enjoy the peace and patience while waiting for the catch",
+      "Mountain Climbing": "I strive to reach the summit and challenge myself",
+      Paragliding: "I dream of flying and seeing the world from above",
+      Skydiving: "I want to experience the thrill of jumping from the sky",
+      "Traditional Dance": "I love learning about local cultures and heritage",
+      "Art Workshops": "I enjoy creativity and artistic expression",
+      "Yoga Classes": "I seek inner peace and relaxation",
+      "Nature Tours": "I love exploring nature and wildlife",
+      "Historical Tours": "I enjoy learning about history and civilizations",
+      "Tennis Coaching": "I want to improve my sports skills",
+      Golf: "I enjoy the calm sport and precision",
+      "Music Lessons": "I love learning music and new instruments",
+      "Dance Classes": "I enjoy movement and rhythm",
+      "DJ Services": "I love music and fun parties",
+      "Tour Guide": "I want an expert guide to accompany me on my journey",
+      Photography: "I love capturing beautiful moments",
+      Videography: "I want to record unforgettable memories",
+    };
+
+    return (
+      descriptions[activityName] || `I want to test ${activityName}`
+    );
+  };
+
+  // دالة للحصول على اسم النشاط الأصلي من الجملة الوصفية
+  const getActivityNameFromDescription = (description) => {
+    const descriptions = {
+      "I feel hot and need to refresh in the water": "Swimming",
+      "I want to explore the underwater world and coral reefs": "Diving",
+      "I love the challenge and riding high waves": "Surfing",
+      "I enjoy the peace and patience while waiting for the catch": "Fishing",
+      "I strive to reach the summit and challenge myself": "Mountain Climbing",
+      "I dream of flying and seeing the world from above": "Paragliding",
+      "I want to experience the thrill of jumping from the sky": "Skydiving",
+      "I love learning about local cultures and heritage": "Traditional Dance",
+      "I enjoy creativity and artistic expression": "Art Workshops",
+      "I seek inner peace and relaxation": "Yoga Classes",
+      "I love exploring nature and wildlife": "Nature Tours",
+      "I enjoy learning about history and civilizations": "Historical Tours",
+      "I want to improve my sports skills": "Tennis Coaching",
+      "I enjoy the calm sport and precision": "Golf",
+      "I love learning music and new instruments": "Music Lessons",
+      "I enjoy movement and rhythm": "Dance Classes",
+      "I love music and fun parties": "DJ Services",
+      "I want an expert guide to accompany me on my journey": "Tour Guide",
+      "I love capturing beautiful moments": "Photography",
+      "I want to record unforgettable memories": "Videography",
+    };
+
+    // إذا كانت الجملة من النوع "I want to test ActivityName"، استخرج اسم النشاط
+    if (description.startsWith("I want to test ")) {
+      return description.replace("I want to test ", "");
+    }
+
+    return descriptions[description] || "";
+  };
 
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      if (countryName != '') {
-        setIsLoading(true);
-        const response = await axios.post(
-          "http://127.0.0.1:8000/api/filterActivities",
-          {
-            activity_name: selectedActivity,
-            country_name: 'Antigua ',
-            location: searchTerm,
-          }
-        );
-        setData(response.data.data);
-      }
+      setIsLoading(true);
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/filterActivities",
+        {
+          activity_name: getActivityNameFromDescription(selectedActivity),
+          country_name: countryName,
+          location: searchTerm,
+        }
+      );
+      setData(response.data.data);
     } catch (e) {
       console.log("Error: " + e);
     } finally {
@@ -73,7 +139,9 @@ export default function ActivityFilter() {
         />
       </div>
       <div className="activity-content">
-        <h3 className="activity-title">{activity.activity_name}</h3>
+        <h3 className="activity-title">
+          {activity.activity_name}
+        </h3>
         <div className="activity-location">
           <i className="fas fa-map-marker-alt"></i>
           <span>{activity.location}</span>
@@ -105,6 +173,7 @@ export default function ActivityFilter() {
     <div className="activity-filter-container">
       <div className="activity-filter-row">
         <div
+        className="trs"
           style={{
             display: "flex",
             alignItems: "center",
@@ -159,10 +228,12 @@ export default function ActivityFilter() {
                         className="owner-submenu-link"
                         onClick={async (e) => {
                           e.preventDefault();
-                          setSelectedActivity(activity.name);
+                          setSelectedActivity(
+                            getActivityDescription(activity.name)
+                          );
                         }}
                       >
-                        {activity.name}
+                        {getActivityDescription(activity.name)}
                       </a>
                     </div>
                   ))}

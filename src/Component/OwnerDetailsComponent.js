@@ -169,7 +169,6 @@ export default function OwnerDetailsComponent({ id, token, isAdmin }) {
       servicesToSend.push(trimmedNew);
     }
 
-    // 2. إذا لم يختَر المستخدم شيئًا ولم يدخل جديدًا، اغلق المودال وارجع
     if (servicesToSend.length === 0) {
       setShowServicesModal(false);
       return;

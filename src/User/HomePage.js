@@ -4,12 +4,20 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {
+// <<<<<<< HEAD
   FaBars,FaTimes,FaUser,FaMoon,FaGlobe,FaPhone,FaHome,FaSuitcase,FaCar,FaHiking,FaRobot,FaBrain,FaInfoCircle,FaEnvelope,} from "react-icons/fa";
 import PackageCard from "../Component/PackageCard";
 import Loader from "../Component/Loader";
 import loadingImage from "../Assets/Loading_icon.gif";
 import chatbotGif from "../Assets/chatbot1.gif";
 import ChatBot from "./ChatBot";
+// =======
+//   FaBars, FaTimes, FaUser, FaMoon, FaGlobe, FaPhone, FaHome, FaSuitcase, FaCar, FaHiking,
+// } from "react-icons/fa";
+import PackageCardSkeleton from "../Component/PackageCardSkeleton";
+import ActivityCardSkeleton from "../Component/ActivityCardSkeleton";
+import AccommodationCardSkeleton from "../Component/AccommodationCardSkeleton";
+// >>>>>>> 9344e3a299f530d174fcffbc7bfe1b09f3f8e2a5
 import "./HomePage.css";
 
 export default function Homepage() {
@@ -75,24 +83,17 @@ export default function Homepage() {
 
   const handlePackageClick = (id) => navigate(`/package-details/${id}`);
 
-  // زر Show more قابل لإعادة الاستخدام
   function ShowMore({ to = "/", label = "Show more" }) {
     const navigate = useNavigate();
     return (
-      <button
-        className="show-more-btn"
-        onClick={() => navigate(to)}
-        aria-label={label}
-        title={label}
-      >
+      <button className="show-more-btn" onClick={() => navigate(to)} aria-label={label} title={label}>
         {label}
         <span className="show-more-arrow">›</span>
       </button>
     );
   }
 
-  // إعدادات السلايدر (محسّنة للموبايل)
-  const slidesDesktop = Math.min(Math.max(packages.length, 1), 4);
+  const slidesDesktop = Math.min(Math.max(packages.length, 1), 5);
   const sliderSettings = {
     dots: false,
     infinite: packages.length > 4,
@@ -124,7 +125,6 @@ export default function Homepage() {
     return picture;
   };
 
-  // فتح/إغلاق مودال النشاط
   const openActivityModal = (act) => {
     setSelectedActivity(act);
     setIsActivityModalOpen(true);
@@ -134,7 +134,6 @@ export default function Homepage() {
     setSelectedActivity(null);
   };
 
-  // رابط واتساب
   const buildWhatsAppLink = (phone, activityName, loc) => {
     if (!phone) return null;
     const digits = String(phone).replace(/\D/g, "");
@@ -143,7 +142,6 @@ export default function Homepage() {
     return `https://wa.me/${digits}?text=${encodeURIComponent(msg)}`;
   };
 
-  // ⇢ نقل للإقامة (نفس أسلوب AccommodationFilter)
   const handleAccommodationCardClick = (acc) => {
     const id = acc?.room_id ?? acc?.id ?? null;
     const type = acc?.type ?? (acc?.room_id ? "room" : "other");
@@ -171,24 +169,17 @@ export default function Homepage() {
 
       {/* Buttons */}
       <div className="nav-buttons">
-        <button onClick={() => navigate("/packages")}>
-          <FaSuitcase /> Packages
-        </button>
-        <button onClick={() => navigate("/All-Activity")}>
-          <FaHiking /> Activities
-        </button>
-        <button onClick={() => navigate("/accommodation-filter")}>
-          <FaHome /> accommodations 
-        </button>
-        <button onClick={() => navigate("/car-filter")}>
-          <FaCar /> Cars
-        </button>
+        <button onClick={() => navigate("/packages")}><FaSuitcase /> Packages</button>
+        <button onClick={() => navigate("/All-Activity")}><FaHiking /> Activities</button>
+        <button onClick={() => navigate("/accommodation-filter")}><FaHome /> accommodations</button>
+        <button onClick={() => navigate("/car-filter")}><FaCar /> Cars</button>
       </div>
 
       {/* Overlay sidebar */}
       {isSidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
       {/* Overlay chatbot */}
       {isChatBotOpen && <div className="overlay" onClick={closeChatBot}></div>}
+
 
       {/* Sidebar */}
       <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
@@ -233,10 +224,21 @@ export default function Homepage() {
 
       {/* Packages slider */}
       {loadingPackages ? (
-        <div style={{ textAlign: "center" }}>
-          <Loader />
-          <img src={loadingImage} alt="Loading..." style={{ width: "100px", margin: "50px auto" }} />
-        </div>
+        <Slider
+          {...{
+            ...sliderSettings,
+            slidesToShow: 4, // عدد سكيليتون بالكارو
+            infinite: false,
+            autoplay: false,
+          }}
+          className="package-slider"
+        >
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={`pkg-skel-${i}`}>
+              <PackageCardSkeleton />
+            </div>
+          ))}
+        </Slider>
       ) : (
         <Slider {...sliderSettings} className="package-slider">
           {packages.map((pkg) => (
@@ -265,8 +267,9 @@ export default function Homepage() {
       </h2>
 
       {loadingActivities ? (
-        <div style={{ textAlign: "center" }}>
-          <Loader />
+        <div className="activities-grid">
+          {[0, 1].map((i) => <ActivityCardSkeleton key={`a-lg-${i}`} size="large" />)}
+          {[0, 1, 2].map((i) => <ActivityCardSkeleton key={`a-sm-${i}`} size="small" />)}
         </div>
       ) : (
         <div className="activities-grid">
@@ -287,9 +290,7 @@ export default function Homepage() {
               <div className="activity-overlay">
                 <h3>{act.activity_name}</h3>
                 <p>{act.owner_name}</p>
-                <p>
-                  {act.location}, {act.country_name}
-                </p>
+                <p>{act.location}, {act.country_name}</p>
               </div>
             </div>
           ))}
@@ -307,8 +308,10 @@ export default function Homepage() {
       <div className="section-divider"></div>
 
       {loadingAccommodations ? (
-        <div style={{ textAlign: "center" }}>
-          <Loader />
+        <div className="accommodations-grid">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <AccommodationCardSkeleton key={`acc-skel-${i}`} />
+          ))}
         </div>
       ) : (
         <div className="accommodations-grid">
@@ -355,7 +358,7 @@ export default function Homepage() {
         <ShowMore to="/accommodation-filter" label="Show more" />
       </div>
 
-      {/* ========== Activity Modal ========== */}
+      {/* Modal */}
       {isActivityModalOpen && selectedActivity && (
         <div className="modal-overlay" onClick={closeActivityModal}>
           <div
@@ -367,23 +370,17 @@ export default function Homepage() {
           >
             <div className="modal-header">
               <h3 id="actModalTitle">Do you want to book this activity?</h3>
-              <button className="modal-close" onClick={closeActivityModal} aria-label="Close">
-                ×
-              </button>
+              <button className="modal-close" onClick={closeActivityModal} aria-label="Close">×</button>
             </div>
 
             <div className="modal-body">
               <p className="modal-title">{selectedActivity.activity_name}</p>
-              <p className="modal-row">
-                <strong>Owner:</strong> {selectedActivity.owner_name || "—"}
-              </p>
+              <p className="modal-row"><strong>Owner:</strong> {selectedActivity.owner_name || "—"}</p>
               <p className="modal-row">
                 <strong>Phone:</strong>{" "}
                 {selectedActivity.phone_number ? (
                   <a href={`tel:${selectedActivity.phone_number}`}>{selectedActivity.phone_number}</a>
-                ) : (
-                  "—"
-                )}
+                ) : "—"}
               </p>
             </div>
 
@@ -402,13 +399,10 @@ export default function Homepage() {
                   Contact on WhatsApp
                 </a>
               ) : (
-                <button className="btn btn-disabled" disabled>
-                  WhatsApp unavailable
-                </button>
+                <button className="btn btn-disabled" disabled>WhatsApp unavailable</button>
               )}
               <button className="btn btn-danger" onClick={closeActivityModal}>
-                <FaTimes style={{ marginRight: 6 }} />
-                Close
+                <FaTimes style={{ marginRight: 6 }} /> Close
               </button>
             </div>
           </div>

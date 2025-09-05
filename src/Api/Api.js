@@ -129,4 +129,24 @@ export const MAKEITINERARY = "ai/itinerary"
 
 
 // export const TOKEN = "VNJPazs7f95olwbhJmCcsdBBntqhoHL3EZzBHcZUeb7c8f9c";
-export const TOKEN = localStorage.getItem("token");
+// <<<<<<< HEAD
+// export const TOKEN = localStorage.getItem("token");
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+
+// التحقق من الـ token
+let TOKEN = getCookie("token");
+
+if (!TOKEN) {
+
+  TOKEN = localStorage.getItem("token");
+}
+
+export { TOKEN };
+// =======
+// export const TOKEN = localStorage.getItem("token");
+// >>>>>>> 8f6c837c3ba972d6555ab9b4fc3df5ae422b7eca

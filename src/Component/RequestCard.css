@@ -5,6 +5,7 @@
   margin-bottom: 20px;
   box-shadow: 0 0 20px rgba(170, 199, 215, 0.6);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 227px;
 }
 
 .request-card:hover {

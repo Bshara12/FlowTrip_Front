@@ -20,7 +20,31 @@ const PackageElementDetails = () => {
   const [element, setElement] = useState(null);
   const fallbackImage = "https://images.unsplash.com/photo-1504674900247-0877df9cc836";
   const userType = localStorage.getItem("user_type");
+  
+  // Check role from both localStorage and cookies
+  const getUserRole = () => {
+    let role = localStorage.getItem("role");
+    if (!role) {
+      // If not in localStorage, check cookies
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; role=`);
+      if (parts.length === 2) {
+        role = parts.pop().split(';').shift();
+      }
+    }
+    // Decode URL encoded values (e.g., Tourism%20Company -> Tourism Company)
+    return role ? decodeURIComponent(role) : role;
+  };
+  
+  const userRole = getUserRole();
   const token = `${TOKEN}`;
+  
+  // Debug: Check userRole value
+  console.log("=== PackageElementDetails Debug ===");
+  console.log("userRole:", userRole);
+  console.log("userRole type:", typeof userRole);
+  console.log("Is Tourism Company?", userRole === "Tourism Company");
+  console.log("===================================");
 
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -129,7 +153,12 @@ const PackageElementDetails = () => {
             element.images.map((pic, index) => (
               <div key={index} className="sliderImageWrapper"
                 style={{ position: "relative" }}
-                onMouseEnter={() => setDeleteImageId(pic.id)}
+                onMouseEnter={() => {
+                  console.log("Mouse enter - userRole:", userRole);
+                  if (userRole === "Tourism Company") {
+                    setDeleteImageId(pic.id);
+                  }
+                }}
                 onMouseLeave={() => setDeleteImageId(null)}
               >
                 <img
@@ -137,7 +166,7 @@ const PackageElementDetails = () => {
                   alt={`slide-${index}`}
                   className={`sliderImage${deleteImageId === pic.id ? " dimmed" : ""}`}
                 />
-                {deleteImageId === pic.id && (
+                {deleteImageId === pic.id && userRole === "Tourism Company" && (
                   <button
                     className="deleteImageBtn"
                     style={{

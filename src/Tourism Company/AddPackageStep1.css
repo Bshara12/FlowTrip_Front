@@ -1,6 +1,16 @@
+.add-package-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  min-height: 100vh;
+}
+
+
+
 .add-package-step1-container {
     max-width: 420px;
-    margin: 40px auto;
+    /* margin: 40px auto; */
     background: var(--color4);
     border-radius: 18px;
     padding: 32px;

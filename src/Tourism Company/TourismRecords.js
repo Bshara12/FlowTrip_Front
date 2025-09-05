@@ -23,7 +23,7 @@ const TourismRecords = () => {
       setLoading(true);
       setErrorDefault("");
       try {
-        const token = Cookies.get("authToken") || localStorage.getItem("token");
+        const token = Cookies.get("token") || localStorage.getItem("token");
         const res = await axios.get(
           "http://127.0.0.1:8000/api/tourism/getPackagesfortourism",
           {
@@ -70,7 +70,7 @@ const TourismRecords = () => {
     setLoading(true);
     setErrorLatest("");
     try {
-      const token = Cookies.get("authToken") || localStorage.getItem("token");
+      const token = Cookies.get("token") || localStorage.getItem("token");
       const res = await axios.get(
         `${baseURL}/${BASETOURISM}/${GET_MOST_POPULAR_PACKAGES_FOR_COMPANY}`,
         {

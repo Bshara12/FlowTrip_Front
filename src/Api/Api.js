@@ -138,15 +138,11 @@ function getCookie(name) {
 }
 
 // التحقق من الـ token
-let TOKEN = localStorage.getItem("token");
+let TOKEN = getCookie("token");
 
 if (!TOKEN) {
-  TOKEN = getCookie("token");
 
-  // إذا جبتها من الكوكيز، ممكن تحفظها بالـ localStorage
-  if (TOKEN) {
-    localStorage.setItem("token", TOKEN);
-  }
+  TOKEN = localStorage.getItem("token");
 }
 
 export { TOKEN };

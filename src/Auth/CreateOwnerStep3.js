@@ -113,7 +113,15 @@ const CreateOwnerStep3 = () => {
 
     try {
       // Get user email from localStorage
-      const userEmail = localStorage.getItem("email");
+      // const userEmail = localStorage.getItem("email");
+      const emailFromLocal = localStorage.getItem("email");
+
+      const emailFromCookie = document.cookie
+        .split("; ")
+        .find(row => row.startsWith("email="))
+        ?.split("=")[1];
+
+      const userEmail = emailFromLocal || emailFromCookie;
       if (!userEmail) {
         toast.error("User email not found. Please login again.");
         return;
@@ -153,7 +161,7 @@ const CreateOwnerStep3 = () => {
       if (
         response.data.success ||
         response.data.message ===
-          "your request has been sent to the technical team.. pleas wait until the request processed."
+        "your request has been sent to the technical team.. pleas wait until the request processed."
       ) {
         toast.success(
           "your request has been sent to the technical team.. pleas wait until the request processed."

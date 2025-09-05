@@ -133,7 +133,7 @@ const AddPackageElement = (props) => {
     };
 
     return (
-        <>
+        <div className="add-package-element-container">
             <ToastContainer position="top-right" autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <form
                 className="add-package-element-form"
@@ -239,7 +239,7 @@ const AddPackageElement = (props) => {
                     {loading ? "Adding..." : "Add Element"}
                 </button>
             </form>
-        </>
+        </div>
     );
 };
 

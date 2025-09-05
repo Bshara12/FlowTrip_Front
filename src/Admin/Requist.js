@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import RequestCard from "../Component/RequestCard";
-import Loader from "../Component/Loader";
 import { baseURL, GET_ALL_REQUESTS, TOKEN } from "../Api/Api";
 import RequestCardSkeleton from "../Component/RequestCardSkeleton";
 
@@ -25,7 +24,8 @@ const Requist = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
+        console.log(response.data);
+        console.log(token);
         if (response.data && response.data.data) {
           setRequests(response.data.data);
         }
@@ -37,8 +37,6 @@ const Requist = () => {
           // Optionally redirect to login page
           // window.location.href = "/auth";
         }
-        console.error("Error:", error);
-        console.error("An error occurred while fetching requests:", error);
       } finally {
         setLoading(false);
       }
@@ -48,33 +46,47 @@ const Requist = () => {
   }, [token]);
 
   return (
-    <div style={{ padding: "2rem", backgroundColor: "var(--color5)", minHeight: "100vh" }}>
-      <h1 style={{ color: "var(--color1)", marginBottom: "1.5rem" }}>Current orders</h1>
+    <div
+      style={{
+        padding: "2rem",
+        backgroundColor: "var(--color5)",
+        minHeight: "100vh",
+      }}
+    >
+      <h1 style={{ color: "var(--color1)", marginBottom: "1.5rem" }}>
+        Current orders
+      </h1>
 
-      {loading ? (
-
-        <>
-          <RequestCardSkeleton />
-          <RequestCardSkeleton />
-          <RequestCardSkeleton />
-          <RequestCardSkeleton />
-        </>
-      ) : (
-        requests.map((item) => {
-          const { id, description, business_name } = item.request;
-          const ownerCategory = item.request.activity_name;
-          console.log(item);
-          return (
-            <RequestCard
-              key={id}
-              id={id}
-              businessName={business_name}
-              ownerCategory={ownerCategory}
-              description={description}
-            />
-          );
-        })
-      )}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "1rem",
+        }}
+      >
+        {loading ? (
+          <>
+            <RequestCardSkeleton />
+            <RequestCardSkeleton />
+            <RequestCardSkeleton />
+            <RequestCardSkeleton />
+          </>
+        ) : (
+          requests.map((item) => {
+            const { id, description, business_name } = item.request;
+            const ownerCategory = item.request.activity_name;
+            return (
+              <RequestCard
+                key={id}
+                id={id}
+                businessName={business_name}
+                ownerCategory={ownerCategory}
+                description={description}
+              />
+            );
+          })
+        )}
+      </div>
     </div>
   );
 };

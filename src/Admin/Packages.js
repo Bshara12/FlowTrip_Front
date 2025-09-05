@@ -27,11 +27,12 @@ export default function Packages() {
 
       try {
         const res = await axios.get(`${baseURL}/${GET_ALL_PACKAGE}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
+          // headers: {
+          //   'Content-Type': 'application/json',
+          //   'Authorization': `Bearer ${token}`
+          // }
         });
+        console.log(res);
         if (res.data && res.data.data) {
           setPackages(res.data.data);
         }
@@ -60,8 +61,8 @@ export default function Packages() {
       <div className="cards">
         {loading ?
           (
-            Array.from({length: 8 }).map((_, index) => (
-            <PackageCardSkeleton key={index} />
+            Array.from({ length: 8 }).map((_, index) => (
+              <PackageCardSkeleton key={index} />
             ))
           )
           : (

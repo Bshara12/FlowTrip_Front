@@ -13,14 +13,23 @@ const Verification = () => {
 
   useEffect(() => {
     // Get user email from localStorage (set during registration)
-    const email = localStorage.getItem("email");
-    if (email) {
-      setUserEmail(email);
+
+    // const email = localStorage.getItem("email");
+    const emailFromLocal = localStorage.getItem("email");
+
+    // جلب الإيميل من الكوكيز
+    const emailFromCookie = document.cookie
+      .split("; ")
+      .find(row => row.startsWith("email="))
+      ?.split("=")[1];
+
+    if (emailFromLocal || emailFromCookie) {
+      setUserEmail(emailFromCookie);
     } else {
       // If no email in localStorage, redirect back to auth
       toast.error("No email found. Please register first.");
       setTimeout(() => {
-        window.location.href = "/auth";
+        window.location.href = "/register";
       }, 2000);
     }
   }, []);
@@ -59,17 +68,17 @@ const Verification = () => {
 
     try {
       console.log("Sending resend request to:", `http://127.0.0.1:8000/api/ReSendEmail/${userEmail}`);
-      
+
       const response = await axios.get(`${baseURL}/${RESENDEMAIL}/${userEmail}`);
 
       console.log("Resend response:", response.data);
 
       if (response.data.success || response.data.message === 'We have sent the code to your email address') {
         toast.success("Verification code has been resent to your email!");
-        
+
         // Clear the verification code inputs
         setVerificationCode(['', '', '', '', '', '']);
-        
+
         // Focus on the first input
         if (inputsRef.current[0]) {
           inputsRef.current[0].focus();
@@ -79,7 +88,7 @@ const Verification = () => {
       }
     } catch (error) {
       console.error("Resend error:", error);
-      
+
       if (error.response) {
         // Server error
         const errorMessage = error.response.data.message || "Failed to resend verification code";
@@ -98,10 +107,10 @@ const Verification = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Combine all digits into one verification code
     const code = verificationCode.join('');
-    
+
     if (code.length !== 6) {
       toast.error("Please enter the complete 6-digit verification code");
       return;
@@ -116,7 +125,7 @@ const Verification = () => {
 
     try {
       console.log("Sending verification request to:", `http://127.0.0.1:8000/api/Verification/${userEmail}`);
-      
+
       const response = await axios.post(`${baseURL}/${VERIFICATION}/${userEmail}`, {
         verification_code: code
       });
@@ -125,10 +134,10 @@ const Verification = () => {
 
       if (response.data.success || response.data.message === 'your email has been verified successfully') {
         toast.success("Email verified successfully!");
-        
+
         // Get user role from localStorage
         const role = localStorage.getItem("role");
-        
+
         // Redirect based on role
         setTimeout(() => {
           if (role === 'user') {
@@ -143,7 +152,7 @@ const Verification = () => {
       }
     } catch (error) {
       console.error("Verification error:", error);
-      
+
       if (error.response) {
         // Server error
         const errorMessage = error.response.data.message || "Verification failed";
@@ -174,7 +183,7 @@ const Verification = () => {
         pauseOnHover
         theme="light"
       />
-      
+
       <form className="form" onSubmit={handleSubmit}>
         <div className="content">
           <p align="center">OTP Verification</p>
@@ -196,8 +205,8 @@ const Verification = () => {
               />
             ))}
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={isLoading}
             style={{
               cursor: isLoading ? 'not-allowed' : 'pointer',
@@ -207,8 +216,8 @@ const Verification = () => {
           >
             {isLoading ? "Verifying..." : "Verify"}
           </button>
-          
-          <button 
+
+          <button
             type="button"
             onClick={handleResendCode}
             disabled={isLoading}

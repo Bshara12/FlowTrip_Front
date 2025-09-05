@@ -146,6 +146,26 @@ if (!TOKEN) {
 }
 
 export { TOKEN };
+
+
+let EMAIL = getCookie("email");
+
+if (!EMAIL) {
+
+  EMAIL = localStorage.getItem("email");
+}
+
+export { EMAIL };
+
+
+let ROLE = getCookie("role");
+
+if (!ROLE) {
+
+  ROLE = localStorage.getItem("role");
+}
+
+export { ROLE };
 // =======
 // export const TOKEN = localStorage.getItem("token");
 // >>>>>>> 8f6c837c3ba972d6555ab9b4fc3df5ae422b7eca

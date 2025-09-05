@@ -122,6 +122,7 @@ const Auth = () => {
         const token = response.data.token;
         const name = response.data.name;
         const role = response.data.role;
+        const email = response.data.email;
 
         console.log("Token:", token);
         console.log("Name:", name);
@@ -136,11 +137,13 @@ const Auth = () => {
           localStorage.setItem("token", token);
           localStorage.setItem("role", role);
           localStorage.setItem("name", name);
+          localStorage.setItem("email", email);
         } else {
           // افتراضي → نخزن بالكوكيز
           Cookies.set("token", token, { expires: 1 }); // يوم واحد
           Cookies.set("role", role, { expires: 1 });
           Cookies.set("name", name, { expires: 1 });
+          Cookies.set("email", email, { expires: 1 });
         }
         // Show welcome notification
         toast.success(`Welcome ${name}!`);

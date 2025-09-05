@@ -17,7 +17,7 @@ export default function Packages() {
   useEffect(() => {
     const fetchPackages = async () => {
       // Get token from localStorage
-      const token = localStorage.getItem("token");
+      const token = TOKEN;
 
       if (!token) {
         console.error("No token found in localStorage");

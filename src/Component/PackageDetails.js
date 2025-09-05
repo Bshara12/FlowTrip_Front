@@ -25,6 +25,8 @@ import {
   GET_PACKAGE,
   PAYBYPOINT,
   TOKEN,
+  EMAIL,
+  ROLE,
 } from "../Api/Api";
 import PackageDetailsLoader from "../Component/PackageDetailsLoader";
 import Cookies from "js-cookie";
@@ -240,7 +242,25 @@ const PackageDetails = () => {
   };
 
   const userType = localStorage.getItem("user_type");
-  const userRole = localStorage.getItem("role");
+  const userRole = ROLE;
+  
+  // Check if current user is the owner of this tourism company package
+  const isPackageOwner = packageData && 
+    packageData.tourism_company && 
+    packageData.tourism_company.owner && 
+    packageData.tourism_company.owner.user && 
+    packageData.tourism_company.owner.user.email === EMAIL;
+    
+  // Check if user is tourism company from role
+  const isTourismCompany = userRole === "Tourism Company" || userRole === "Tourism%20Company";
+  
+  // Debug logs
+  console.log("Debug PackageDetails:");
+  console.log("userRole:", userRole);
+  console.log("EMAIL:", EMAIL);
+  console.log("isTourismCompany:", isTourismCompany);
+  console.log("isPackageOwner:", isPackageOwner);
+  console.log("packageData.tourism_company?.owner?.user?.email:", packageData?.tourism_company?.owner?.user?.email);
 
   return (
     <div className="packageDetailsContainer">
@@ -335,7 +355,7 @@ const PackageDetails = () => {
       </div>
 
       <div className="bookingFooter">
-        {userRole === "admin" ? (
+        {userRole === "admin" || userRole === "Admin" ? (
           <div style={{ display: "flex", justifyContent: "center" }}>
             <button
               onClick={handlePayByPoints}
@@ -411,12 +431,12 @@ const PackageDetails = () => {
               </svg>
               <span>
                 {packageData.payment_by_points === 1
-                  ? "Remove Payment"
-                  : "Pay by Points"}
+                  ? "Remove Payment by Points"
+                  : "Enable Payment by Points"}
               </span>
             </button>
           </div>
-        ) : userType === "tourism" ? (
+        ) : isTourismCompany && isPackageOwner ? (
           <div
             style={{
               display: "flex",
